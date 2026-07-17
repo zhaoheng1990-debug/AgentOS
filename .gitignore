@@ -11,6 +11,7 @@ _tmp*/
 return_packs/
 provider_traces/
 caches/
+archive/
 *.log
 *.zip
 
