@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.pytest_tmp*/
+.pytest_tmp_provider_cognition/
+
+# Runtime outputs and return packs are artifacts, not source.
+outputs/
+tmp/
+_tmp*/
+return_packs/
+provider_traces/
+caches/
+*.log
+*.zip
+
+# Local tool/app state.
+.codex/
+.agents/
+
+# OS/editor noise.
+.DS_Store
+Thumbs.db
