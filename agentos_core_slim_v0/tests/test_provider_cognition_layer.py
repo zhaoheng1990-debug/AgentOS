@@ -4,9 +4,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from agentos_kernel import (
-    BLOCKED_PROVIDER_JUDGMENT_MISSING,
+    BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING,
     PASS_MECHANICAL_RUNTIME_OPERATION,
-    PASS_PROVIDER_JUDGMENT_PRESENT,
+    PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT,
     PROVIDER_COGNITION_LAYER_ID,
     ProviderBackedRuntimeCognitionLayer,
 )
@@ -18,41 +18,44 @@ def test_contract_declares_provider_required_runtime_cognition_operations():
     operation_ids = {item["operation_id"] for item in contract["provider_required_operations"]}
 
     assert contract["layer_id"] == PROVIDER_COGNITION_LAYER_ID
-    assert contract["provider_decision_owner"] is False
+    assert contract["provider_final_decision_owner"] is False
     assert contract["final_decision_owner"] == "AgentOSKernel"
     assert "temporal_sro_constraint_field_resolution" in operation_ids
     assert "memory_retention_candidate_evaluation" in operation_ids
-    assert "entity_and_event_extraction" in operation_ids
-    assert "domain_scope_synthesis" in operation_ids
+    assert "plugin_object_event_extraction" in operation_ids
+    assert "plugin_scope_synthesis" in operation_ids
+    assert "domain_scope_synthesis" not in operation_ids
     assert contract["contract_hash"]
 
 
-def test_semantic_operation_without_provider_judgment_blocks_closed():
+def test_semantic_operation_without_provider_support_receipt_blocks_closed():
     layer = ProviderBackedRuntimeCognitionLayer()
 
     audit = layer.audit_operation(
-        "entity_and_event_extraction",
+        "plugin_object_event_extraction",
         {
-            "operation_id": "entity_and_event_extraction",
+            "operation_id": "plugin_object_event_extraction",
             "local_guess": {"entity": "ObjectA", "entity_type": "plugin_defined_object"},
         },
     )
 
-    assert audit["status"] == BLOCKED_PROVIDER_JUDGMENT_MISSING
+    assert audit["status"] == BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING
     assert audit["provider_required"] is True
-    assert audit["semantic_owner"] == "provider"
+    assert audit["runtime_cognitive_owner"] == "AgentOSKernel"
+    assert audit["provider_support_role"] == "semantic_support_required"
+    assert "semantic_owner" not in audit
     assert "entities" in audit["missing_provider_outputs"]
     assert audit["fail_closed_behavior"] == "candidate_only_or_insufficient_materials_report"
 
 
-def test_semantic_operation_passes_with_complete_provider_judgment():
+def test_semantic_operation_passes_with_complete_provider_support_receipt():
     layer = ProviderBackedRuntimeCognitionLayer()
 
     audit = layer.audit_operation(
-        "entity_and_event_extraction",
+        "plugin_object_event_extraction",
         {
-            "operation_id": "entity_and_event_extraction",
-            "provider_judgment": {
+            "operation_id": "plugin_object_event_extraction",
+            "provider_support_receipt": {
                 "entities": [{"name": "ObjectA", "entity_type": "plugin_defined_object"}],
                 "events": [],
                 "entity_type": "plugin_defined_object",
@@ -63,10 +66,11 @@ def test_semantic_operation_passes_with_complete_provider_judgment():
         },
     )
 
-    assert audit["status"] == PASS_PROVIDER_JUDGMENT_PRESENT
+    assert audit["status"] == PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT
     assert audit["provider_required"] is True
-    assert audit["semantic_owner"] == "provider"
-    assert audit["provider_judgment_hash"]
+    assert audit["runtime_cognitive_owner"] == "AgentOSKernel"
+    assert audit["provider_support_role"] == "semantic_support_present"
+    assert audit["provider_support_receipt_hash"]
 
 
 def test_mechanical_runtime_operation_does_not_require_provider():
@@ -83,7 +87,8 @@ def test_mechanical_runtime_operation_does_not_require_provider():
 
     assert audit["status"] == PASS_MECHANICAL_RUNTIME_OPERATION
     assert audit["provider_required"] is False
-    assert audit["semantic_owner"] == "none"
+    assert audit["runtime_cognitive_owner"] == "AgentOSKernel"
+    assert audit["provider_support_role"] == "forbidden_for_deterministic_runtime_boundary"
 
 
 def test_pipeline_audit_blocks_when_any_provider_required_operation_lacks_judgment():

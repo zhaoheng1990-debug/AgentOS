@@ -15,9 +15,9 @@ from .baseline_evolution_proposal import (
     ProposalQueue,
 )
 from .provider_cognition_layer import (
-    BLOCKED_PROVIDER_JUDGMENT_MISSING,
+    BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING,
     PASS_MECHANICAL_RUNTIME_OPERATION,
-    PASS_PROVIDER_JUDGMENT_PRESENT,
+    PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT,
     PROVIDER_COGNITION_LAYER_ID,
     ProviderBackedRuntimeCognitionLayer,
 )
@@ -84,7 +84,7 @@ __all__ = [
     "AutonomousICMEvolutionPolicy",
     "BaselineEvolutionProposalProtocol",
     "BaselineEligibilityGate",
-    "BLOCKED_PROVIDER_JUDGMENT_MISSING",
+    "BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING",
     "FORBIDDEN_CAPABILITIES",
     "CodexToolBridge",
     "CognitiveAssetEntry",
@@ -94,7 +94,7 @@ __all__ = [
     "EvidenceDimensionSpec",
     "ProjectScopedDurableStore",
     "PASS_MECHANICAL_RUNTIME_OPERATION",
-    "PASS_PROVIDER_JUDGMENT_PRESENT",
+    "PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT",
     "ProviderAdapter",
     "PROVIDER_COGNITION_LAYER_ID",
     "ProviderBackedRuntimeCognitionLayer",

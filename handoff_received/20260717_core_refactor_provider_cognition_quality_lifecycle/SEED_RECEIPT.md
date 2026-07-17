@@ -28,6 +28,13 @@ python -m compileall -q agentos_core_slim_v0
 passed
 ```
 
+## Legacy Conflict Cleanup
+
+- Removed the old `provider_judgment` naming from the Core policy boundary and replaced it with `provider_support_receipt`.
+- Removed `semantic_owner = provider` from policy outputs; the runtime cognitive owner is now explicitly `AgentOSKernel`.
+- Replaced old plugin-facing operation IDs `entity_and_event_extraction` and `domain_scope_synthesis` with domain-neutral `plugin_object_event_extraction` and `plugin_scope_synthesis`.
+- Kept anti-regression tests proving old conflicting fields and operation IDs do not return.
+
 ## Boundary
 
 This patch implements the generic AgentOS Core substrate only. VCOS-specific ontology, prompts, workflows, report renderers, UI conventions, and provider prompt content remain domain-plugin responsibilities.

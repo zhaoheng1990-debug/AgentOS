@@ -1,4 +1,4 @@
-"""Provider-backed cognition contract for AgentOS runtime decisions.
+"""Provider-backed cognition policy boundary for AgentOS runtime decisions.
 
 This module defines which runtime operations require model/provider cognition
 instead of local string or boolean classification. The Kernel remains the
@@ -20,8 +20,8 @@ PROVIDER_REQUIRED = "PROVIDER_REQUIRED"
 PROVIDER_OPTIONAL = "PROVIDER_OPTIONAL"
 PROVIDER_FORBIDDEN = "PROVIDER_FORBIDDEN"
 
-PASS_PROVIDER_JUDGMENT_PRESENT = "PASS_PROVIDER_JUDGMENT_PRESENT"
-BLOCKED_PROVIDER_JUDGMENT_MISSING = "BLOCKED_PROVIDER_JUDGMENT_MISSING"
+PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT = "PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT"
+BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING = "BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING"
 PASS_MECHANICAL_RUNTIME_OPERATION = "PASS_MECHANICAL_RUNTIME_OPERATION"
 BLOCKED_UNKNOWN_COGNITION_OPERATION = "BLOCKED_UNKNOWN_COGNITION_OPERATION"
 
@@ -69,7 +69,7 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         "rank operator compatibility and explain why each operator applies or does not apply",
         "check registered operators, capability envelopes, forbidden actions, and replayability",
         ("ranked_operator_fiber", "applicability_reason", "non_applicability_reason", "risk_notes", "confidence"),
-        "block_route_selection_until_provider_judgment",
+        "block_route_selection_until_provider_support_receipt",
     ),
     CognitionOperationContract(
         "utility_policy_selection",
@@ -87,7 +87,7 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         "judge transferability, future Cbit gain, supersession, negative transfer, scope, freshness, and reuse value",
         "write only candidate/project-scoped records when authorized; hash, replay, rollback, and expose review packet",
         ("transferability", "future_cbit_gain", "negative_transfer_risk", "scope", "freshness", "recommended_state"),
-        "keep_pending_or_quarantine_without_provider_judgment",
+        "keep_pending_or_quarantine_without_provider_support_receipt",
     ),
     CognitionOperationContract(
         "operator_memory_functional_equivalence_review",
@@ -117,7 +117,7 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         "do_not_accept_evidence_without_provider_support_judgment",
     ),
     CognitionOperationContract(
-        "entity_and_event_extraction",
+        "plugin_object_event_extraction",
         "plugin_middleware",
         PROVIDER_REQUIRED,
         "extract plugin-defined objects, events, relations, and source-backed fields",
@@ -126,7 +126,7 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         "candidate_only_or_insufficient_materials_report",
     ),
     CognitionOperationContract(
-        "domain_scope_synthesis",
+        "plugin_scope_synthesis",
         "plugin_middleware",
         PROVIDER_REQUIRED,
         "synthesize a plugin-owned scope from evidence, contradictions, structure, quantitative signals, and uncertainty",
@@ -186,11 +186,11 @@ MECHANICAL_RUNTIME_OPERATIONS: tuple[CognitionOperationContract, ...] = (
 
 
 class ProviderBackedRuntimeCognitionLayer:
-    """Kernel contract for provider-owned semantic cognition operations."""
+    """Kernel-owned policy boundary for provider-supported cognition."""
 
     layer_id = PROVIDER_COGNITION_LAYER_ID
     final_decision_owner = "AgentOSKernel"
-    provider_decision_owner = False
+    provider_final_decision_owner = False
 
     def __init__(self) -> None:
         contracts = PROVIDER_REQUIRED_OPERATIONS + MECHANICAL_RUNTIME_OPERATIONS
@@ -201,8 +201,8 @@ class ProviderBackedRuntimeCognitionLayer:
         mechanical = [item.as_dict() for item in MECHANICAL_RUNTIME_OPERATIONS]
         payload = {
             "layer_id": self.layer_id,
-            "purpose": "separate provider-owned semantic judgment from kernel-owned final decision and mechanical runtime enforcement",
-            "provider_decision_owner": False,
+            "purpose": "route provider-supported semantic work while preserving kernel-owned cognition, final decision, and mechanical runtime enforcement",
+            "provider_final_decision_owner": False,
             "final_decision_owner": self.final_decision_owner,
             "provider_required_operations": provider_required,
             "mechanical_runtime_operations": mechanical,
@@ -236,38 +236,41 @@ class ProviderBackedRuntimeCognitionLayer:
                 "operation_id": operation_id,
                 "status": PASS_MECHANICAL_RUNTIME_OPERATION,
                 "provider_required": False,
-                "semantic_owner": "none",
+                "runtime_cognitive_owner": self.final_decision_owner,
+                "provider_support_role": "forbidden_for_deterministic_runtime_boundary",
                 "runtime_role": contract.runtime_role,
                 "runtime_record_hash": _hash_payload(runtime_record),
             }
 
-        judgment = runtime_record.get("provider_judgment")
-        missing_outputs = self._missing_provider_outputs(contract, judgment)
+        support_receipt = runtime_record.get("provider_support_receipt")
+        missing_outputs = self._missing_provider_outputs(contract, support_receipt)
         if missing_outputs:
             return {
                 "operation_id": operation_id,
-                "status": BLOCKED_PROVIDER_JUDGMENT_MISSING,
+                "status": BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING,
                 "provider_required": True,
-                "semantic_owner": "provider",
+                "runtime_cognitive_owner": self.final_decision_owner,
+                "provider_support_role": "semantic_support_required",
                 "missing_provider_outputs": missing_outputs,
                 "fail_closed_behavior": contract.fail_closed_behavior,
                 "runtime_record_hash": _hash_payload(runtime_record),
             }
 
-        judgment_hash = runtime_record.get("provider_judgment_hash") or _hash_payload(judgment)
+        receipt_hash = runtime_record.get("provider_support_receipt_hash") or _hash_payload(support_receipt)
         return {
             "operation_id": operation_id,
-            "status": PASS_PROVIDER_JUDGMENT_PRESENT,
+            "status": PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT,
             "provider_required": True,
-            "semantic_owner": "provider",
+            "runtime_cognitive_owner": self.final_decision_owner,
+            "provider_support_role": "semantic_support_present",
             "runtime_role": contract.runtime_role,
-            "provider_judgment_hash": judgment_hash,
+            "provider_support_receipt_hash": receipt_hash,
             "runtime_record_hash": _hash_payload(runtime_record),
         }
 
     def audit_pipeline(self, operation_records: list[dict[str, Any]]) -> dict[str, Any]:
         audits = [self.audit_operation(item.get("operation_id", ""), item) for item in operation_records]
-        hard_blocks = [item for item in audits if item["status"] in {BLOCKED_PROVIDER_JUDGMENT_MISSING, BLOCKED_UNKNOWN_COGNITION_OPERATION}]
+        hard_blocks = [item for item in audits if item["status"] in {BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING, BLOCKED_UNKNOWN_COGNITION_OPERATION}]
         return {
             "layer_id": self.layer_id,
             "status": "BLOCKED" if hard_blocks else "PASS",
