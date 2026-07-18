@@ -14,16 +14,29 @@ from hashlib import sha256
 from typing import Any
 
 
-PROVIDER_COGNITION_LAYER_ID = "provider_backed_runtime_cognition_layer_v0_2"
+PROVIDER_COGNITION_LAYER_ID = "provider_backed_runtime_cognition_layer_v0_4"
 
 PROVIDER_REQUIRED = "PROVIDER_REQUIRED"
 PROVIDER_OPTIONAL = "PROVIDER_OPTIONAL"
 PROVIDER_FORBIDDEN = "PROVIDER_FORBIDDEN"
 
 PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT = "PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT"
+PASS_PROVIDER_SUPPORT_RECEIPT_CONSISTENT = "PASS_PROVIDER_SUPPORT_RECEIPT_CONSISTENT"
 BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING = "BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING"
+BLOCKED_PROVIDER_SUPPORT_RECEIPT_INCONSISTENT = "BLOCKED_PROVIDER_SUPPORT_RECEIPT_INCONSISTENT"
 PASS_MECHANICAL_RUNTIME_OPERATION = "PASS_MECHANICAL_RUNTIME_OPERATION"
 BLOCKED_UNKNOWN_COGNITION_OPERATION = "BLOCKED_UNKNOWN_COGNITION_OPERATION"
+
+SEMANTIC_CONSISTENCY_ASSERTIONS = "semantic_consistency_assertions"
+_CONSISTENCY_OPERATORS = {
+    "equals",
+    "not_equals",
+    "in",
+    "contains_all",
+    "length_equals",
+    "greater_than_or_equal",
+    "less_than_or_equal",
+}
 
 
 def _hash_payload(payload: Any) -> str:
@@ -143,6 +156,69 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         ("next_action", "expected_cbit_gain", "stop_condition", "object_switch_candidate", "risk_notes"),
         "stop_or_request_direction_no_local_semantic_guess",
     ),
+    CognitionOperationContract(
+        "group_hypothesis_generation",
+        "cognitive_ensemble_runtime",
+        PROVIDER_REQUIRED,
+        "generate scoped hypotheses, assumptions, rival explanations, and falsifiable predictions from the current problem space",
+        "preserve hypothesis plurality, validate scope and evidence refs, and register claim candidates without promotion",
+        ("hypotheses", "assumptions", "rival_explanations", "falsifiable_predictions", "evidence_refs", "confidence"),
+        "keep_problem_open_no_local_hypothesis_fabrication",
+    ),
+    CognitionOperationContract(
+        "adversarial_epistemic_review",
+        "cognitive_ensemble_runtime",
+        PROVIDER_REQUIRED,
+        "identify rival explanations, strongest falsifiers, unsupported inference, and scope violations",
+        "enforce reviewer independence, frozen gates, receipt completeness, and final bounded epistemic state",
+        ("objections", "strongest_falsifier", "rival_set_coverage", "evidence_refs", "recommended_epistemic_state", "confidence"),
+        "keep_claim_pending_until_provider_backed_adversarial_review",
+    ),
+    CognitionOperationContract(
+        "independent_replication_interpretation",
+        "cognitive_ensemble_runtime",
+        PROVIDER_REQUIRED,
+        "interpret independent replication evidence against the frozen gate and rival set",
+        "verify context independence, gate identity, evidence provenance, and final candidate state",
+        ("replication_outcome", "gate_results", "deviations", "evidence_refs", "confidence"),
+        "keep_claim_pending_until_independent_replication_interpretation",
+    ),
+    CognitionOperationContract(
+        "group_synthesis_and_conflict_resolution",
+        "cognitive_ensemble_runtime",
+        PROVIDER_REQUIRED,
+        "synthesize converged claims while preserving unresolved conflicts, minority positions, and uncertainty",
+        "validate cited receipts, retain conflicts, enforce scope, and own the final synthesis candidate state",
+        ("converged_claims", "unresolved_conflicts", "minority_positions", "evidence_refs", "uncertainties"),
+        "emit_insufficient_synthesis_without_local_conflict_erasure",
+    ),
+    CognitionOperationContract(
+        "group_outcome_quality_assessment",
+        "cognitive_ensemble_runtime",
+        PROVIDER_REQUIRED,
+        "assess non-mechanical output quality, exposed errors, corrected errors, candidate survival, and negative transfer signals",
+        "validate observation schema and evidence refs, then compute deterministic group metrics against member baselines",
+        ("quality_score", "errors_exposed", "errors_corrected", "candidate_survival", "negative_transfer_signals", "evidence_refs"),
+        "do_not_claim_group_gain_without_supported_quality_observations",
+    ),
+    CognitionOperationContract(
+        "endogenous_problem_generation",
+        "cognitive_ensemble_runtime",
+        PROVIDER_REQUIRED,
+        "derive open problems, residual rivals, candidate questions, expected Cbit gain, scope, and uncertainty from current evidence",
+        "register provider-backed agenda candidates, apply risk and priority gates, and own select-or-stop decisions",
+        ("open_problems", "residual_rivals", "candidate_questions", "expected_cbit_gain", "scope", "evidence_refs"),
+        "keep_existing_problem_space_no_local_question_fabrication",
+    ),
+    CognitionOperationContract(
+        "knowledge_invalidation_root_assessment",
+        "cognitive_ensemble_runtime",
+        PROVIDER_REQUIRED,
+        "identify which claims or semantic receipts are invalidated, contradicted, stale, or require revalidation",
+        "validate adjudication refs and apply deterministic dependency propagation, quarantine, and reuse blocking",
+        ("invalidation_roots", "adjudication_basis", "affected_scope", "revalidation_need", "evidence_refs"),
+        "quarantine_candidate_roots_without_local_semantic_invalidation_guess",
+    ),
 )
 
 MECHANICAL_RUNTIME_OPERATIONS: tuple[CognitionOperationContract, ...] = (
@@ -181,6 +257,42 @@ MECHANICAL_RUNTIME_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         "package artifacts, generate manifests, and inventory hashes",
         (),
         "fail_packaging",
+    ),
+    CognitionOperationContract(
+        "agent_registry_context_isolation",
+        "runtime_mechanical",
+        PROVIDER_FORBIDDEN,
+        "none",
+        "register declared agent bindings and enforce distinct agent, context, capability, and optional provider constraints",
+        (),
+        "reject_non_isolated_or_unregistered_team",
+    ),
+    CognitionOperationContract(
+        "group_metric_calculation",
+        "runtime_mechanical",
+        PROVIDER_FORBIDDEN,
+        "none",
+        "compute group delta, correction rate, survival rate, diversity, convergence, and negative-transfer interception from admitted observations",
+        (),
+        "fail_invalid_group_observation",
+    ),
+    CognitionOperationContract(
+        "epistemic_credit_ledger_projection",
+        "runtime_mechanical",
+        PROVIDER_FORBIDDEN,
+        "none",
+        "append adjudicated credit events and compute bounded advisory profiles without route-selection authority",
+        (),
+        "reject_unadjudicated_credit_event",
+    ),
+    CognitionOperationContract(
+        "dependency_invalidation_propagation",
+        "runtime_mechanical",
+        PROVIDER_FORBIDDEN,
+        "none",
+        "propagate admitted invalidation roots through registered hard and quarantine dependency edges",
+        (),
+        "block_reuse_for_invalidated_or_quarantined_nodes",
     ),
 )
 
@@ -257,6 +369,33 @@ class ProviderBackedRuntimeCognitionLayer:
             }
 
         receipt_hash = runtime_record.get("provider_support_receipt_hash") or _hash_payload(support_receipt)
+        assertions = runtime_record.get(SEMANTIC_CONSISTENCY_ASSERTIONS, ())
+        if assertions:
+            consistency = self._audit_consistency_assertions(support_receipt, assertions)
+            if consistency["failed_count"]:
+                return {
+                    "operation_id": operation_id,
+                    "status": BLOCKED_PROVIDER_SUPPORT_RECEIPT_INCONSISTENT,
+                    "provider_required": True,
+                    "runtime_cognitive_owner": self.final_decision_owner,
+                    "provider_support_role": "semantic_support_conflicted",
+                    "runtime_role": contract.runtime_role,
+                    "provider_support_receipt_hash": receipt_hash,
+                    "semantic_consistency": consistency,
+                    "fail_closed_behavior": contract.fail_closed_behavior,
+                    "runtime_record_hash": _hash_payload(runtime_record),
+                }
+            return {
+                "operation_id": operation_id,
+                "status": PASS_PROVIDER_SUPPORT_RECEIPT_CONSISTENT,
+                "provider_required": True,
+                "runtime_cognitive_owner": self.final_decision_owner,
+                "provider_support_role": "semantic_support_consistent",
+                "runtime_role": contract.runtime_role,
+                "provider_support_receipt_hash": receipt_hash,
+                "semantic_consistency": consistency,
+                "runtime_record_hash": _hash_payload(runtime_record),
+            }
         return {
             "operation_id": operation_id,
             "status": PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT,
@@ -270,7 +409,16 @@ class ProviderBackedRuntimeCognitionLayer:
 
     def audit_pipeline(self, operation_records: list[dict[str, Any]]) -> dict[str, Any]:
         audits = [self.audit_operation(item.get("operation_id", ""), item) for item in operation_records]
-        hard_blocks = [item for item in audits if item["status"] in {BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING, BLOCKED_UNKNOWN_COGNITION_OPERATION}]
+        hard_blocks = [
+            item
+            for item in audits
+            if item["status"]
+            in {
+                BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING,
+                BLOCKED_PROVIDER_SUPPORT_RECEIPT_INCONSISTENT,
+                BLOCKED_UNKNOWN_COGNITION_OPERATION,
+            }
+        ]
         return {
             "layer_id": self.layer_id,
             "status": "BLOCKED" if hard_blocks else "PASS",
@@ -285,3 +433,93 @@ class ProviderBackedRuntimeCognitionLayer:
         if not isinstance(judgment, dict):
             return list(contract.required_provider_outputs)
         return [field for field in contract.required_provider_outputs if field not in judgment]
+
+    @classmethod
+    def _audit_consistency_assertions(cls, receipt: dict[str, Any], assertions: Any) -> dict[str, Any]:
+        if not isinstance(assertions, (list, tuple)):
+            assertions = (assertions,)
+        results = [cls._evaluate_consistency_assertion(receipt, assertion, index) for index, assertion in enumerate(assertions)]
+        failures = [result for result in results if not result["passed"]]
+        payload = {
+            "assertion_count": len(results),
+            "passed_count": len(results) - len(failures),
+            "failed_count": len(failures),
+            "results": results,
+        }
+        payload["assertions_hash"] = _hash_payload(assertions)
+        return payload
+
+    @classmethod
+    def _evaluate_consistency_assertion(
+        cls,
+        receipt: dict[str, Any],
+        assertion: Any,
+        index: int,
+    ) -> dict[str, Any]:
+        if not isinstance(assertion, dict):
+            return {
+                "assertion_id": f"assertion-{index}",
+                "passed": False,
+                "reason": "assertion_must_be_object",
+            }
+        assertion_id = str(assertion.get("assertion_id") or f"assertion-{index}")
+        path = assertion.get("path")
+        operator = assertion.get("operator")
+        expected = assertion.get("expected")
+        evidence_refs = assertion.get("evidence_refs", [])
+        base = {
+            "assertion_id": assertion_id,
+            "path": path,
+            "operator": operator,
+            "expected": expected,
+            "evidence_refs": list(evidence_refs) if isinstance(evidence_refs, (list, tuple)) else [],
+        }
+        if not isinstance(path, str) or not path:
+            return {**base, "passed": False, "reason": "assertion_path_required"}
+        if operator not in _CONSISTENCY_OPERATORS:
+            return {**base, "passed": False, "reason": "assertion_operator_unsupported"}
+        found, observed = cls._resolve_json_path(receipt, path)
+        if not found:
+            return {**base, "passed": False, "reason": "assertion_path_missing"}
+        try:
+            passed = cls._compare_consistency_value(observed, operator, expected)
+        except (TypeError, ValueError):
+            return {
+                **base,
+                "observed": observed,
+                "passed": False,
+                "reason": "assertion_comparison_type_error",
+            }
+        return {
+            **base,
+            "observed": observed,
+            "passed": passed,
+            "reason": "assertion_satisfied" if passed else "assertion_value_mismatch",
+        }
+
+    @staticmethod
+    def _resolve_json_path(payload: dict[str, Any], path: str) -> tuple[bool, Any]:
+        current: Any = payload
+        for segment in path.split("."):
+            if not isinstance(current, dict) or segment not in current:
+                return False, None
+            current = current[segment]
+        return True, current
+
+    @staticmethod
+    def _compare_consistency_value(observed: Any, operator: str, expected: Any) -> bool:
+        if operator == "equals":
+            return observed == expected and type(observed) is type(expected)
+        if operator == "not_equals":
+            return observed != expected or type(observed) is not type(expected)
+        if operator == "in":
+            return observed in expected
+        if operator == "contains_all":
+            return isinstance(observed, (list, tuple, set)) and all(item in observed for item in expected)
+        if operator == "length_equals":
+            return len(observed) == expected
+        if operator == "greater_than_or_equal":
+            return not isinstance(observed, bool) and observed >= expected
+        if operator == "less_than_or_equal":
+            return not isinstance(observed, bool) and observed <= expected
+        raise ValueError(f"unsupported_consistency_operator:{operator}")

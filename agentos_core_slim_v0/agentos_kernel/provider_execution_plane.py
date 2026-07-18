@@ -184,6 +184,7 @@ class ProviderTaskRouter:
     def route(self, task: ProviderCognitiveTask) -> ProviderResultEnvelope:
         attempted: list[str] = []
         last_error = ""
+        last_invalid: ProviderResultEnvelope | None = None
         for adapter in self.adapters:
             profile = adapter.profile
             if not profile.supports(task):
@@ -217,7 +218,7 @@ class ProviderTaskRouter:
                 retry_count=max(0, len(attempted) - 1),
                 fallback_decision=fallback,
             )
-            return ProviderResultEnvelope(
+            envelope = ProviderResultEnvelope(
                 status=status,
                 task_id=task.task_id,
                 task_kind=task.task_kind,
@@ -227,6 +228,12 @@ class ProviderTaskRouter:
                 provenance_refs=provenance,
                 invocation_receipt=receipt,
             )
+            if errors:
+                last_invalid = envelope
+                continue
+            return envelope
+        if last_invalid is not None:
+            return last_invalid
         fallback = ProviderFallbackDecision(
             "provider_unavailable",
             "no_adapter_returned_valid_provider_output",
@@ -275,6 +282,14 @@ class ProviderTaskRouter:
                 errors.append(f"field_type_mismatch:{field_name}:object")
             if expected_type == "string" and not isinstance(result[field_name], str):
                 errors.append(f"field_type_mismatch:{field_name}:string")
-            if expected_type == "number" and not isinstance(result[field_name], (int, float)):
+            if expected_type == "number" and (
+                not isinstance(result[field_name], (int, float)) or isinstance(result[field_name], bool)
+            ):
                 errors.append(f"field_type_mismatch:{field_name}:number")
+            if expected_type == "integer" and (
+                not isinstance(result[field_name], int) or isinstance(result[field_name], bool)
+            ):
+                errors.append(f"field_type_mismatch:{field_name}:integer")
+            if expected_type == "boolean" and not isinstance(result[field_name], bool):
+                errors.append(f"field_type_mismatch:{field_name}:boolean")
         return errors

@@ -100,6 +100,24 @@ def test_replay_and_rollback_for_project_scoped_write(tmp_path):
     assert not Path(receipt["target_path"]).exists()
 
 
+def test_repeated_candidate_write_preserves_append_only_replay_and_rollback_history(tmp_path):
+    policy = AutonomousICMEvolutionPolicy()
+    store = ProjectScopedDurableStore(tmp_path / "project_scoped_icm_store")
+    candidate = ups_candidate()
+    review = policy.review(candidate)
+
+    first = store.write(policy.build_envelope(candidate, review, store))
+    second = store.write(policy.build_envelope(candidate, review, store))
+
+    assert first["operation_id"] != second["operation_id"]
+    assert first["rollback_pointer"] != second["rollback_pointer"]
+    assert first["replay_manifest_ref"] != second["replay_manifest_ref"]
+    assert Path(first["rollback_pointer"]).is_file()
+    assert Path(second["rollback_pointer"]).is_file()
+    assert Path(first["replay_manifest_ref"]).is_file()
+    assert Path(second["replay_manifest_ref"]).is_file()
+
+
 def test_global_or_production_write_is_blocked(tmp_path):
     store = ProjectScopedDurableStore(tmp_path / "project_scoped_icm_store")
     target = tmp_path / "global_icm" / "bad.json"

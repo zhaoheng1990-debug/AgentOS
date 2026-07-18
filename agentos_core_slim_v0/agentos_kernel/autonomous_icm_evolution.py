@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 
 POLICY_OWNER = "AgentOSKernel.ICMEvolutionPolicy"
@@ -202,6 +203,7 @@ class ProjectScopedDurableStore:
 
     def write(self, envelope: dict[str, Any]) -> dict[str, Any]:
         self._validate_envelope(envelope)
+        operation_id = f"op-{uuid4().hex}"
         target = Path(envelope["target_path"]).resolve()
         before_exists = target.exists()
         before_bytes = target.read_bytes() if before_exists else b""
@@ -210,10 +212,18 @@ class ProjectScopedDurableStore:
         payload_bytes = json.dumps(envelope["payload"], indent=2, sort_keys=True).encode("utf-8")
         target.write_bytes(payload_bytes)
         sha_after = _hash_file(target)
-        rollback_pointer = self._write_rollback(envelope, before_exists, before_bytes, sha_before, sha_after)
-        replay_ref = self._write_replay_manifest(envelope, sha_after)
+        rollback_pointer = self._write_rollback(
+            envelope,
+            operation_id,
+            before_exists,
+            before_bytes,
+            sha_before,
+            sha_after,
+        )
+        replay_ref = self._write_replay_manifest(envelope, operation_id, sha_after)
         receipt = {
             "write_id": envelope["write_id"],
+            "operation_id": operation_id,
             "status": "PASS",
             "target_path": str(target),
             "sha256_before": sha_before,
@@ -303,14 +313,16 @@ class ProjectScopedDurableStore:
     def _write_rollback(
         self,
         envelope: dict[str, Any],
+        operation_id: str,
         before_exists: bool,
         before_bytes: bytes,
         sha_before: str,
         sha_after: str,
     ) -> Path:
-        pointer = self.root / "rollback" / f"{_hash_bytes(envelope['write_id'].encode('utf-8'))[:16]}.rollback.json"
+        pointer = self.root / "rollback" / f"{_hash_bytes(operation_id.encode('utf-8'))[:16]}.rollback.json"
         payload = {
             "write_id": envelope["write_id"],
+            "operation_id": operation_id,
             "target_path": envelope["target_path"],
             "before_exists": before_exists,
             "before_content_hex": before_bytes.hex(),
@@ -320,10 +332,11 @@ class ProjectScopedDurableStore:
         pointer.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
         return pointer
 
-    def _write_replay_manifest(self, envelope: dict[str, Any], sha_after: str) -> Path:
-        ref = self.root / "replay_manifest" / f"{_hash_bytes(envelope['write_id'].encode('utf-8'))[:16]}.replay.json"
+    def _write_replay_manifest(self, envelope: dict[str, Any], operation_id: str, sha_after: str) -> Path:
+        ref = self.root / "replay_manifest" / f"{_hash_bytes(operation_id.encode('utf-8'))[:16]}.replay.json"
         payload = {
             "write_id": envelope["write_id"],
+            "operation_id": operation_id,
             "target_path": envelope["target_path"],
             "sha256_after": sha_after,
             "evidence_refs": envelope.get("evidence_refs", []),
@@ -337,6 +350,7 @@ class ProjectScopedDurableStore:
         entry = {
             "created_at": datetime.now(timezone.utc).isoformat(),
             "write_id": envelope["write_id"],
+            "operation_id": receipt["operation_id"],
             "decision_id": envelope["decision_id"],
             "target_type": envelope["target_type"],
             "target_path": envelope["target_path"],
@@ -347,10 +361,11 @@ class ProjectScopedDurableStore:
             handle.write(json.dumps(entry, sort_keys=True) + "\n")
 
     def _write_posthoc_report(self, envelope: dict[str, Any], receipt: dict[str, Any]) -> None:
-        report = self.root / "human_posthoc_reports" / f"{_hash_bytes(envelope['write_id'].encode('utf-8'))[:16]}.posthoc.json"
+        report = self.root / "human_posthoc_reports" / f"{_hash_bytes(receipt['operation_id'].encode('utf-8'))[:16]}.posthoc.json"
         report.parent.mkdir(parents=True, exist_ok=True)
         payload = {
             "write_id": envelope["write_id"],
+            "operation_id": receipt["operation_id"],
             "target_type": envelope["target_type"],
             "target_path": envelope["target_path"],
             "status": receipt["status"],

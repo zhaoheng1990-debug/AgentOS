@@ -14,9 +14,60 @@ from .baseline_evolution_proposal import (
     BaselineEvolutionProposalProtocol,
     ProposalQueue,
 )
+from .constraint_aligned_retention import (
+    ConstraintAlignedRetentionDecision,
+    ConstraintAlignedRetentionGate,
+)
+from .group_cognition_eval import (
+    CognitionRunObservation,
+    GroupCognitionEvaluation,
+    GroupCognitionEvalHarness,
+)
+from .epistemic_review import (
+    ClaimCandidate,
+    EpistemicReviewDecision,
+    EpistemicReviewProtocol,
+    ObjectionReceipt,
+    ReplicationReceipt,
+)
+from .credit_ledger import (
+    CreditEvent,
+    CreditEventStore,
+    CreditLedger,
+    CreditProfile,
+    JsonlCreditEventStore,
+)
+from .agent_registry import (
+    AgentDescriptor,
+    AgentRegistry,
+    AgentRoleRequirement,
+    AgentRuntimeAdapter,
+    AgentWorkOrder,
+    EnsembleAssignment,
+)
+from .endogenous_agenda import (
+    AgendaCandidate,
+    AgendaFeedback,
+    AgendaSelection,
+    EndogenousAgendaLoop,
+    OpenProblem,
+)
+from .cascading_invalidation import (
+    CascadingInvalidationGraph,
+    DependencyEdge,
+    InvalidationReceipt,
+    InvalidationTransition,
+    KnowledgeNode,
+)
+from .cognitive_module_registry import (
+    CognitiveModuleRegistry,
+    CognitiveRuntimeModule,
+)
 from .provider_cognition_layer import (
+    BLOCKED_PROVIDER_SUPPORT_RECEIPT_INCONSISTENT,
     BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING,
     PASS_MECHANICAL_RUNTIME_OPERATION,
+    PASS_PROVIDER_SUPPORT_RECEIPT_CONSISTENT,
     PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT,
     PROVIDER_COGNITION_LAYER_ID,
     ProviderBackedRuntimeCognitionLayer,
@@ -66,6 +117,7 @@ from .evidence_dimensions import (
 )
 from .version import (
     AGENTOS_CORE_SLIM_CODENAME,
+    AGENTOS_CORE_SLIM_FEATURE_SET,
     AGENTOS_CORE_SLIM_PATCH_SEED,
     AGENTOS_CORE_SLIM_VERSION,
 )
@@ -73,8 +125,17 @@ from .version import (
 __all__ = [
     "ALLOWED_CAPABILITIES",
     "AGENTOS_CORE_SLIM_CODENAME",
+    "AGENTOS_CORE_SLIM_FEATURE_SET",
     "AGENTOS_CORE_SLIM_PATCH_SEED",
     "AGENTOS_CORE_SLIM_VERSION",
+    "AgentDescriptor",
+    "AgentRegistry",
+    "AgentRoleRequirement",
+    "AgentRuntimeAdapter",
+    "AgentWorkOrder",
+    "AgendaCandidate",
+    "AgendaFeedback",
+    "AgendaSelection",
     "ArtifactIdentity",
     "ArtifactPointer",
     "ArtifactProjection",
@@ -84,16 +145,42 @@ __all__ = [
     "AutonomousICMEvolutionPolicy",
     "BaselineEvolutionProposalProtocol",
     "BaselineEligibilityGate",
+    "CascadingInvalidationGraph",
+    "BLOCKED_PROVIDER_SUPPORT_RECEIPT_INCONSISTENT",
     "BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING",
     "FORBIDDEN_CAPABILITIES",
     "CodexToolBridge",
+    "ClaimCandidate",
     "CognitiveAssetEntry",
     "CognitiveAssetLedger",
+    "ConstraintAlignedRetentionDecision",
+    "ConstraintAlignedRetentionGate",
+    "CognitionRunObservation",
+    "CognitiveModuleRegistry",
+    "CognitiveRuntimeModule",
+    "CreditEvent",
+    "CreditEventStore",
+    "CreditLedger",
+    "CreditProfile",
+    "DependencyEdge",
     "EvidenceAdmissionGate",
     "EvidenceDimensionRegistry",
     "EvidenceDimensionSpec",
+    "EpistemicReviewDecision",
+    "EpistemicReviewProtocol",
+    "EnsembleAssignment",
+    "EndogenousAgendaLoop",
+    "GroupCognitionEvaluation",
+    "GroupCognitionEvalHarness",
+    "InvalidationReceipt",
+    "InvalidationTransition",
+    "JsonlCreditEventStore",
+    "KnowledgeNode",
+    "ObjectionReceipt",
+    "OpenProblem",
     "ProjectScopedDurableStore",
     "PASS_MECHANICAL_RUNTIME_OPERATION",
+    "PASS_PROVIDER_SUPPORT_RECEIPT_CONSISTENT",
     "PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT",
     "ProviderAdapter",
     "PROVIDER_COGNITION_LAYER_ID",
@@ -111,6 +198,7 @@ __all__ = [
     "QualityDecisionMatrix",
     "QualityFinding",
     "ReaderIntegrityGate",
+    "ReplicationReceipt",
     "RetentionDecision",
     "RuntimeTaskLifecycle",
     "ScopeCoverageGate",

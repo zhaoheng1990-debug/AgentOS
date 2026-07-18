@@ -5,6 +5,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from agentos_kernel import (
     AGENTOS_CORE_SLIM_PATCH_SEED,
+    AGENTOS_CORE_SLIM_FEATURE_SET,
     AGENTOS_CORE_SLIM_VERSION,
     ArtifactIdentity,
     ArtifactVersionStore,
@@ -60,9 +61,10 @@ def _task():
     )
 
 
-def test_version_updated_for_patch_seed():
-    assert AGENTOS_CORE_SLIM_VERSION == "0.2.0"
+def test_version_preserves_patch_seed_and_declares_modular_group_cognition_feature_set():
+    assert AGENTOS_CORE_SLIM_VERSION == "0.3.1"
     assert AGENTOS_CORE_SLIM_PATCH_SEED == "AgentOS_CoreRefactor_ProviderCognition_QualityLifecycle_Seed_v0_1"
+    assert AGENTOS_CORE_SLIM_FEATURE_SET == "modular_group_cognition_runtime_p0_p5_provider_consistency_v0_2"
 
 
 def test_provider_task_routes_through_two_adapters_with_same_contract():
@@ -84,6 +86,50 @@ def test_provider_failure_is_typed_and_does_not_fabricate_semantic_output():
     assert envelope.normalized_result is None
     assert envelope.semantic_result_present is False
     assert envelope.invocation_receipt.fallback_decision.decision == "provider_unavailable"
+
+
+def test_provider_schema_validation_distinguishes_boolean_number_and_integer():
+    task = ProviderCognitiveTask(
+        task_id="typed-task",
+        task_kind="generic_semantic_task",
+        objective="Return typed fields.",
+        inputs={},
+        allowed_evidence=["source://fixture"],
+        expected_schema={
+            "required": ["flag", "score", "count"],
+            "properties": {
+                "flag": {"type": "boolean"},
+                "score": {"type": "number"},
+                "count": {"type": "integer"},
+            },
+        },
+    )
+    adapter = StaticAdapter(
+        "provider-a",
+        {"flag": [], "score": True, "count": 1.5},
+    )
+
+    envelope = ProviderTaskRouter([adapter]).route(task)
+
+    assert envelope.status == "VALIDATION_FAILED"
+    assert "field_type_mismatch:flag:boolean" in envelope.validation_errors
+    assert "field_type_mismatch:score:number" in envelope.validation_errors
+    assert "field_type_mismatch:count:integer" in envelope.validation_errors
+
+
+def test_router_falls_back_after_schema_invalid_provider_result():
+    invalid = StaticAdapter("provider-invalid", {"judgment": "candidate"})
+    valid = StaticAdapter("provider-valid", {"judgment": "candidate", "confidence": 0.8})
+
+    envelope = ProviderTaskRouter([invalid, valid]).route(_task())
+
+    assert envelope.status == "COMPLETED"
+    assert envelope.invocation_receipt.provider_id == "provider-valid"
+    assert envelope.invocation_receipt.retry_count == 1
+    assert envelope.invocation_receipt.fallback_decision.attempted_providers == (
+        "provider-invalid",
+        "provider-valid",
+    )
 
 
 def test_reader_integrity_failure_blocks_only_candidate_revision_and_preserves_published_pointer():
