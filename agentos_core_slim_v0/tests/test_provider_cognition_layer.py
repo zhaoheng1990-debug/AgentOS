@@ -37,6 +37,14 @@ def test_contract_declares_provider_required_runtime_cognition_operations():
     assert contract["contract_hash"]
 
 
+def test_contract_declares_anti_additive_calibration_and_receipt_resolution_mechanical():
+    contract = ProviderBackedRuntimeCognitionLayer().contract()
+    operation_ids = {item["operation_id"] for item in contract["mechanical_runtime_operations"]}
+
+    assert "anti_additive_prediction_outcome_calibration" in operation_ids
+    assert "anti_additive_receipt_authority_resolution" in operation_ids
+
+
 def test_semantic_operation_without_provider_support_receipt_blocks_closed():
     layer = ProviderBackedRuntimeCognitionLayer()
 

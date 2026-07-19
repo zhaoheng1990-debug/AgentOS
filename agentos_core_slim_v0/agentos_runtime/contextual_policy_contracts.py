@@ -117,6 +117,19 @@ class ContextualOrganizationSelectionReceipt:
             raise ValueError("contextual_selection_matched_evidence_binding_invalid")
         if self.kernel_decision.provider_advice_hash != self.provider_advice.advice_hash:
             raise ValueError("contextual_selection_provider_advice_binding_invalid")
+        if any(
+            item.project_scope != self.project_scope
+            or item.context_key != self.context_key
+            or item.evidence_tier != self.evidence_tier
+            for item in self.kernel_decision.calibration_controls
+        ):
+            raise ValueError("contextual_selection_calibration_scope_mismatch")
+        if any(
+            item.calibration_receipt_ref
+            and item.calibration_receipt_ref not in self.kernel_decision.evidence_refs
+            for item in self.kernel_decision.calibration_controls
+        ):
+            raise ValueError("contextual_selection_calibration_evidence_binding_invalid")
         if self.assignment is None and self.kernel_decision.selected_policy_id:
             raise ValueError("contextual_selection_assignment_required")
         if self.assignment is not None:

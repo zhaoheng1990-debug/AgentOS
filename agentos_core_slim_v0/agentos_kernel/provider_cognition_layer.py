@@ -14,7 +14,7 @@ from hashlib import sha256
 from typing import Any
 
 
-PROVIDER_COGNITION_LAYER_ID = "provider_backed_runtime_cognition_layer_v0_8"
+PROVIDER_COGNITION_LAYER_ID = "provider_backed_runtime_cognition_layer_v0_9"
 
 PROVIDER_REQUIRED = "PROVIDER_REQUIRED"
 PROVIDER_OPTIONAL = "PROVIDER_OPTIONAL"
@@ -111,7 +111,7 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         "utility_policy_selection",
         "kernel",
         PROVIDER_REQUIRED,
-        "estimate expected utility, Cbit gain, residual risk, and anti-additive pressure for candidate routes",
+        "estimate expected utility, Cbit gain, residual risk, and route-interaction anti-additive pressure for candidate routes",
         "apply hard gates, permission policy, rollback requirements, and final decision envelope",
         ("utility_estimate", "cbit_gain_estimate", "risk_estimate", "anti_additive_signal", "selected_policy_candidate"),
         "defer_policy_selection_no_local_best_guess",
@@ -434,10 +434,44 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         "block_the_team_arm_without_a_complete_provider_backed_normalized_candidate",
     ),
     CognitionOperationContract(
+        "problem_structure_dimension_assessment",
+        "cognitive_ensemble_runtime",
+        PROVIDER_REQUIRED,
+        "assess the evidence-bound problem constraint field across premise uncertainty, evidence conflict, replication, synthesis, coordination, and novelty dimensions",
+        "validate source seed and isolated role receipts, evidence and signal bindings, uncertainty ceilings, revision ancestry, replay, and retain final Kernel admission authority",
+        (
+            "candidate_hash",
+            "dimension_assessments",
+            "global_uncertainty",
+            "evidence_refs",
+        ),
+        "keep_the_problem_structure_pending_without_complete_provider_supported_dimensions",
+    ),
+    CognitionOperationContract(
+        "anti_additive_methodology_assessment",
+        "kernel_meta_governance",
+        PROVIDER_REQUIRED,
+        "judge object adequacy, all seven patch-accumulation triggers, effective Cbit gain, complexity cost, object-upgrade gain, abstraction cost, and uncertainty",
+        "freeze the candidate and evidence surface, compare gains against costs, choose the bounded methodology state, persist replay, and retain all write authority",
+        (
+            "current_object_adequacy",
+            "trigger_assessments",
+            "expected_effective_cbit_gain",
+            "complexity_cost",
+            "object_upgrade_gain",
+            "abstraction_cost",
+            "uncertainty",
+            "recommended_action",
+            "rationale",
+            "evidence_refs",
+        ),
+        "block_candidate_write_without_provider_supported_first_principles_audit",
+    ),
+    CognitionOperationContract(
         "contextual_organization_policy_assessment",
         "cognitive_ensemble_runtime",
         PROVIDER_REQUIRED,
-        "assess the structural fit, expected Cbit, bounded cost, residual risk, uncertainty, and anti-additive pressure of each registered organization policy for one bound problem",
+        "assess the structural fit, expected Cbit, bounded cost, residual risk, uncertainty, and organization-interaction anti-additive pressure of each registered organization policy for one bound problem",
         "validate exact policy coverage, problem and evidence binding, matched-evidence provenance, budget and risk gates, registry feasibility, and retain final Kernel selection authority",
         (
             "recommended_policy_id",
@@ -446,6 +480,22 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
             "evidence_refs",
         ),
         "abstain_from_contextual_role_selection_without_complete_provider_supported_assessment",
+    ),
+    CognitionOperationContract(
+        "selector_calibration_drift_assessment",
+        "cognitive_ensemble_runtime",
+        PROVIDER_REQUIRED,
+        "diagnose semantic scope, evidence, model, Harness, Cbit, cost, and residual-risk drift over one exact Selector calibration profile",
+        "freeze prediction/outcome bindings, calculate metrics, isolate project/context/evidence-tier/policy profiles, enforce thresholds and lineage, and retain final Kernel calibration state",
+        (
+            "diagnostic_state",
+            "drift_drivers",
+            "recommended_action",
+            "uncertainty",
+            "rationale",
+            "evidence_refs",
+        ),
+        "keep_selector_calibration_pending_without_provider_diagnosis",
     ),
     CognitionOperationContract(
         "cognitive_organization_failure_diagnosis",
@@ -475,6 +525,15 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
 )
 
 MECHANICAL_RUNTIME_OPERATIONS: tuple[CognitionOperationContract, ...] = (
+    CognitionOperationContract(
+        "anti_additive_methodology_kernel_gate",
+        "runtime_mechanical",
+        PROVIDER_FORBIDDEN,
+        "none",
+        "verify candidate and receipt bindings, compare effective Cbit against complexity and object-upgrade gain against abstraction cost, and enforce the final methodology state",
+        (),
+        "block_patch_accumulation_or_require_object_upgrade",
+    ),
     CognitionOperationContract(
         "schema_validation",
         "runtime_mechanical",
@@ -564,6 +623,42 @@ MECHANICAL_RUNTIME_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         "pair organization ablations within one context, evidence tier, and trial group; compute component effects and repeated protocol statistics",
         (),
         "withhold_component_causality_or_protocol_selection_when_matched_evidence_is_insufficient",
+    ),
+    CognitionOperationContract(
+        "selector_prediction_outcome_calibration",
+        "runtime_mechanical",
+        PROVIDER_FORBIDDEN,
+        "none",
+        "bind selected-policy predictions to admitted Harness outcomes and calculate exact-scope error, bias, coverage, and independent-source statistics",
+        (),
+        "reject_unbound_cross_scope_or_duplicate_calibration_observation",
+    ),
+    CognitionOperationContract(
+        "contextual_selector_calibration_control",
+        "runtime_mechanical",
+        PROVIDER_FORBIDDEN,
+        "none",
+        "consume replay-valid latest calibration receipts and apply exact-scope exploration downgrade, trusted authorization eligibility, or drift blocking",
+        (),
+        "reject_missing_stale_cross_scope_or_internally_inconsistent_calibration_control",
+    ),
+    CognitionOperationContract(
+        "anti_additive_prediction_outcome_calibration",
+        "runtime_mechanical",
+        PROVIDER_FORBIDDEN,
+        "none",
+        "bind methodology predictions to admitted Harness outcomes and calculate exact project, change-kind, and target-type error and margin-survival profiles",
+        (),
+        "reject_unbound_cross_scope_duplicate_or_nonexecuted_calibration_observation",
+    ),
+    CognitionOperationContract(
+        "anti_additive_receipt_authority_resolution",
+        "runtime_mechanical",
+        PROVIDER_FORBIDDEN,
+        "none",
+        "verify source replay and latest receipt identity, enforce exact candidate payload and target binding, and distinguish candidate-only from durable-project-write authority",
+        (),
+        "reject_stale_unbound_or_insufficient_authority_receipt",
     ),
 )
 

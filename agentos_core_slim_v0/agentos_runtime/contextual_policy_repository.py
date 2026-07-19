@@ -10,6 +10,7 @@ from agentos_kernel import (
     AgentDescriptor,
     ContextualOrganizationPolicyDecision,
     ContextualPolicyCandidateEvaluation,
+    ContextualPolicyCalibrationControl,
     ContextualProviderPolicyAssessment,
     EnsembleAssignment,
     MatchedPolicyEvidence,
@@ -169,6 +170,10 @@ class ContextualPolicyRepository:
         item["evidence_refs"] = tuple(item["evidence_refs"])
         item["candidate_evaluations"] = tuple(
             cls._candidate_evaluation_from_dict(value) for value in item["candidate_evaluations"]
+        )
+        item["calibration_controls"] = tuple(
+            ContextualPolicyCalibrationControl(**value)
+            for value in item["calibration_controls"]
         )
         return ContextualOrganizationPolicyDecision(**item)
 

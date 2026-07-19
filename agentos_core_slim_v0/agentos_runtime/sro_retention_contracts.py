@@ -142,6 +142,7 @@ class LegacyRetentionMigrationCandidate:
     required_reconstruction_refs: tuple[str, ...]
     created_at: str
     registered_witness_id: str = ""
+    anti_additive_methodology_receipt_hash: str = ""
 
     def __post_init__(self) -> None:
         for name in (
@@ -161,6 +162,11 @@ class LegacyRetentionMigrationCandidate:
             raise ValueError("legacy_migration_state_invalid")
         if self.evidence_refs:
             require_refs("legacy_migration_evidence_refs", self.evidence_refs)
+        if self.anti_additive_methodology_receipt_hash:
+            require_hash(
+                "legacy_migration_anti_additive_receipt_hash",
+                self.anti_additive_methodology_receipt_hash,
+            )
 
     def as_dict(self) -> dict[str, Any]:
         payload = {
@@ -177,6 +183,7 @@ class LegacyRetentionMigrationCandidate:
             "required_reconstruction_refs": list(self.required_reconstruction_refs),
             "created_at": self.created_at,
             "registered_witness_id": self.registered_witness_id,
+            "anti_additive_methodology_receipt_hash": self.anti_additive_methodology_receipt_hash,
         }
         payload["migration_hash"] = hash_payload(payload)
         return payload

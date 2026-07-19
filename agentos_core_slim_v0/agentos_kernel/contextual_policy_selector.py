@@ -17,18 +17,27 @@ from .contextual_policy_models import (
     OrganizationRiskEnvelope,
     hash_payload,
 )
+from .contextual_policy_calibration import ContextualPolicyCalibrationControl
+from .contextual_policy_calibration_gate import ContextualPolicyCalibrationGate
 
 
 class ContextualOrganizationPolicySelector:
     """Select one bounded role policy while retaining final Kernel authority."""
 
-    def __init__(self, *, structural_role_threshold: float = 0.60, adverse_delta: float = -0.02) -> None:
+    def __init__(
+        self,
+        *,
+        structural_role_threshold: float = 0.60,
+        adverse_delta: float = -0.02,
+        calibration_gate: ContextualPolicyCalibrationGate | None = None,
+    ) -> None:
         if not 0.0 <= float(structural_role_threshold) <= 1.0:
             raise ValueError("contextual_policy_structural_role_threshold_invalid")
         if not -1.0 <= float(adverse_delta) <= 0.0:
             raise ValueError("contextual_policy_adverse_delta_invalid")
         self.structural_role_threshold = float(structural_role_threshold)
         self.adverse_delta = float(adverse_delta)
+        self.calibration_gate = calibration_gate or ContextualPolicyCalibrationGate()
 
     def select(
         self,
@@ -43,8 +52,19 @@ class ContextualOrganizationPolicySelector:
         provider_advice_hash: str,
         feasible_policy_ids: tuple[str, ...],
         kernel_authorization_ref: str,
+        calibration_controls: tuple[ContextualPolicyCalibrationControl, ...] | None = None,
     ) -> ContextualOrganizationPolicyDecision:
+        calibration_controls = calibration_controls or tuple(
+            ContextualPolicyCalibrationControl.unmonitored(
+                project_scope=problem.project_scope,
+                context_key=problem.context_key,
+                evidence_tier=matched_evidence[0].evidence_tier,
+                policy_id=policy_id,
+            )
+            for policy_id in CONTEXTUAL_POLICY_IDS
+        )
         self._validate_inputs(
+            problem,
             decision_id,
             policies,
             matched_evidence,
@@ -52,10 +72,12 @@ class ContextualOrganizationPolicySelector:
             provider_advice_hash,
             feasible_policy_ids,
             kernel_authorization_ref,
+            calibration_controls,
         )
         required_roles = self.required_roles(problem)
         evidence_by_policy = {item.policy_id: item for item in matched_evidence}
         assessment_by_policy = {item.policy_id: item for item in provider_assessments}
+        control_by_policy = {item.policy_id: item for item in calibration_controls}
         evaluations = tuple(
             self._evaluate_candidate(
                 policy,
@@ -65,13 +87,16 @@ class ContextualOrganizationPolicySelector:
                 budget,
                 risk,
                 feasible_policy_ids,
+                control_by_policy[policy.policy_id],
             )
             for policy in policies
         )
         eligible = [item for item in evaluations if item.eligibility != "BLOCKED"]
         selected = max(eligible, key=lambda item: item.rank_vector) if eligible else None
         activation_mode = self._activation_mode(selected)
-        evidence_refs = self._evidence_refs(problem, matched_evidence, provider_assessments)
+        evidence_refs = self._evidence_refs(
+            problem, matched_evidence, provider_assessments, calibration_controls
+        )
         return self._decision(
             decision_id=decision_id,
             selected=selected,
@@ -84,6 +109,7 @@ class ContextualOrganizationPolicySelector:
             risk=risk,
             provider_advice_hash=provider_advice_hash,
             evidence_refs=evidence_refs,
+            calibration_controls=calibration_controls,
         )
 
     def required_roles(self, problem: ContextualProblemStructure) -> tuple[str, ...]:
@@ -108,6 +134,7 @@ class ContextualOrganizationPolicySelector:
         budget: OrganizationBudgetEnvelope,
         risk: OrganizationRiskEnvelope,
         feasible_policy_ids: tuple[str, ...],
+        calibration_control: ContextualPolicyCalibrationControl,
     ) -> ContextualPolicyCandidateEvaluation:
         failures = []
         if policy.policy_id not in feasible_policy_ids:
@@ -145,12 +172,17 @@ class ContextualOrganizationPolicySelector:
                 failures.append("unmatched_exploration_forbidden")
             if len(policy.roles) > risk.exploration_max_roles:
                 failures.append("exploration_role_ceiling_exceeded")
-        eligibility = (
-            "BLOCKED"
-            if failures
-            else "AUTHORIZED_ELIGIBLE"
-            if evidence.sufficient_matched_evidence
-            else "EXPLORATION_ELIGIBLE"
+        failures.extend(self.calibration_gate.hard_failures(calibration_control))
+        if (
+            calibration_control.control_mode == "EXPLORATION_ONLY"
+            and len(policy.roles) > risk.exploration_max_roles
+        ):
+            failures.append("calibration_exploration_role_ceiling_exceeded")
+        failures = list(dict.fromkeys(failures))
+        eligibility = self.calibration_gate.eligibility(
+            hard_failures=tuple(failures),
+            sufficient_matched_evidence=evidence.sufficient_matched_evidence,
+            control=calibration_control,
         )
         return ContextualPolicyCandidateEvaluation(
             policy_id=policy.policy_id,
@@ -202,6 +234,7 @@ class ContextualOrganizationPolicySelector:
         problem: ContextualProblemStructure,
         matched_evidence: tuple[MatchedPolicyEvidence, ...],
         provider_assessments: tuple[ContextualProviderPolicyAssessment, ...],
+        calibration_controls: tuple[ContextualPolicyCalibrationControl, ...],
     ) -> tuple[str, ...]:
         return tuple(
             dict.fromkeys(
@@ -209,6 +242,11 @@ class ContextualOrganizationPolicySelector:
                     *problem.evidence_refs,
                     *(ref for item in matched_evidence for ref in item.evidence_refs),
                     *(ref for item in provider_assessments for ref in item.evidence_refs),
+                    *(
+                        item.calibration_receipt_ref
+                        for item in calibration_controls
+                        if item.calibration_receipt_ref
+                    ),
                 )
             )
         )
@@ -227,6 +265,7 @@ class ContextualOrganizationPolicySelector:
         risk: OrganizationRiskEnvelope,
         provider_advice_hash: str,
         evidence_refs: tuple[str, ...],
+        calibration_controls: tuple[ContextualPolicyCalibrationControl, ...],
     ) -> ContextualOrganizationPolicyDecision:
         committed = {
             "decision_id": decision_id,
@@ -238,6 +277,7 @@ class ContextualOrganizationPolicySelector:
             "kernel_authorization_ref": kernel_authorization_ref,
             "required_roles": list(required_roles),
             "candidate_evaluations": [item.as_dict() for item in evaluations],
+            "calibration_controls": [item.as_dict() for item in calibration_controls],
             "reason": (
                 "contextual_policy_passed_kernel_gates"
                 if selected
@@ -259,6 +299,7 @@ class ContextualOrganizationPolicySelector:
             kernel_authorization_ref=kernel_authorization_ref,
             required_roles=required_roles,
             candidate_evaluations=evaluations,
+            calibration_controls=calibration_controls,
             reason=committed["reason"],
             problem_structure_hash=committed["problem_structure_hash"],
             budget_hash=committed["budget_hash"],
@@ -270,6 +311,7 @@ class ContextualOrganizationPolicySelector:
 
     @staticmethod
     def _validate_inputs(
+        problem: ContextualProblemStructure,
         decision_id: str,
         policies: tuple[ContextualRolePolicy, ...],
         matched_evidence: tuple[MatchedPolicyEvidence, ...],
@@ -277,6 +319,7 @@ class ContextualOrganizationPolicySelector:
         provider_advice_hash: str,
         feasible_policy_ids: tuple[str, ...],
         kernel_authorization_ref: str,
+        calibration_controls: tuple[ContextualPolicyCalibrationControl, ...],
     ) -> None:
         if not re.fullmatch(r"[A-Za-z0-9_.-]+", decision_id):
             raise ValueError("contextual_policy_decision_id_invalid")
@@ -294,3 +337,14 @@ class ContextualOrganizationPolicySelector:
                 raise ValueError(f"contextual_policy_{name}_coverage_invalid")
         if not set(feasible_policy_ids).issubset(expected):
             raise ValueError("contextual_policy_feasible_set_invalid")
+        control_ids = tuple(item.policy_id for item in calibration_controls)
+        if control_ids != CONTEXTUAL_POLICY_IDS:
+            raise ValueError("contextual_policy_calibration_control_coverage_invalid")
+        evidence_tier = matched_evidence[0].evidence_tier
+        if any(
+            item.project_scope != problem.project_scope
+            or item.context_key != problem.context_key
+            or item.evidence_tier != evidence_tier
+            for item in calibration_controls
+        ):
+            raise ValueError("contextual_policy_calibration_control_scope_invalid")

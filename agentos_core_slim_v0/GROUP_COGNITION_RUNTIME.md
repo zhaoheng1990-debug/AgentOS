@@ -1,6 +1,6 @@
 # Modular Group Cognition Runtime
 
-AgentOS CoreSlim 0.4.0-alpha.12 retains the pluggable P0-P5 group cognition layer. The design
+AgentOS CoreSlim 0.4.0-alpha.17 retains the pluggable P0-P5 group cognition layer. The design
 keeps the Kernel as the cognitive and policy owner while allowing providers,
 runners, Harnesses, evaluators, and state stores to be replaced independently.
 
@@ -14,6 +14,7 @@ runners, Harnesses, evaluators, and state stores to be replaced independently.
 | learned trust allocation | epistemic credit ledger | adjudicated append-only events | bounded trust score and confidence |
 | endogenous problem selection | agenda loop | provider-supported agenda candidates | priority gate and explicit stop |
 | endogenous problem definition | four isolated problem roles | candidate, critique, researchability, and selection receipts | pending seed and no execution authority |
+| problem constraint-field reconstruction | problem-structure admission | seed, role receipts, source signals, six dimensions, and revision ancestry | evidence/signal/uncertainty gate |
 | problem-quality learning | quality lifecycle runtime | blinded forecasts, trial and feedback receipts | observed Cbit and prediction error |
 | Temporal Difference hygiene | cascading invalidation graph | dependency and invalidation receipts | blocked reuse and cascade size |
 
@@ -30,6 +31,8 @@ that execute those organizational contracts.
 function and the Kernel gates that apply its route proposals.
 `ENDOGENOUS_PROBLEM_RUNTIME.md` documents plural problem framing, independent
 problem challenge, researchability assessment, group selection, and seed intake.
+`PROBLEM_STRUCTURE_ADMISSION_RUNTIME.md` documents how the selected seed and four role receipts are
+converted into a Provider-supported, Kernel-admitted structure before Selector use.
 `PROBLEM_QUALITY_LIFECYCLE.md` documents baseline comparison, Kernel-authorized
 problem trials, outcome receipts, and agenda/credit/invalidation feedback.
 `COGNITIVE_TEAM_FORMATION_RUNTIME.md` documents independent baselines, dynamic
@@ -57,6 +60,7 @@ existing team or ablation execution, Harness-owned outcomes, matched evidence, a
 | P2 | `CreditLedger` | adjudicated track record and advisory profile | route selection or evidence admission |
 | P3 | `AgentRegistry` | role discovery and isolated team assembly | agent execution |
 | P4 | `EndogenousAgendaLoop` | problem state, ranking, select-or-stop, feedback | external action execution |
+| Problem structure admission | `ProblemStructureAdmissionRuntime` | source verification, six-dimensional Provider support, Kernel admission, revisions, persistence, and Selector source | problem generation, policy selection, execution, or knowledge promotion |
 | P5 | `CascadingInvalidationGraph` | dependency propagation and reuse blocking | semantic choice of invalidation roots |
 | Quality lifecycle | `ProblemQualityLifecycleRuntime` | frozen forecasts, trial state, outcome and feedback | self-authorization or publication |
 | Team formation | `CognitiveTeamFormationRuntime` | independent baselines, bounded team proposals, authorization receipts | team execution or truth ownership |
@@ -65,6 +69,8 @@ existing team or ablation execution, Harness-owned outcomes, matched evidence, a
 | Organization ablation | `CognitiveOrganizationAblationRuntime` | authorized full-team and one-component-omission execution, replay, blind assessment, and Harness-owned metrics | self-authorization, hidden truth, causal promotion, or policy acceptance |
 | Contextual organization selection | `ContextualOrganizationPolicyRuntime` | exact-context evidence aggregation, bounded Provider advice, registry feasibility, Kernel policy selection, persistence, and replay | universal role ranking, cross-context pooling, self-authorization, or production activation |
 | Selection-execution feedback | `SelectionExecutionFeedbackBridge` | thin composition of frozen selection, explicit execution budget, existing execution adapter, Kernel admission, persistent records, and replay | policy selection, team cognition, Harness scoring, semantic promotion, or production activation |
+| Selector calibration and drift | `SelectorCalibrationRuntime` | exact prediction/outcome binding, context-policy metrics, Provider-supported diagnosis, Kernel trust state, revision ledger, and replay | cross-context pooling, threshold mutation, Provider-owned state, automatic policy activation, or global ranking |
+| Calibration-controlled selection | `ContextualPolicyCalibrationControl` | replay-valid latest receipt, seven-policy control surface, authorization downgrade/block, decision binding, and replay | Provider override, stale receipt use, bare-state routing, calibration-only execution authority, or global policy activation |
 | SRO retention | `SRORetentionRuntime` | Provider-backed witness/task matching, Kernel route ownership, legacy migration candidates, persistent delayed retrieval and replay | global memory, unbound reuse, production activation, synthetic-weight deployment, or theory promotion |
 
 `CognitiveModuleRegistry` is the thin composition root. It only installs,
@@ -84,7 +90,7 @@ P3 isolated agents -> P1 review/replication -> P2 credit history
        |                    |                       |
        |                    +-> P5 invalidation ----+
        v
-P0 group evaluation -> organization learning -> contextual policy selection
+P4 problem definition -> problem structure admission -> contextual policy selection
               |                    |
               +-> bounded ablation proposal -> separate Kernel authorization
               |

@@ -93,6 +93,13 @@ A selected problem forms a hash-committed `DeliberationSeed` with:
 with a separate Kernel authorization. It transfers the selected question and
 seed provenance into coordination intake without silently promoting the seed.
 
+CoreSlim 0.4.0-alpha.13 adds a second bounded consumer of the same seed.
+`ProblemDefinitionStructureAdapter` verifies the seed, all four formal messages,
+their execution receipts, and replay before constructing a problem-structure
+candidate. Provider-supported dimensions still require a separate Kernel
+admission before they can enter the organization-policy Selector. See
+`PROBLEM_STRUCTURE_ADMISSION_RUNTIME.md`.
+
 ## Verified Live Behavior
 
 The LIFE-COG3R live smoke supplied frozen evidence with

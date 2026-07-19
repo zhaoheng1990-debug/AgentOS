@@ -9,6 +9,7 @@ theory-baseline files.
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -16,6 +17,11 @@ from hashlib import sha256
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
+
+from .anti_additive_models import (
+    AntiAdditiveMethodologyReceipt,
+    methodology_candidate_commitment,
+)
 
 
 POLICY_OWNER = "AgentOSKernel.ICMEvolutionPolicy"
@@ -81,6 +87,8 @@ class EvolutionReview:
     target_type: str
     reason: str
     eligible: bool
+    methodology_receipt_hash: str = ""
+    methodology_decision_hash: str = ""
 
 
 class AutonomousICMEvolutionPolicy:
@@ -91,7 +99,11 @@ class AutonomousICMEvolutionPolicy:
     harness_role = "execute_write_envelope_only"
     final_decision_owner = "AgentOSKernel"
 
-    def review(self, candidate: dict[str, Any]) -> EvolutionReview:
+    def review(
+        self,
+        candidate: dict[str, Any],
+        methodology_receipt: AntiAdditiveMethodologyReceipt | None = None,
+    ) -> EvolutionReview:
         if candidate.get("scope") not in {"project_scoped", "AgentOS project runtime policy selection"}:
             return EvolutionReview("REQUEST_HUMAN_SCOPE_ESCALATION", "None", "scope_not_project_bounded", False)
         if candidate.get("negative_transfer_risk") in {"high", "unbounded"} or candidate.get("negative_transfer_detected"):
@@ -101,11 +113,39 @@ class AutonomousICMEvolutionPolicy:
         if candidate.get("future_cbit_gain") not in {"positive", "high", True}:
             return EvolutionReview("NO_WRITE_KEEP_CANDIDATE", "None", "future_cbit_gain_not_positive", False)
         kind = candidate.get("target_type") or ("OperatorMemory" if "UPS" in candidate.get("research_line", "").upper() or "UtilityPolicySelector" in candidate.get("research_line", "") else "MemoryUnit")
+        methodology_failure = self._methodology_failure(candidate, kind, methodology_receipt)
+        if methodology_failure:
+            return EvolutionReview("NO_WRITE_KEEP_CANDIDATE", "None", methodology_failure, False)
+        receipt_hash = methodology_receipt.receipt_hash
+        decision_hash = methodology_receipt.decision.decision_hash
         if kind == "OperatorMemory":
-            return EvolutionReview("AUTONOMOUS_PROJECT_OPERATORMEMORY_WRITE", kind, "accept_replayable_project_scoped_operator_memory", True)
+            return EvolutionReview("AUTONOMOUS_PROJECT_OPERATORMEMORY_WRITE", kind, "accept_replayable_project_scoped_operator_memory", True, receipt_hash, decision_hash)
         if kind == "PolicyPrior":
-            return EvolutionReview("AUTONOMOUS_POLICY_PRIOR_WRITE", kind, "accept_replayable_project_scoped_policy_prior", True)
-        return EvolutionReview("AUTONOMOUS_PROJECT_MEMORYUNIT_WRITE", "MemoryUnit", "accept_replayable_project_scoped_memory_unit", True)
+            return EvolutionReview("AUTONOMOUS_POLICY_PRIOR_WRITE", kind, "accept_replayable_project_scoped_policy_prior", True, receipt_hash, decision_hash)
+        return EvolutionReview("AUTONOMOUS_PROJECT_MEMORYUNIT_WRITE", "MemoryUnit", "accept_replayable_project_scoped_memory_unit", True, receipt_hash, decision_hash)
+
+    @staticmethod
+    def _methodology_failure(
+        candidate: dict[str, Any],
+        target_type: str,
+        receipt: AntiAdditiveMethodologyReceipt | None,
+    ) -> str:
+        if receipt is None:
+            return "anti_additive_methodology_receipt_required"
+        expected_scope = candidate.get("project_scope_ref")
+        if not isinstance(expected_scope, str) or not expected_scope.startswith("project://"):
+            return "anti_additive_project_scope_ref_required"
+        if receipt.candidate.project_scope != expected_scope:
+            return "anti_additive_methodology_scope_mismatch"
+        if receipt.candidate.candidate_id != candidate.get("candidate_id"):
+            return "anti_additive_methodology_candidate_id_mismatch"
+        if receipt.candidate.target_type != target_type:
+            return "anti_additive_methodology_target_type_mismatch"
+        if receipt.candidate.candidate_payload_hash != methodology_candidate_commitment(candidate):
+            return "anti_additive_methodology_candidate_payload_mismatch"
+        if not receipt.decision.allowed:
+            return f"anti_additive_methodology_not_allowed:{receipt.decision.state}"
+        return ""
 
     @staticmethod
     def _has_accept_evidence(candidate: dict[str, Any]) -> bool:
@@ -129,6 +169,8 @@ class AutonomousICMEvolutionPolicy:
             "payload": payload,
             "evidence_refs": candidate.get("evidence_refs", []),
             "accept_decision_ref": candidate.get("accept_decision_ref", ""),
+            "anti_additive_methodology_receipt_hash": review.methodology_receipt_hash,
+            "anti_additive_methodology_decision_hash": review.methodology_decision_hash,
             "applicability_gate": payload.get("applicability_gate", {}),
             "boundary_policy": payload.get("boundary_policy", {}),
             "reuse_policy": payload.get("reuse_policy", {}),
@@ -300,6 +342,20 @@ class ProjectScopedDurableStore:
             raise EvolutionPolicyBlocked("production_activation_forbidden")
         if not envelope.get("rollback_required"):
             raise EvolutionPolicyBlocked("rollback_required")
+        if envelope.get("target_type") != "Quarantine" and (
+            not envelope.get("anti_additive_methodology_receipt_hash")
+            or not envelope.get("anti_additive_methodology_decision_hash")
+        ):
+            raise EvolutionPolicyBlocked("anti_additive_methodology_binding_required")
+        for name in (
+            "anti_additive_methodology_receipt_hash",
+            "anti_additive_methodology_decision_hash",
+        ):
+            value = envelope.get(name, "")
+            if envelope.get("target_type") != "Quarantine" and not re.fullmatch(
+                r"[0-9a-f]{64}", value
+            ):
+                raise EvolutionPolicyBlocked(f"{name}_invalid")
         target = Path(envelope.get("target_path", "")).resolve()
         self._ensure_under_root(target)
         relative_parts = target.relative_to(self.root).parts
@@ -341,6 +397,12 @@ class ProjectScopedDurableStore:
             "sha256_after": sha_after,
             "evidence_refs": envelope.get("evidence_refs", []),
             "accept_decision_ref": envelope.get("accept_decision_ref", ""),
+            "anti_additive_methodology_receipt_hash": envelope.get(
+                "anti_additive_methodology_receipt_hash", ""
+            ),
+            "anti_additive_methodology_decision_hash": envelope.get(
+                "anti_additive_methodology_decision_hash", ""
+            ),
         }
         ref.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
         return ref
@@ -356,6 +418,9 @@ class ProjectScopedDurableStore:
             "target_path": envelope["target_path"],
             "receipt_hash": receipt["receipt_hash"],
             "kernel_policy_owner": POLICY_OWNER,
+            "anti_additive_methodology_decision_hash": envelope.get(
+                "anti_additive_methodology_decision_hash", ""
+            ),
         }
         with ledger.open("a", encoding="utf-8", newline="\n") as handle:
             handle.write(json.dumps(entry, sort_keys=True) + "\n")

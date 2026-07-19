@@ -128,7 +128,8 @@ class ContextualOrganizationProviderAdvisor:
             objective=(
                 "Assess every registered organization policy for this exact problem structure and matched-evidence "
                 "surface. Return semantic fit, expected Cbit, bounded cost, residual risk, uncertainty, and "
-                "anti-additive pressure. The recommendation is advisory: do not alter policy roles, matched metrics, "
+                "organization-interaction anti-additive pressure. This is not the MethodologyKernel patch-accumulation "
+                "constraint. The recommendation is advisory: do not alter policy roles, matched metrics, "
                 "budget, risk envelope, registry bindings, or claim execution/global policy authority."
             ),
             inputs={

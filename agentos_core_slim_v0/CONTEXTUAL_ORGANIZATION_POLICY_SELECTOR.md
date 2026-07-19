@@ -1,10 +1,22 @@
 # Contextual Organization Policy Selector
 
-AgentOS CoreSlim 0.4.0-alpha.12 includes a bounded organization-policy selector. It does not assume
+AgentOS CoreSlim 0.4.0-alpha.16 includes a bounded organization-policy selector. It does not assume
 that more agents are always better. For each problem, the Runtime combines a structured problem
 receipt, exact-context matched evidence, an explicit budget, a risk envelope, registered agent
 feasibility, and Provider semantic support. The Kernel then chooses one executable role policy,
 authorizes only an exploratory trial, or abstains.
+
+The separate `SelectorCalibrationRuntime` closes the prediction-to-outcome loop after execution. It
+does not enlarge this Selector facade: it binds the selected policy assessment to admitted Harness
+feedback, computes exact-scope calibration statistics, obtains bounded Provider drift diagnosis, and
+lets a Kernel gate issue the project-scoped prediction-trust state.
+
+Alpha.15 consumes that state through an optional read-only calibration source. Without a source, the
+Selector preserves alpha.14 compatibility. With a source, every registered policy receives an exact
+control commitment: absent or insufficient history is exploration-only, `WATCH` removes project-scoped
+authorization, `DRIFTED` blocks the policy, and `CALIBRATED` preserves eligibility for the existing
+matched-evidence, budget, risk, and registry gates. The complete control surface is part of the Kernel
+decision hash and persistent selection receipt.
 
 ## Object Mapping
 
@@ -16,6 +28,12 @@ authorizes only an exploratory trial, or abstains.
 | bounded semantic support | Provider policy assessment | fit, expected Cbit, cost, risk, anti-additivity, uncertainty | exact schema, provenance, and invocation binding |
 | executable organization | `EnsembleAssignment` | registered role and isolated context bindings | registry feasibility and optional Provider diversity |
 | final runtime policy | Kernel decision | selected policy and activation mode | budget, risk, evidence, role coverage, and authorization |
+
+`anti_additive_signal` in this table is an organization-interaction risk estimate: it asks whether the
+roles and coordination of one policy may cancel value in the current problem. It is not the
+MethodologyKernel Anti-Additive Constraint. The latter is a separate Kernel meta-governance gate over
+new variables, modules, metrics, windows, exceptions, objects, memories, and policies. See
+`ANTI_ADDITIVE_METHODOLOGY_RUNTIME.md`.
 
 These mappings are engineering contracts. A passing selector run demonstrates bounded selection and
 auditability, not a universal law about the best cognitive organization.
@@ -63,7 +81,8 @@ exact context/tier matched trial evaluation
 AgentRegistry feasibility for every registered policy
                  |
                  v
-Provider assessment of fit, Cbit, cost, risk, uncertainty
+Provider assessment of fit, Cbit, cost, risk, uncertainty,
+and organization-interaction anti-additivity
                  |
                  v
 Kernel role coverage + budget + risk + evidence gates
@@ -127,6 +146,10 @@ The Selector does not execute its decision. `SelectionExecutionFeedbackBridge` f
 assignment, trial surface, and a separate execution budget before invoking an existing Team or
 Ablation Runtime adapter. Only Harness-owned, replay-valid outcomes admitted by the Kernel become
 exact-context organization records. See `SELECTION_EXECUTION_FEEDBACK_BRIDGE.md`.
+
+Alpha.13 adds an optional `AdmittedProblemStructureSource`. In this mode the Selector resolves one
+explicit `problem_admission_id` and rejects direct problem objects. The legacy direct-input path is
+retained only when no admission source is configured. See `PROBLEM_STRUCTURE_ADMISSION_RUNTIME.md`.
 
 ## Persistence and Replay
 

@@ -27,6 +27,7 @@ from .sro_retention_contracts import (
 from .sro_retention_migration import LegacyRetentionMigrator
 from .sro_retention_provider import ProviderBackedSROMatcher
 from .sro_retention_repository import SRORetentionRepository
+from .anti_additive_source import AntiAdditiveMethodologyReceiptSource
 
 
 class SRORetentionRuntime:
@@ -49,6 +50,7 @@ class SRORetentionRuntime:
         workspace_root: str | Path,
         compatibility_gate: GradedSROCompatibilityGate | None = None,
         retention_gate: ConstraintAlignedRetentionGate | None = None,
+        anti_additive_source: AntiAdditiveMethodologyReceiptSource | None = None,
     ) -> None:
         if not re.fullmatch(r"[A-Za-z0-9_.-]+", runtime_id):
             raise ValueError("sro_retention_runtime_id_invalid")
@@ -63,7 +65,11 @@ class SRORetentionRuntime:
             module_id=self.module_id,
             workspace_root=workspace_root,
         )
-        self._migrator = LegacyRetentionMigrator(project_scope, retention_gate)
+        self._migrator = LegacyRetentionMigrator(
+            project_scope,
+            retention_gate,
+            anti_additive_source,
+        )
         self._matcher = ProviderBackedSROMatcher(
             runtime_id=runtime_id,
             project_scope=project_scope,
@@ -81,6 +87,7 @@ class SRORetentionRuntime:
         candidate: dict[str, Any],
         *,
         migration_authority_ref: str,
+        methodology_audit_id: str = "",
     ) -> LegacyRetentionMigrationCandidate:
         legacy_hash = hash_payload(candidate)
         existing = self._repository.migration_by_legacy_hash(legacy_hash)
@@ -89,6 +96,7 @@ class SRORetentionRuntime:
         migration = self._migrator.create(
             candidate,
             migration_authority_ref=migration_authority_ref,
+            methodology_audit_id=methodology_audit_id,
         )
         self._repository.save_migration_created(migration)
         return migration
@@ -98,11 +106,16 @@ class SRORetentionRuntime:
         candidates: tuple[dict[str, Any], ...],
         *,
         migration_authority_ref: str,
+        methodology_audit_ids: dict[str, str] | None = None,
     ) -> tuple[LegacyRetentionMigrationCandidate, ...]:
+        methodology_audit_ids = methodology_audit_ids or {}
         return tuple(
             self.migrate_legacy_candidate(
                 candidate,
                 migration_authority_ref=migration_authority_ref,
+                methodology_audit_id=methodology_audit_ids.get(
+                    str(candidate.get("candidate_id") or ""), ""
+                ),
             )
             for candidate in candidates
         )
@@ -113,12 +126,14 @@ class SRORetentionRuntime:
         revalidated_candidate: dict[str, Any],
         *,
         kernel_authorization_ref: str,
+        methodology_audit_id: str = "",
     ) -> LegacyRetentionMigrationCandidate:
         migration = self._require_migration(migration_id)
         updated = self._migrator.revalidate(
             migration,
             revalidated_candidate,
             kernel_authorization_ref=kernel_authorization_ref,
+            methodology_audit_id=methodology_audit_id,
         )
         self._repository.save_migration_revalidated(
             updated,

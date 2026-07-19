@@ -92,6 +92,11 @@ from .contextual_policy_contracts import (
 from .contextual_policy_provider import ContextualOrganizationProviderAdvisor
 from .contextual_policy_repository import ContextualPolicyRepository
 from .contextual_policy_runtime import ContextualOrganizationPolicyRuntime
+from .contextual_policy_assignment import ContextualPolicyAssignmentPlanner
+from .contextual_policy_calibration_source import (
+    SelectorCalibrationControlSource,
+    resolve_calibration_controls,
+)
 from .organization_record_source import OrganizationTrialRecordSource
 from .selection_execution_adapters import (
     AblationExecutionPolicyAdapter,
@@ -105,8 +110,56 @@ from .selection_feedback_contracts import (
     SelectionExecutionFeedbackSnapshot,
 )
 from .selection_feedback_repository import SelectionFeedbackRepository
+from .problem_structure_admission import ProblemStructureAdmissionRuntime
+from .problem_structure_contracts import (
+    PROBLEM_STRUCTURE_ADMISSION_RUNTIME_VERSION,
+    ProblemStructureAdmissionSnapshot,
+)
+from .problem_structure_provider import ProblemStructureProviderAdvisor
+from .problem_structure_repository import ProblemStructureRepository
+from .problem_structure_source import AdmittedProblemStructureSource
+from .problem_structure_source_adapter import ProblemDefinitionStructureAdapter
+from .selector_calibration_adapter import SelectorCalibrationObservationAdapter
+from .selector_calibration_contracts import (
+    SELECTOR_CALIBRATION_RUNTIME_VERSION,
+    SelectorCalibrationSnapshot,
+    selector_calibration_scope_key,
+)
+from .selector_calibration_provider import SelectorCalibrationProviderAdvisor
+from .selector_calibration_repository import SelectorCalibrationRepository
+from .selector_calibration_runtime import SelectorCalibrationRuntime
+from .anti_additive_provider import AntiAdditiveProviderAdvisor
+from .anti_additive_repository import AntiAdditiveMethodologyRepository
+from .anti_additive_runtime import AntiAdditiveMethodologyRuntime
+from .anti_additive_calibration_repository import (
+    AntiAdditiveCalibrationRepository,
+    anti_additive_calibration_scope_key,
+)
+from .anti_additive_calibration_runtime import AntiAdditiveCalibrationRuntime
+from .anti_additive_calibration_source import (
+    AntiAdditiveCalibrationSource,
+    resolve_anti_additive_calibration_control,
+)
+from .anti_additive_source import (
+    ANTI_ADDITIVE_AUTHORITY_REQUIREMENTS,
+    AntiAdditiveMethodologyReceiptSource,
+    resolve_anti_additive_methodology_receipt,
+)
+from .anti_additive_baseline_evolution import AntiAdditiveBaselineEvolutionRuntime
 
 __all__ = [
+    "AntiAdditiveMethodologyRepository",
+    "AntiAdditiveMethodologyRuntime",
+    "AntiAdditiveProviderAdvisor",
+    "AntiAdditiveCalibrationRepository",
+    "AntiAdditiveCalibrationRuntime",
+    "AntiAdditiveCalibrationSource",
+    "anti_additive_calibration_scope_key",
+    "resolve_anti_additive_calibration_control",
+    "ANTI_ADDITIVE_AUTHORITY_REQUIREMENTS",
+    "AntiAdditiveMethodologyReceiptSource",
+    "resolve_anti_additive_methodology_receipt",
+    "AntiAdditiveBaselineEvolutionRuntime",
     "CognitiveAgent",
     "AgentAdapterResult",
     "CognitiveAgentRuntimeAdapter",
@@ -118,6 +171,9 @@ __all__ = [
     "CognitiveRoleContract",
     "CONTEXTUAL_ORGANIZATION_POLICY_RUNTIME_VERSION",
     "ContextualOrganizationPolicyRuntime",
+    "ContextualPolicyAssignmentPlanner",
+    "SelectorCalibrationControlSource",
+    "resolve_calibration_controls",
     "ContextualOrganizationPolicySnapshot",
     "ContextualOrganizationProviderAdvisor",
     "ContextualOrganizationSelectionReceipt",
@@ -132,6 +188,20 @@ __all__ = [
     "SelectionExecutionFeedbackSnapshot",
     "SelectionFeedbackRepository",
     "SELECTION_EXECUTION_FEEDBACK_RUNTIME_VERSION",
+    "AdmittedProblemStructureSource",
+    "PROBLEM_STRUCTURE_ADMISSION_RUNTIME_VERSION",
+    "ProblemDefinitionStructureAdapter",
+    "ProblemStructureAdmissionRuntime",
+    "ProblemStructureAdmissionSnapshot",
+    "ProblemStructureProviderAdvisor",
+    "ProblemStructureRepository",
+    "SELECTOR_CALIBRATION_RUNTIME_VERSION",
+    "SelectorCalibrationObservationAdapter",
+    "SelectorCalibrationProviderAdvisor",
+    "SelectorCalibrationRepository",
+    "SelectorCalibrationRuntime",
+    "SelectorCalibrationSnapshot",
+    "selector_calibration_scope_key",
     "CoordinationProposal",
     "PrivateAgentWorkspace",
     "ProviderCognitiveAgentAdapter",

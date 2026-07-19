@@ -3,7 +3,7 @@
 **Harness 与 Runner 的认知运行时操作系统**<br>
 **A cognitive runtime operating system for Harnesses and Runners**
 
-当前版本 / Current version: **AgentOS CoreSlim 0.4.0-alpha.12**
+当前版本 / Current version: **AgentOS CoreSlim 0.4.0-alpha.17**
 
 [中文](#中文) | [English](#english) | [Apache-2.0](LICENSE)
 
@@ -71,6 +71,7 @@ flowchart TB
 | Provider Cognition Layer | 要求语义操作具有 provider 支持，并检查 evidence/judgment consistency；冲突时 fail closed |
 | Quality Decision Matrix | 分离证据准入、范围覆盖、基线资格、阅读完整性、发布与保留判断 |
 | Evidence 与 Cbit 控制 | 维护证据维度；将 Cbit 作为信息增益、停止条件和群体评估信号，而不是未经验证的万能分数 |
+| Anti-Additive 元规则 | 阻止失败后在错误对象上继续堆变量、模块、指标、窗口或例外；只有有效 Cbit 收益高于复杂度成本、对象升维收益高于抽象成本时才允许有界扩张 |
 | Artifact 与 Memory Runtime | 管理 candidate、accepted、quarantine、版本关系、信用事件和依赖失效 |
 | Safety 与 Tool Bridge | 限制 capability、路径和写操作，保留哈希、回放和回滚信息 |
 
@@ -81,6 +82,7 @@ flowchart TB
 - **P2 Credit Ledger**：记录经裁决的历史表现，不让声誉直接越权成为事实；
 - **P3 Agent Registry**：注册不同角色、模型和隔离上下文，组建可审计团队；
 - **P4 Endogenous Agenda**：从开放问题、残余竞争解释和预期信息增益中选择下一轮候选；
+- **Problem Structure Admission Runtime**：验证问题 seed 与四角色回执，由 Provider 支撑六个约束维度判断，再由 Kernel 决定结构是否可以进入 Selector；
 - **P5 Cascading Invalidation**：让被证伪或过期的知识沿依赖关系失效、隔离或停止复用。
 - **Cognitive Team Formation Runtime**：让独立成员先形成问题基线，再由 Provider 按问题适配性提议团队、Kernel 授权，并用最佳成员/固定团队/动态团队三臂反事实检验组合价值。
 - **Cognitive Team Execution Runtime**：把已授权编队变成真实、隔离、可回放的角色执行；由隐藏真值 Harness 计算实际 Cbit，再分别校准成员、固定团队、动态团队和编队 Provider 的信用。
@@ -89,11 +91,14 @@ flowchart TB
 - **Cross-project Attribution Audit**：保留每个 `context_key` 的独立效应，只比较角色贡献方向；不池化因果效应，不产生通用角色排名。
 - **Contextual Organization Policy Selector**：根据问题结构、同一上下文的 matched evidence、真实 Agent 注册表、预算和风险选择可执行角色组合；Provider 提供语义支持，Kernel 保留最终选择与授权。
 - **Selection-to-Execution Feedback Bridge**：将 Selector 的冻结决策接入既有团队或消融执行 Runtime，并把 Harness 度量回流为同一上下文的 matched evidence；独立执行预算覆盖所有实际运行协议，而不只覆盖最终接纳的比较结果。
+- **Selector Calibration / Drift Runtime**：把 Selector 对所选政策的预期 Cbit、成本、风险与不确定性绑定到真实 Harness outcome；机械误差与独立样本由 Runtime 计算，Provider 支撑漂移诊断，Kernel 决定预测是否可信、观察或暂停信任。
+- **Calibration-controlled Selector**：Selector 显式读取最新、可回放、同范围的 calibration receipt；无观测或样本不足只能探索，`WATCH` 取消项目级授权，`DRIFTED` 阻断对应政策，只有 `CALIBRATED` 才保留既有 matched-evidence 授权资格。
+- **Anti-Additive Methodology Runtime**：把 MethodologyKernel 的七类补丁堆积信号变成 Provider-backed、Kernel-owned 的元规则门；prediction-outcome calibration 用真实 Harness 结果约束预测权威，同一可回放 receipt source 按对象强绑定接入问题准入、retention promotion 与 baseline evolution。
 - **Provider-backed SRORetentionRuntime**：把 retention admission 与 query-time reuse 分开，以项目绑定 witness、Provider 调用回执和持久哈希链约束复用；旧记录只能迁移为待重建、待复验或隔离候选。
 
 ### 第一阶段认知角色
 
-0.4.0-alpha.12 保留了已经从 prompt 标签拆出的四个独立运行时 Agent，并增加受 Kernel 约束的认知协调者：
+0.4.0-alpha.17 保留了已经从 prompt 标签拆出的四个独立运行时 Agent，并增加受 Kernel 约束的认知协调者：
 
 - Generator、Reviewer、Replicator、Synthesizer 分别拥有独立身份、上下文和私有记忆；
 - Reviewer 只能读取正式 proposal，Replicator 不能读取 Reviewer 回执；
@@ -118,6 +123,14 @@ AgentOS 现在可以从已接纳证据、异常和未解决冲突中启动问题
 - 经新的 Kernel authorization 后，该 seed 才能进入 Coordinator，成为下一轮认知工作目标。
 
 完整协议见 [`agentos_core_slim_v0/ENDOGENOUS_PROBLEM_RUNTIME.md`](agentos_core_slim_v0/ENDOGENOUS_PROBLEM_RUNTIME.md)。
+
+### 问题结构准入
+
+一个问题被群体提出和选中，并不意味着它的约束结构已经可靠。Alpha.13 会验证 `DeliberationSeed`、Framer、Critic、Researchability Assessor 与 Agenda Synthesizer 的正式消息和执行回执，再冻结问题、证据、竞争解释、未解决冲突、所需 Harness 与九个来源信号。
+
+Provider 只评估前提不确定性、证据冲突、复现需求、综合需求、协调复杂度和新颖性需求六个维度，并必须逐维引用已接纳证据和来源信号。Kernel 检查完整覆盖、判断一致性、不确定性上限、项目范围和 revision 前驱。通过后形成的 receipt 只具有 Selector 输入资格，不携带执行、全局策略或知识晋升权。
+
+当 Selector 配置 admission source 后，只接受显式 admission ID，拒绝调用方直接注入问题结构。结构修订必须指向最新 receipt，旧版本保留在可回放账本中。完整协议见 [`agentos_core_slim_v0/PROBLEM_STRUCTURE_ADMISSION_RUNTIME.md`](agentos_core_slim_v0/PROBLEM_STRUCTURE_ADMISSION_RUNTIME.md)。
 
 ### 问题质量学习闭环
 
@@ -185,20 +198,24 @@ Runner 下方可以连接多个 Harness，例如代码执行、浏览器、搜�
 3. 让 Kernel 形成任务和认知角色，Harness 只执行授权动作；
 4. 将证据和 provider judgment 分别落盘，再通过一致性与认识论门控；
 5. 当当前任务留下异常或竞争解释时，启动群体问题定义并生成 pending deliberation seed；
-6. 将问题与成员和人工基线做盲评，冻结预期 Cbit，再由 Kernel 决定是否批准小规模 Harness 试验；
-7. 当任务需要群体执行时，让独立成员先给出问题基线，由 Provider 提议团队、Kernel 授权，再运行最佳成员/固定团队/动态团队三臂比较；
-8. 让三个 arm 真正执行同一 finding trial；隐藏真值 Harness 评分，Provider 只做盲化语义支持；
-9. 把实际 Cbit、残余问题、个人、固定团队、动态团队与编队 Provider 的信用校准和失效传播回议程；
-10. 将通过回放门的三臂结果送入组织学习；重复试验选协议，匹配消融才归因角色贡献；
-11. 由 Provider 支持失败诊断，由 Kernel 单独授权有预算和停止条件的下一轮组织实验；
-12. 执行完整团队与单组件缺失的匹配消融；至少两组独立结果通过回放、盲化和 Harness 门后，才允许 Kernel 计算组件贡献；
-13. 跨项目时保留各自 `context_key`，只审计方向一致性；符号冲突必须标记为 context-dependent，不得池化成通用角色结论；
-14. 在真实任务上调用 Contextual Organization Policy Selector；Provider 评估各注册协议，Kernel 按问题必需角色、matched evidence、预算、风险和 Agent 可形成性选择项目范围组合、仅试验或 abstain；
-15. 用独立 Kernel execution authorization 和完整执行预算把 Selector 决策交给 Selection-to-Execution Feedback Bridge；既有 Team/Ablation Runtime 执行，Harness 评分，Kernel 只接纳强绑定且可回放的 outcome；
-16. 让持久反馈账本成为下一轮 Selector 的只读 record source；只有重复、独立、同一上下文的 matched pairs 才能把探索性策略提升为项目范围授权；
-17. 对保留候选执行 Provider-backed SRO 匹配；Kernel 按强对象绑定选择复用、适配、复验、重推导或拒绝，并将延迟结果写入持久校准账本；
-18. 输出 candidate、manifest、hash inventory、replay/rollback pointer 和下一轮候选；
-19. 只有通过明确 promotion gate 的资产才能进入 accepted 基线。
+6. 将 pending seed 和四角色回执送入 Problem Structure Admission Runtime；Provider 支撑六维结构判断，Kernel 准入后 Selector 才能读取；
+7. 将问题与成员和人工基线做盲评，冻结预期 Cbit，再由 Kernel 决定是否批准小规模 Harness 试验；
+8. 当任务需要群体执行时，让独立成员先给出问题基线，由 Provider 提议团队、Kernel 授权，再运行最佳成员/固定团队/动态团队三臂比较；
+9. 让三个 arm 真正执行同一 finding trial；隐藏真值 Harness 评分，Provider 只做盲化语义支持；
+10. 把实际 Cbit、残余问题、个人、固定团队、动态团队与编队 Provider 的信用校准和失效传播回议程；
+11. 将通过回放门的三臂结果送入组织学习；重复试验选协议，匹配消融才归因角色贡献；
+12. 由 Provider 支持失败诊断，由 Kernel 单独授权有预算和停止条件的下一轮组织实验；
+13. 执行完整团队与单组件缺失的匹配消融；至少两组独立结果通过回放、盲化和 Harness 门后，才允许 Kernel 计算组件贡献；
+14. 跨项目时保留各自 `context_key`，只审计方向一致性；符号冲突必须标记为 context-dependent，不得池化成通用角色结论；
+15. 在真实任务上调用 Contextual Organization Policy Selector；Provider 评估各注册协议，Kernel 按问题必需角色、matched evidence、预算、风险和 Agent 可形成性选择项目范围组合、仅试验或 abstain；
+16. 用独立 Kernel execution authorization 和完整执行预算把 Selector 决策交给 Selection-to-Execution Feedback Bridge；既有 Team/Ablation Runtime 执行，Harness 评分，Kernel 只接纳强绑定且可回放的 outcome；
+17. 让持久反馈账本成为下一轮 Selector 的只读 record source；只有重复、独立、同一上下文的 matched pairs 才能把探索性策略提升为项目范围授权；
+18. 把每次所选政策的 Provider 预测与同一次真实执行反馈送入 Selector Calibration Runtime；样本不足时不授予预测信任，误差或语义漂移触发 `WATCH`/`DRIFTED`，所有 profile 只在同项目、context、evidence tier 和 policy 内聚合；
+19. 将 calibration ledger 作为 Selector 的只读 control source；Kernel 验证 latest map、receipt、profile、decision 和范围绑定，再执行探索降级、可信授权资格或漂移阻断；
+20. 当失败后提出新变量、模块、指标、窗口、例外、对象、记忆或政策时，先运行 Anti-Additive Methodology Runtime；Provider 支撑对象充分性与七类触发器判断，Kernel 比较 Cbit/复杂度与升维/抽象成本，并用实际 Harness outcome 校准同类预测；
+21. 对保留候选执行 Provider-backed SRO 匹配；Kernel 按强对象绑定选择复用、适配、复验、重推导或拒绝，并将延迟结果写入持久校准账本；
+22. 输出 candidate、manifest、hash inventory、replay/rollback pointer 和下一轮候选；
+23. 只有通过明确 promotion gate 的资产才能进入 accepted 基线。
 
 ### 快速验证
 
@@ -230,7 +247,7 @@ review = modules.require_one("epistemic_review")
 
 ### 当前能力边界
 
-CoreSlim 0.4.0-alpha.12 已通过 289 个本地测试、Python 编译、短路径 clean-copy 全量回归、真实三臂反馈冒烟、重启回放和 manifest/hash/ZIP 产物审计。本版在 alpha.11 Selector 上闭合了选择到执行再回到 matched evidence 的路径：冻结的 assignment 和单独执行预算交给既有 Team/Ablation Runtime，所有实际协议都留下调用数、成本、结果哈希和 Harness 回执哈希 footprint，Kernel 才决定哪些 outcome 可以进入项目与上下文绑定的学习记录。Provider 支撑语义判断，但不能改写问题、历史指标、角色协议、授权或 Kernel 最终状态；一次试验仍不能自动产生项目策略授权。
+CoreSlim 0.4.0-alpha.17 为 Anti-Additive 预测加入了结果校准和统一 receipt source。Provider 继续支撑对象充分性、七类补丁堆积触发器以及预期 Cbit/复杂度判断；Kernel 用实际 Harness outcome 计算误差和正 margin 存活率，并将精确 scope 标为 exploration-only、trusted 或 drift-blocked。问题准入与 baseline evolution 只消费 candidate authority，retention promotion 和 Autonomous ICM Evolution 持久写入要求 durable authority；任何 receipt 都不授予 accepted baseline、全局记忆或生产权限。本版在最小 clean copy 中通过 Python 编译和全部 348 个测试；三条 smoke 的 manifest、hash、ZIP CRC 与条目集合均通过独立审计。
 
 首次 live 数据没有证明认知乘法，反而给出了必要的负结果：最佳成员 observed Cbit 为 `1.00`，固定团队和动态团队均为 `0.60`；计入语义质量与成本后，动态团队相对最佳成员为 `-0.5375`，相对固定团队为 `-0.13`。系统据此给团队和编队 Provider 记录负信用，而没有把协作包装成成功。一次独立保留的 Moonshot 运行因 Reviewer 连续两次 `PROVIDER_UNAVAILABLE` 被 Kernel 阻断；成功运行使用 DeepSeek 下不同模型与独立上下文，因此只证明 live 多角色执行，不证明 live 多 Provider 稳健性。生产可靠性、外部 Replicator Harness、跨项目 live 重复、长期议程学习和信用迁移仍待验证。
 
@@ -254,6 +271,7 @@ A Runner hosts interaction and advances work. Harnesses perform concrete actions
 - evidence admission, quality decisions, artifact versions, and cognitive asset states;
 - falsification-first review, independent replication, epistemic credit, endogenous agenda selection, and cascading invalidation;
 - plural provider-backed problem framing, independent problem criticism, researchability assessment, and pending deliberation seeds;
+- evidence-bound problem-structure admission from the existing four-role receipts, with six Provider-supported dimensions, Kernel uncertainty and consistency gates, append-only revisions, replay, and an admission-only Selector source;
 - blinded problem-quality comparison against member and human baselines, Kernel-authorized trials, observed-Cbit receipts, and agenda/credit/invalidation feedback;
 - isolated member problem baselines, Provider-supported dynamic team proposals, Kernel authorization, and best-member/fixed-team/dynamic-team counterfactual evaluation;
 - actual isolated three-arm execution with equal coordination contracts, hidden-truth Harness scoring, replay admission, and separate member/team/formation credit;
@@ -262,6 +280,9 @@ A Runner hosts interaction and advances work. Harnesses perform concrete actions
 - a non-pooled cross-project attribution audit that preserves context-specific effects and candidate-only transfer claims;
 - context-conditioned organization-policy selection from problem structure, exact-context matched evidence, registry feasibility, budgets, risk, and bounded Provider advice, with final Kernel authority;
 - a bounded selection-to-execution feedback bridge that freezes assignments and a separate all-protocol execution budget, reuses existing Team/Ablation Runtimes, admits Harness-owned outcomes through the Kernel, and exposes persistent matched evidence to later Selector runs;
+- exact-scope Selector calibration that binds Provider predictions to admitted Harness outcomes, computes mechanical error/bias/coverage profiles, uses Provider-supported semantic drift diagnosis, and leaves final prediction-trust state with the Kernel;
+- calibration-controlled contextual selection that binds all seven policy controls into the decision receipt, preserves legacy behavior without a source, downgrades missing/insufficient/watch states to exploration, and hard-blocks drifted policies;
+- Provider-backed Anti-Additive Methodology meta-governance with prediction-outcome calibration, exact-scope trust control, and one replayable receipt source that distinguishes candidate admission from durable project writes;
 - measurable group evaluation against the best individual member.
 
 ### Using AgentOS
@@ -272,7 +293,7 @@ This repository currently exposes CoreSlim as Python source rather than a packag
 
 ### Status and limits
 
-CoreSlim 0.4.0-alpha.12 passes 289 local tests, Python compilation, a short-path clean-copy regression, a real three-arm feedback smoke, restart replay, and manifest/hash/ZIP artifact audits. Building on the alpha.11 Selector, this release closes the path from frozen selection to existing Team/Ablation execution and back to exact-context matched evidence. Every actually executed protocol carries a call-count, cost, result-hash, and Harness-receipt footprint under a separate Kernel-authorized execution budget. Providers support semantic assessment but cannot rewrite the problem, observed metrics, role protocols, authorization, or final Kernel state; one trial still cannot self-authorize a project policy.
+CoreSlim 0.4.0-alpha.17 adds outcome calibration and a shared receipt source to Anti-Additive Methodology. Providers still support object adequacy, seven-trigger, and expected gain/cost judgments; the Kernel admits Harness outcomes, calculates exact-scope error and margin survival, and marks prediction authority as exploration-only, trusted, or drift-blocked. Problem admission and baseline evolution consume candidate authority, while retention promotion and Autonomous ICM Evolution durable writes require durable authority. No methodology receipt grants accepted-baseline, global-memory, or production authority. This release passes Python compilation and all 348 tests in a minimal clean copy; manifests, hashes, ZIP CRCs, and entry surfaces for all three smoke packs pass independent audit.
 
 It did **not** establish universal cognitive multiplication. The evidence instead shows that role value changes with the problem context and measurement surface. A separate Moonshot-backed run failed closed after two provider-unavailable reviewer attempts; the successful runs therefore validate live multi-role execution within the tested bindings, not general multi-provider robustness. External Harness replication, repeated cross-provider trials, production reliability, long-running agenda learning, and credit transfer remain open.
 
@@ -288,6 +309,10 @@ It did **not** establish universal cognitive multiplication. The evidence instea
 | `agentos_core_slim_v0/COGNITIVE_AGENT_RUNTIME.md` | First-stage independent cognitive-role architecture |
 | `agentos_core_slim_v0/COGNITIVE_COORDINATION_RUNTIME.md` | Kernel-gated provider-backed coordination architecture |
 | `agentos_core_slim_v0/ENDOGENOUS_PROBLEM_RUNTIME.md` | Group problem-definition and deliberation-seed architecture |
+| `agentos_core_slim_v0/PROBLEM_STRUCTURE_ADMISSION_RUNTIME.md` | Seed and role-receipt verification, Provider-supported structure dimensions, Kernel admission, revisions, Selector source, and replay |
+| `agentos_core_slim_v0/SELECTOR_CALIBRATION_DRIFT_RUNTIME.md` | Prediction/outcome binding, exact-scope metrics, Provider drift diagnosis, Kernel trust state, revision ledger, and replay |
+| `agentos_core_slim_v0/CONTEXTUAL_POLICY_CALIBRATION_CONTROL.md` | Latest calibration source, seven-policy control surface, exploration downgrade, drift blocking, decision binding, and replay |
+| `agentos_core_slim_v0/ANTI_ADDITIVE_METHODOLOGY_RUNTIME.md` | Seven-trigger object audit, Cbit/complexity and upgrade/abstraction gates, ICM write binding, persistence, and replay |
 | `agentos_core_slim_v0/PROBLEM_QUALITY_LIFECYCLE.md` | Blinded problem comparison, trial lifecycle, outcome, and feedback architecture |
 | `agentos_core_slim_v0/COGNITIVE_TEAM_FORMATION_RUNTIME.md` | Independent member baselines, dynamic team formation, Kernel authorization, and three-arm evaluation |
 | `agentos_core_slim_v0/COGNITIVE_TEAM_EXECUTION_RUNTIME.md` | Authorized three-arm execution, hidden-truth Harness evaluation, replay, and credit feedback |

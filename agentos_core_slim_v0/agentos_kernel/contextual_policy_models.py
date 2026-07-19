@@ -7,7 +7,10 @@ import math
 import re
 from dataclasses import dataclass
 from hashlib import sha256
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from .contextual_policy_calibration import ContextualPolicyCalibrationControl
 
 
 CONTEXTUAL_POLICY_ROLE_MAP = {
@@ -469,6 +472,7 @@ class ContextualOrganizationPolicyDecision:
     kernel_authorization_ref: str
     required_roles: tuple[str, ...]
     candidate_evaluations: tuple[ContextualPolicyCandidateEvaluation, ...]
+    calibration_controls: tuple["ContextualPolicyCalibrationControl", ...]
     reason: str
     problem_structure_hash: str
     budget_hash: str
@@ -495,6 +499,9 @@ class ContextualOrganizationPolicyDecision:
                 raise ValueError("contextual_policy_selected_trial_authority_required")
         if self.execution_authorized != (self.activation_mode == "AUTHORIZED_PROJECT_SCOPED"):
             raise ValueError("contextual_policy_execution_authority_invalid")
+        control_ids = tuple(item.policy_id for item in self.calibration_controls)
+        if control_ids != CONTEXTUAL_POLICY_IDS:
+            raise ValueError("contextual_policy_calibration_control_coverage_invalid")
         require_refs("contextual_policy_decision_evidence_refs", self.evidence_refs)
         for name in (
             "problem_structure_hash",
@@ -519,6 +526,7 @@ class ContextualOrganizationPolicyDecision:
             "kernel_authorization_ref": self.kernel_authorization_ref,
             "required_roles": list(self.required_roles),
             "candidate_evaluations": [item.as_dict() for item in self.candidate_evaluations],
+            "calibration_controls": [item.as_dict() for item in self.calibration_controls],
             "reason": self.reason,
             "problem_structure_hash": self.problem_structure_hash,
             "budget_hash": self.budget_hash,

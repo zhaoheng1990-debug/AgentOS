@@ -6,6 +6,7 @@ __pycache__/
 .pytest_tmp*/
 .pytest_tmp_provider_cognition/
 .pt-*/
+.pt*/
 
 # Runtime outputs and return packs are artifacts, not source.
 outputs/

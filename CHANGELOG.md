@@ -4,6 +4,63 @@ All notable CoreSlim changes are recorded here.
 
 ## Unreleased
 
+## 0.4.0-alpha.17 - 2026-07-19
+
+- Added exact-scope Anti-Additive prediction-outcome calibration over effective Cbit, complexity, object-upgrade gain, abstraction cost, and positive-margin survival. Only actually executed allowing receipts may contribute observations; duplicate receipts and non-independent outcome sources cannot inflate trust.
+- Added Kernel-owned `NO_OBSERVATION`, `INSUFFICIENT_HISTORY`, `CALIBRATED`, `WATCH`, and `DRIFTED` controls. Unobserved, insufficient, and watch profiles are exploration-only; calibrated profiles may support existing durable gates; drifted profiles block new methodology authority.
+- Added a replay-valid, latest-head methodology receipt source with exact project, audit, candidate, payload, and target binding. The source distinguishes `CANDIDATE_ONLY` from `DURABLE_PROJECT_WRITE` instead of letting each consumer invent its own trust policy.
+- Bound the shared source into problem-structure admission, SRO retention migration/promotion, and baseline evolution proposals. Problem and baseline paths remain candidate-only; retention durable progress requires a fully allowing receipt. Existing Autonomous ICM Evolution durable binding remains intact.
+- Split receipt reconstruction into a focused codec and kept calibration observation, models, evaluator, repository, source, Runtime, and baseline adapter in separate modules with explicit size and Kernel-import boundaries.
+- Registered calibration and receipt authority resolution as Provider-forbidden mechanical operations. Providers continue to support semantic prediction; AgentOS owns outcome admission, arithmetic, state, replay, and final authority.
+- Added cross-consumer binding tests and deterministic smoke coverage for exploration-only problem admission, calibrated retention authority, candidate-only baseline proposals, replay, manifests, and return packs.
+- Verified Python compilation and all 348 tests in a minimal clean copy with no Git metadata, cache directories, historical test outputs, or unrelated handoff content. Independent audits passed the original durable-ICM smoke (8 manifest files, 9 ZIP entries), receipt-backed problem admission smoke (13 manifest files, 14 ZIP entries), and calibration/retention/baseline smoke (7 manifest files, 8 ZIP entries).
+
+## 0.4.0-alpha.16 - 2026-07-19
+
+- Audited the existing `anti_additive_signal` and separated its organization-interaction meaning from the MethodologyKernel Anti-Additive Constraint. The Selector field remains compatible and no longer stands in for meta-governance.
+- Added immutable Kernel contracts for complexity-expanding change candidates, all seven frozen patch-accumulation triggers, bounded Provider judgments, methodology policy, five final states, decision hashes, and project-scoped receipts.
+- Added `AntiAdditiveMethodologyGate`: effective Cbit gain must strictly exceed complexity cost; object-upgrade gain must exceed abstraction cost; active triggers on an underpowered or wrong object require a real object lift instead of another same-level patch.
+- Registered a Provider-required first-principles methodology assessment and a Provider-forbidden Kernel enforcement operation. Providers support object adequacy and trigger semantics; AgentOS owns evidence binding, arithmetic, state, persistence, and authority.
+- Added a thin Provider-backed Runtime with separate adapter, gate, contracts, append-only ledger, snapshot, receipt-integrity checks, and restart replay.
+- Bound the first mandatory consumer to Autonomous ICM Evolution. Project-scoped MemoryUnit, OperatorMemory, and PolicyPrior writes now require an exact allowing receipt; missing, modified, wrong-scope, wrong-target, or blocked receipts remain candidates. Safety quarantine remains available.
+- Added tests for valid object upgrading, same-level patch rejection, nonpositive Cbit margin, abstraction fog, Provider failure, trigger coverage, cross-scope rejection, ledger tamper detection, durable-write binding, and module boundaries.
+- Verified Python compilation and all 337 tests in a Git-derived clean copy with no Git metadata or unrelated handoff content. The end-to-end ICM write smoke, Runtime and durable-store replay, 8-file manifest, canonical manifest hash, and exact 9-entry return-pack surface passed an independent artifact audit.
+
+## 0.4.0-alpha.15 - 2026-07-19
+
+- Added `ContextualPolicyCalibrationControl`, a self-validating Kernel contract that binds every registered policy to an exact project, context, evidence tier, source mode, calibration state, receipt/profile/decision hashes, observation history, and control mode.
+- Added a read-only `SelectorCalibrationControlSource` resolver. Configured sources must pass ledger replay and expose a latest-receipt hash map; missing, stale, cross-scope, internally inconsistent, or mechanically downgraded receipts fail closed before contextual Provider assessment.
+- Added Kernel-owned consumption semantics: no configured source preserves legacy behavior; no observation and `INSUFFICIENT_HISTORY` are exploration-only; `CALIBRATED` may retain existing matched-evidence authorization; `WATCH` downgrades to exploration; `DRIFTED` hard-blocks the affected policy.
+- Bound the complete seven-policy control surface into `ContextualOrganizationPolicyDecision`, its decision hash, evidence references, selection receipt, persistent event ledger, snapshot, and restart reconstruction.
+- Registered `contextual_selector_calibration_control` as Provider-forbidden mechanical enforcement. Historical calibration constrains the authority of new Provider advice but neither replaces the new assessment nor grants route-selection authority itself.
+- Extracted `ContextualPolicyAssignmentPlanner` from the Selector Runtime facade and kept calibration models, gates, source resolution, assignment planning, Kernel selection, Provider advice, persistence, and orchestration in focused modules.
+- Added focused tests for legacy compatibility, absent observations, all four calibration states, role-budget interaction, latest-map freshness, replay, wrong scope, bare-state mutation, hash-consistent mechanical-drift downgrade attempts, and module-size boundaries.
+- Added a deterministic LIFE-Cog3R smoke that reuses real execution feedback to produce calibrated, watch, and drifted ledgers, then verifies project authorization, exploratory downgrade, hard blocking, receipt evidence binding, selector replay, manifest integrity, and return-pack surface.
+- Verified Python compilation and all 325 tests in a Git-derived clean copy with no Git metadata or unrelated handoff content. The end-to-end smoke, restart replay, 66-file manifest, canonical manifest hash, and exact 67-entry return-pack surface passed an independent artifact audit.
+
+## 0.4.0-alpha.14 - 2026-07-19
+
+- Added `SelectorCalibrationRuntime` to bind each selected-policy Provider prediction to the exact admitted Harness outcome through selection, request, assignment, trial-surface, execution, source, and feedback hashes.
+- Added pure mechanical profiles for expected-versus-observed Cbit, normalized cost, signed bias, uncertainty coverage, residual negative-transfer proxy, observation count, and independent-source count. Profiles are isolated by project, context, evidence tier, and policy; duplicate feedback and trial groups cannot increase sample size.
+- Registered `selector_calibration_drift_assessment` as a Provider-required semantic operation. The Provider may diagnose scope, evidence, model, Harness, metric, or residual-risk drift, but cannot alter observations, thresholds, profile arithmetic, final state, or authority.
+- Added a Kernel calibration gate with pre-frozen thresholds and `INSUFFICIENT_HISTORY`, `CALIBRATED`, `WATCH`, and `DRIFTED` states. Mechanical drift cannot be downgraded by the Provider; semantic drift may raise a calibrated profile to `WATCH` but cannot fabricate mechanical drift.
+- Added an append-only project-scoped calibration ledger with exact revision ancestry, blocked-attempt preservation, nested receipt reconstruction, snapshot verification, restart replay, and event-tamper rejection.
+- Split shared constants, observations, profiles, evaluation, gate, adapter, Provider support, repository, contracts, and orchestration into focused modules; the Runtime facade remains below the frozen modularity cap.
+- Added a deterministic LIFE-Cog3R end-to-end smoke that reuses the real selection-to-execution feedback path, withholds trust after one observation, closes a two-source profile, restarts from ledger, and emits a manifest and return pack.
+- Verified 313 local tests, Python compilation, focused binding/drift/history/tamper gates, end-to-end smoke, clean-copy regression, restart replay, and independent manifest/hash/ZIP auditing.
+
+## 0.4.0-alpha.13 - 2026-07-19
+
+- Added `ProblemStructureAdmissionRuntime` to close the boundary from the existing four-role endogenous problem-definition Runtime to `ContextualOrganizationPolicyRuntime`.
+- Added immutable Kernel contracts for source signals, problem-structure candidates, six Provider-supported dimension assessments, Kernel decisions, project-scoped receipts, and append-only revision ancestry.
+- Added `ProblemDefinitionStructureAdapter`, which requires a replay-valid `CANDIDATE` snapshot and verifies the `DeliberationSeed`, four formal messages, four execution receipts, selected framing/review/researchability payloads, evidence surface, and agenda choice before any new Provider call.
+- Registered `problem_structure_dimension_assessment` in the Provider cognition layer. Exact output contracts bind every dimension to admitted evidence and committed source signals while excluding identity, objective, scope, state, and authorization mutation.
+- Added a pure Kernel admission gate for complete dimension coverage, semantic consistency, uncertainty ceilings, evidence scope, required signal families, project state, and no execution/global/production authority.
+- Added a persistent hash-chained repository with blocked-attempt preservation, nested reconstruction, restart replay, snapshot validation, event tamper rejection, and exact-latest revision requirements without overwriting earlier structures.
+- Added an `AdmittedProblemStructureSource` port. Selectors configured with it require an explicit admission ID and reject direct problem-object bypass; legacy direct input remains compatible when no source is configured.
+- Added modularity caps, focused failure tests, and a deterministic end-to-end smoke from real four-stage problem definition through admission, restart, and downstream exploratory policy selection.
+- Verified 301 local tests, Python compilation, a short-path clean-copy regression, Provider/Kernel/source/revision failure gates, restart replay, and independent manifest/hash/ZIP artifact auditing.
+
 ## 0.4.0-alpha.12 - 2026-07-19
 
 - Added a modular `SelectionExecutionFeedbackBridge` that carries a frozen contextual-policy decision into existing Team or Ablation execution Runtimes and returns Kernel-admitted outcomes as exact-context organization records.

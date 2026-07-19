@@ -11,6 +11,8 @@ from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
+from .anti_additive_models import AntiAdditiveMethodologyReceipt, methodology_candidate_commitment
+
 
 SUPPORTED_DECISION_STATUSES = {
     "SUPPORTED_BOUNDED",
@@ -40,6 +42,7 @@ class ConstraintAlignedRetentionDecision:
     reason: str
     retention_score: float | None
     hard_gate_failures: tuple[str, ...]
+    anti_additive_methodology_receipt_hash: str = ""
 
 
 class ConstraintAlignedRetentionGate:
@@ -67,7 +70,13 @@ class ConstraintAlignedRetentionGate:
         except InvalidOperation as exc:
             raise ValueError("retention_threshold_must_be_numeric") from exc
 
-    def evaluate(self, candidate: dict[str, Any]) -> ConstraintAlignedRetentionDecision:
+    def evaluate(
+        self,
+        candidate: dict[str, Any],
+        *,
+        methodology_receipt: AntiAdditiveMethodologyReceipt | None = None,
+        require_methodology_receipt: bool = False,
+    ) -> ConstraintAlignedRetentionDecision:
         if candidate.get("scope") != "project_scoped":
             return self._blocked(
                 "REQUEST_HUMAN_SCOPE_ESCALATION",
@@ -134,13 +143,42 @@ class ConstraintAlignedRetentionGate:
                 score=score,
             )
 
+        methodology_hash = ""
+        if require_methodology_receipt:
+            failure = self._methodology_failure(candidate, methodology_receipt)
+            if failure:
+                return self._blocked(
+                    "BLOCK_ANTI_ADDITIVE_METHODOLOGY",
+                    failure,
+                    "anti_additive_methodology",
+                    score=score,
+                )
+            methodology_hash = methodology_receipt.receipt_hash
+
         return ConstraintAlignedRetentionDecision(
             decision="RETAIN_PROJECT_SCOPED",
             eligible_for_retention=True,
             reason="all_hard_gates_pass_and_score_above_threshold",
             retention_score=float(score),
             hard_gate_failures=(),
+            anti_additive_methodology_receipt_hash=methodology_hash,
         )
+
+    @staticmethod
+    def _methodology_failure(candidate, receipt):
+        if receipt is None:
+            return "anti_additive_methodology_receipt_required"
+        if receipt.candidate.candidate_id != candidate.get("candidate_id"):
+            return "anti_additive_methodology_candidate_id_mismatch"
+        if receipt.candidate.target_type != "RetentionCandidate":
+            return "anti_additive_methodology_target_type_mismatch"
+        if receipt.candidate.project_scope != candidate.get("project_scope_ref"):
+            return "anti_additive_methodology_scope_mismatch"
+        if receipt.candidate.candidate_payload_hash != methodology_candidate_commitment(candidate):
+            return "anti_additive_methodology_candidate_payload_mismatch"
+        if receipt.decision.allowed is not True:
+            return "anti_additive_methodology_durable_authority_required"
+        return ""
 
     @staticmethod
     def _has_evidence_coordinates(candidate: dict[str, Any]) -> bool:
@@ -192,6 +230,7 @@ class ConstraintAlignedRetentionGate:
         reason: str,
         *failures: str,
         score: Decimal | None = None,
+        methodology_receipt_hash: str = "",
     ) -> ConstraintAlignedRetentionDecision:
         return ConstraintAlignedRetentionDecision(
             decision=decision,
@@ -199,4 +238,5 @@ class ConstraintAlignedRetentionGate:
             reason=reason,
             retention_score=float(score) if score is not None else None,
             hard_gate_failures=tuple(failures),
+            anti_additive_methodology_receipt_hash=methodology_receipt_hash,
         )

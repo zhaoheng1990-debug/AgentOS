@@ -6,6 +6,11 @@ from dataclasses import replace
 from typing import Any
 
 from agentos_kernel import ConstraintAlignedRetentionGate, SerialSelectionWitness
+from agentos_kernel import methodology_candidate_commitment
+from .anti_additive_source import (
+    AntiAdditiveMethodologyReceiptSource,
+    resolve_anti_additive_methodology_receipt,
+)
 
 from .sro_retention_contracts import (
     LegacyRetentionMigrationCandidate,
@@ -22,22 +27,30 @@ class LegacyRetentionMigrator:
         self,
         project_scope: str,
         retention_gate: ConstraintAlignedRetentionGate | None = None,
+        anti_additive_source: AntiAdditiveMethodologyReceiptSource | None = None,
     ) -> None:
         self.project_scope = project_scope
         self.retention_gate = retention_gate or ConstraintAlignedRetentionGate()
+        self.anti_additive_source = anti_additive_source
 
     def create(
         self,
         candidate: dict[str, Any],
         *,
         migration_authority_ref: str,
+        methodology_audit_id: str = "",
     ) -> LegacyRetentionMigrationCandidate:
         self._require_kernel_authority(
             migration_authority_ref,
             "legacy_migration_kernel_authority_required",
         )
         legacy_hash = hash_payload(candidate)
-        decision = self.retention_gate.evaluate(candidate)
+        methodology = self._methodology(candidate, methodology_audit_id)
+        decision = self.retention_gate.evaluate(
+            candidate,
+            methodology_receipt=methodology,
+            require_methodology_receipt=self.anti_additive_source is not None,
+        )
         evidence_refs = tuple(candidate.get("evidence_refs") or ())
         state = self._initial_state(candidate, decision.eligible_for_retention)
         return LegacyRetentionMigrationCandidate(
@@ -53,6 +66,7 @@ class LegacyRetentionMigrator:
             candidate_state=state,
             required_reconstruction_refs=self._required_refs(state),
             created_at=utc_now(),
+            anti_additive_methodology_receipt_hash=decision.anti_additive_methodology_receipt_hash,
         )
 
     def revalidate(
@@ -61,6 +75,7 @@ class LegacyRetentionMigrator:
         revalidated_candidate: dict[str, Any],
         *,
         kernel_authorization_ref: str,
+        methodology_audit_id: str = "",
     ) -> LegacyRetentionMigrationCandidate:
         self._require_kernel_authority(
             kernel_authorization_ref,
@@ -74,7 +89,12 @@ class LegacyRetentionMigrator:
             raise ValueError("legacy_revalidation_source_hash_mismatch")
         if not set(migration.evidence_refs).issubset(revalidated_candidate.get("evidence_refs") or ()):
             raise ValueError("legacy_revalidation_must_preserve_evidence")
-        decision = self.retention_gate.evaluate(revalidated_candidate)
+        methodology = self._methodology(revalidated_candidate, methodology_audit_id)
+        decision = self.retention_gate.evaluate(
+            revalidated_candidate,
+            methodology_receipt=methodology,
+            require_methodology_receipt=self.anti_additive_source is not None,
+        )
         return replace(
             migration,
             legacy_decision=decision.decision,
@@ -96,6 +116,24 @@ class LegacyRetentionMigrator:
                 "authority_ref",
                 "privacy_boundary",
             ),
+            anti_additive_methodology_receipt_hash=decision.anti_additive_methodology_receipt_hash,
+        )
+
+    def _methodology(self, candidate, audit_id):
+        if self.anti_additive_source is None:
+            if audit_id:
+                raise ValueError("retention_anti_additive_source_required")
+            return None
+        if not audit_id:
+            raise ValueError("retention_anti_additive_audit_id_required")
+        return resolve_anti_additive_methodology_receipt(
+            source=self.anti_additive_source,
+            audit_id=audit_id,
+            project_scope=self.project_scope,
+            candidate_id=str(candidate.get("candidate_id") or ""),
+            candidate_payload_hash=methodology_candidate_commitment(candidate),
+            target_type="RetentionCandidate",
+            authority_requirement="DURABLE_PROJECT_WRITE",
         )
 
     def reconstruct_witness(

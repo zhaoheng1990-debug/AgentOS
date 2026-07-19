@@ -13,6 +13,8 @@ from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
+from .anti_additive_models import AntiAdditiveMethodologyReceipt, methodology_candidate_commitment
+
 
 PROPOSAL_ACTIONS = {
     "ENQUEUE_BASELINE_UPDATE_PROPOSAL",
@@ -29,6 +31,7 @@ class ProposalEligibilityReview:
     action: str
     eligible: bool
     reason: str
+    anti_additive_methodology_receipt_hash: str = ""
 
 
 def _hash_payload(payload: Any) -> str:
@@ -43,7 +46,13 @@ class BaselineEvolutionProposalProtocol:
     signed_authorization_required_for_write = True
     direct_s3_s4_write_allowed = False
 
-    def review_eligibility(self, candidate: dict[str, Any]) -> ProposalEligibilityReview:
+    def review_eligibility(
+        self,
+        candidate: dict[str, Any],
+        *,
+        methodology_receipt: AntiAdditiveMethodologyReceipt | None = None,
+        require_methodology_receipt: bool = False,
+    ) -> ProposalEligibilityReview:
         if not candidate.get("accept_decision_ref"):
             return ProposalEligibilityReview("DEFER_INSUFFICIENT_EVIDENCE", False, "missing_accept_decision_ref")
         if not candidate.get("project_scoped_write_ref"):
@@ -58,7 +67,38 @@ class BaselineEvolutionProposalProtocol:
             return ProposalEligibilityReview("REQUEST_CONFLICT_REVIEW", False, "conflict_with_accept_baseline")
         if candidate.get("cross_project_reuse_value", 0) <= 0:
             return ProposalEligibilityReview("REJECT_INSUFFICIENT_GENERALITY", False, "no_cross_project_reuse_value")
-        return ProposalEligibilityReview("ENQUEUE_BASELINE_UPDATE_PROPOSAL", True, "eligible_empirical_project_scoped_learning")
+        methodology_hash = ""
+        if require_methodology_receipt:
+            failure = self._methodology_failure(candidate, methodology_receipt)
+            if failure:
+                return ProposalEligibilityReview(
+                    "DEFER_INSUFFICIENT_EVIDENCE",
+                    False,
+                    failure,
+                )
+            methodology_hash = methodology_receipt.receipt_hash
+        return ProposalEligibilityReview(
+            "ENQUEUE_BASELINE_UPDATE_PROPOSAL",
+            True,
+            "eligible_empirical_project_scoped_learning",
+            methodology_hash,
+        )
+
+    @staticmethod
+    def _methodology_failure(candidate, receipt):
+        if receipt is None:
+            return "anti_additive_methodology_receipt_required"
+        if receipt.candidate.candidate_id != candidate.get("candidate_id"):
+            return "anti_additive_methodology_candidate_id_mismatch"
+        if receipt.candidate.target_type != "BaselineEvolutionProposal":
+            return "anti_additive_methodology_target_type_mismatch"
+        if receipt.candidate.project_scope != candidate.get("project_scope_ref"):
+            return "anti_additive_methodology_scope_mismatch"
+        if receipt.candidate.candidate_payload_hash != methodology_candidate_commitment(candidate):
+            return "anti_additive_methodology_candidate_payload_mismatch"
+        if receipt.decision.candidate_only_allowed is not True:
+            return "anti_additive_methodology_candidate_authority_required"
+        return ""
 
     def build_proposal(self, candidate: dict[str, Any], review: ProposalEligibilityReview) -> dict[str, Any]:
         if not review.eligible:
@@ -86,6 +126,7 @@ class BaselineEvolutionProposalProtocol:
             "requires_signed_authorization": True,
             "production_activation": False,
             "official_baseline_written": False,
+            "anti_additive_methodology_receipt_hash": review.anti_additive_methodology_receipt_hash,
         }
         proposal["proposal_hash"] = _hash_payload(proposal)
         return proposal
