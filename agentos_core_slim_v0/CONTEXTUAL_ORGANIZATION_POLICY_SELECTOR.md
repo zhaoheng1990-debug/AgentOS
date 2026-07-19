@@ -1,6 +1,6 @@
 # Contextual Organization Policy Selector
 
-AgentOS CoreSlim 0.4.0-alpha.11 adds a bounded organization-policy selector. It does not assume
+AgentOS CoreSlim 0.4.0-alpha.12 includes a bounded organization-policy selector. It does not assume
 that more agents are always better. For each problem, the Runtime combines a structured problem
 receipt, exact-context matched evidence, an explicit budget, a risk envelope, registered agent
 feasibility, and Provider semantic support. The Kernel then chooses one executable role policy,
@@ -76,6 +76,9 @@ authorization        or abstention
         |
         v
 assignment receipt + hash-chained event + snapshot/replay
+        |
+        v
+bounded execution-feedback bridge (separate authorization and budget)
 ```
 
 Problem fields mechanically determine required roles at the configured threshold. Premise
@@ -119,6 +122,11 @@ The possible final modes are:
 - `ABSTAIN`: no policy passes all gates.
 
 No receipt grants global policy authority, accepted knowledge status, or production activation.
+
+The Selector does not execute its decision. `SelectionExecutionFeedbackBridge` freezes the selected
+assignment, trial surface, and a separate execution budget before invoking an existing Team or
+Ablation Runtime adapter. Only Harness-owned, replay-valid outcomes admitted by the Kernel become
+exact-context organization records. See `SELECTION_EXECUTION_FEEDBACK_BRIDGE.md`.
 
 ## Persistence and Replay
 

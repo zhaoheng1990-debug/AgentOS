@@ -62,9 +62,9 @@ def _task():
 
 
 def test_version_preserves_patch_seed_and_declares_contextual_policy_feature_set():
-    assert AGENTOS_CORE_SLIM_VERSION == "0.4.0-alpha.11"
+    assert AGENTOS_CORE_SLIM_VERSION == "0.4.0-alpha.12"
     assert AGENTOS_CORE_SLIM_PATCH_SEED == "AgentOS_CoreRefactor_ProviderCognition_QualityLifecycle_Seed_v0_1"
-    assert AGENTOS_CORE_SLIM_FEATURE_SET == "contextual_organization_policy_selector_v0_1"
+    assert AGENTOS_CORE_SLIM_FEATURE_SET == "selection_execution_feedback_bridge_v0_1"
 
 
 def test_provider_task_routes_through_two_adapters_with_same_contract():

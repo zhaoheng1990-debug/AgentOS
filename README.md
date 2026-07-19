@@ -3,7 +3,7 @@
 **Harness 与 Runner 的认知运行时操作系统**<br>
 **A cognitive runtime operating system for Harnesses and Runners**
 
-当前版本 / Current version: **AgentOS CoreSlim 0.4.0-alpha.11**
+当前版本 / Current version: **AgentOS CoreSlim 0.4.0-alpha.12**
 
 [中文](#中文) | [English](#english) | [Apache-2.0](LICENSE)
 
@@ -88,11 +88,12 @@ flowchart TB
 - **Cognitive Organization Ablation Runtime**：执行 Kernel 授权的完整动态团队与四种单组件缺失协议；保持 trial、证据、预算与盲化 Harness 一致，再把重复结果回流到组织学习。
 - **Cross-project Attribution Audit**：保留每个 `context_key` 的独立效应，只比较角色贡献方向；不池化因果效应，不产生通用角色排名。
 - **Contextual Organization Policy Selector**：根据问题结构、同一上下文的 matched evidence、真实 Agent 注册表、预算和风险选择可执行角色组合；Provider 提供语义支持，Kernel 保留最终选择与授权。
+- **Selection-to-Execution Feedback Bridge**：将 Selector 的冻结决策接入既有团队或消融执行 Runtime，并把 Harness 度量回流为同一上下文的 matched evidence；独立执行预算覆盖所有实际运行协议，而不只覆盖最终接纳的比较结果。
 - **Provider-backed SRORetentionRuntime**：把 retention admission 与 query-time reuse 分开，以项目绑定 witness、Provider 调用回执和持久哈希链约束复用；旧记录只能迁移为待重建、待复验或隔离候选。
 
 ### 第一阶段认知角色
 
-0.4.0-alpha.11 保留了已经从 prompt 标签拆出的四个独立运行时 Agent，并增加受 Kernel 约束的认知协调者：
+0.4.0-alpha.12 保留了已经从 prompt 标签拆出的四个独立运行时 Agent，并增加受 Kernel 约束的认知协调者：
 
 - Generator、Reviewer、Replicator、Synthesizer 分别拥有独立身份、上下文和私有记忆；
 - Reviewer 只能读取正式 proposal，Replicator 不能读取 Reviewer 回执；
@@ -193,9 +194,11 @@ Runner 下方可以连接多个 Harness，例如代码执行、浏览器、搜�
 12. 执行完整团队与单组件缺失的匹配消融；至少两组独立结果通过回放、盲化和 Harness 门后，才允许 Kernel 计算组件贡献；
 13. 跨项目时保留各自 `context_key`，只审计方向一致性；符号冲突必须标记为 context-dependent，不得池化成通用角色结论；
 14. 在真实任务上调用 Contextual Organization Policy Selector；Provider 评估各注册协议，Kernel 按问题必需角色、matched evidence、预算、风险和 Agent 可形成性选择项目范围组合、仅试验或 abstain；
-15. 对保留候选执行 Provider-backed SRO 匹配；Kernel 按强对象绑定选择复用、适配、复验、重推导或拒绝，并将延迟结果写入持久校准账本；
-16. 输出 candidate、manifest、hash inventory、replay/rollback pointer 和下一轮候选；
-17. 只有通过明确 promotion gate 的资产才能进入 accepted 基线。
+15. 用独立 Kernel execution authorization 和完整执行预算把 Selector 决策交给 Selection-to-Execution Feedback Bridge；既有 Team/Ablation Runtime 执行，Harness 评分，Kernel 只接纳强绑定且可回放的 outcome；
+16. 让持久反馈账本成为下一轮 Selector 的只读 record source；只有重复、独立、同一上下文的 matched pairs 才能把探索性策略提升为项目范围授权；
+17. 对保留候选执行 Provider-backed SRO 匹配；Kernel 按强对象绑定选择复用、适配、复验、重推导或拒绝，并将延迟结果写入持久校准账本；
+18. 输出 candidate、manifest、hash inventory、replay/rollback pointer 和下一轮候选；
+19. 只有通过明确 promotion gate 的资产才能进入 accepted 基线。
 
 ### 快速验证
 
@@ -227,7 +230,7 @@ review = modules.require_one("epistemic_review")
 
 ### 当前能力边界
 
-CoreSlim 0.4.0-alpha.11 已通过 272 个本地测试、Python 编译、短路径 clean-copy 全量回归、Selector 重启回放和 manifest/hash/ZIP 产物审计。在 alpha.10 的 Provider-backed SRO retention/reuse 与模块化重构之上，本版增加按问题结构、同一上下文 matched evidence、预算、风险和注册 Agent 可形成性选择角色组合的运行时。Provider 支撑语义判断，但不能改写问题、历史指标、角色协议、授权或 Kernel 的最终选择；没有充分匹配证据的组合最多只能进入 bounded exploratory trial。默认 project-source smoke 使用仓库内冻结 fixture，完整外部档案仍可通过显式路径输入。
+CoreSlim 0.4.0-alpha.12 已通过 289 个本地测试、Python 编译、短路径 clean-copy 全量回归、真实三臂反馈冒烟、重启回放和 manifest/hash/ZIP 产物审计。本版在 alpha.11 Selector 上闭合了选择到执行再回到 matched evidence 的路径：冻结的 assignment 和单独执行预算交给既有 Team/Ablation Runtime，所有实际协议都留下调用数、成本、结果哈希和 Harness 回执哈希 footprint，Kernel 才决定哪些 outcome 可以进入项目与上下文绑定的学习记录。Provider 支撑语义判断，但不能改写问题、历史指标、角色协议、授权或 Kernel 最终状态；一次试验仍不能自动产生项目策略授权。
 
 首次 live 数据没有证明认知乘法，反而给出了必要的负结果：最佳成员 observed Cbit 为 `1.00`，固定团队和动态团队均为 `0.60`；计入语义质量与成本后，动态团队相对最佳成员为 `-0.5375`，相对固定团队为 `-0.13`。系统据此给团队和编队 Provider 记录负信用，而没有把协作包装成成功。一次独立保留的 Moonshot 运行因 Reviewer 连续两次 `PROVIDER_UNAVAILABLE` 被 Kernel 阻断；成功运行使用 DeepSeek 下不同模型与独立上下文，因此只证明 live 多角色执行，不证明 live 多 Provider 稳健性。生产可靠性、外部 Replicator Harness、跨项目 live 重复、长期议程学习和信用迁移仍待验证。
 
@@ -258,6 +261,7 @@ A Runner hosts interaction and advances work. Harnesses perform concrete actions
 - Kernel-authorized matched organization ablations with equal evidence and budgets, blind semantic assessment, hidden-truth Harness metrics, replay, and repeated learning feedback;
 - a non-pooled cross-project attribution audit that preserves context-specific effects and candidate-only transfer claims;
 - context-conditioned organization-policy selection from problem structure, exact-context matched evidence, registry feasibility, budgets, risk, and bounded Provider advice, with final Kernel authority;
+- a bounded selection-to-execution feedback bridge that freezes assignments and a separate all-protocol execution budget, reuses existing Team/Ablation Runtimes, admits Harness-owned outcomes through the Kernel, and exposes persistent matched evidence to later Selector runs;
 - measurable group evaluation against the best individual member.
 
 ### Using AgentOS
@@ -268,7 +272,7 @@ This repository currently exposes CoreSlim as Python source rather than a packag
 
 ### Status and limits
 
-CoreSlim 0.4.0-alpha.11 passes 272 local tests, Python compilation, a short-path clean-copy regression, Selector restart replay, and manifest/hash/ZIP artifact audits. Building on alpha.10's modular Provider-backed SRO retention/reuse Runtime, this release adds role-policy selection from problem structure, exact-context matched evidence, budgets, risk, and registered-agent feasibility. Providers support semantic assessment but cannot rewrite the problem, historical metrics, role protocols, authorization, or the Kernel's final selection. Policies without sufficient matched evidence can receive only bounded exploratory-trial authority. Default project-source smokes use committed frozen fixtures; complete external archives remain explicit inputs.
+CoreSlim 0.4.0-alpha.12 passes 289 local tests, Python compilation, a short-path clean-copy regression, a real three-arm feedback smoke, restart replay, and manifest/hash/ZIP artifact audits. Building on the alpha.11 Selector, this release closes the path from frozen selection to existing Team/Ablation execution and back to exact-context matched evidence. Every actually executed protocol carries a call-count, cost, result-hash, and Harness-receipt footprint under a separate Kernel-authorized execution budget. Providers support semantic assessment but cannot rewrite the problem, observed metrics, role protocols, authorization, or final Kernel state; one trial still cannot self-authorize a project policy.
 
 It did **not** establish universal cognitive multiplication. The evidence instead shows that role value changes with the problem context and measurement surface. A separate Moonshot-backed run failed closed after two provider-unavailable reviewer attempts; the successful runs therefore validate live multi-role execution within the tested bindings, not general multi-provider robustness. External Harness replication, repeated cross-provider trials, production reliability, long-running agenda learning, and credit transfer remain open.
 
@@ -290,6 +294,7 @@ It did **not** establish universal cognitive multiplication. The evidence instea
 | `agentos_core_slim_v0/COGNITIVE_ORGANIZATION_LEARNING_RUNTIME.md` | Repeated protocol learning, matched-ablation attribution, bounded diagnosis, and experiment authorization |
 | `agentos_core_slim_v0/COGNITIVE_ORGANIZATION_ABLATION_RUNTIME.md` | Authorized one-component omission execution, blind assessment, Harness metrics, replay, and learning feedback |
 | `agentos_core_slim_v0/CONTEXTUAL_ORGANIZATION_POLICY_SELECTOR.md` | Problem-conditioned role-policy selection, matched evidence, Provider advice, Kernel gates, persistence, and replay |
+| `agentos_core_slim_v0/SELECTION_EXECUTION_FEEDBACK_BRIDGE.md` | Frozen selection, explicit execution budget, Team/Ablation adapters, Harness outcome admission, persistent feedback, and replay |
 | `agentos_core_slim_v0/SRO_RETENTION_RUNTIME.md` | Provider-backed SRO retention/reuse orchestration, binding, migration, delayed calibration, and replay boundaries |
 | `CHANGELOG.md` | Release history |
 

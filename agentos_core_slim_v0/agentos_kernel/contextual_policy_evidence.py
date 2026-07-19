@@ -13,7 +13,7 @@ from .contextual_policy_models import (
 from .organization_learning_eval import EVIDENCE_TIERS, OrganizationTrialRecord
 
 
-_COMPARATOR_POLICY = {
+CONTEXTUAL_POLICY_COMPARATORS = {
     "SOLO": "DYNAMIC_TEAM",
     "FIXED_TEAM": "SOLO",
     "DYNAMIC_TEAM": "SOLO",
@@ -65,7 +65,7 @@ class ContextualMatchedEvidenceEvaluator:
         evidence_tier: str,
         by_group: dict[str, dict[str, OrganizationTrialRecord]],
     ) -> MatchedPolicyEvidence:
-        comparator_id = _COMPARATOR_POLICY[policy_id]
+        comparator_id = CONTEXTUAL_POLICY_COMPARATORS[policy_id]
         pairs = []
         source_hashes = set()
         for group_id, protocols in sorted(by_group.items()):

@@ -4,6 +4,17 @@ All notable CoreSlim changes are recorded here.
 
 ## Unreleased
 
+## 0.4.0-alpha.12 - 2026-07-19
+
+- Added a modular `SelectionExecutionFeedbackBridge` that carries a frozen contextual-policy decision into existing Team or Ablation execution Runtimes and returns Kernel-admitted outcomes as exact-context organization records.
+- Added strong request commitments for selection receipt, trial surface, evidence references, ordered roles, selected agent identities, complete Provider/model/Runner/Harness/context bindings, Kernel execution authorization, and a separate execution budget.
+- Added per-protocol execution footprints for every actually executed arm, including Provider-call count, normalized cost, execution-result hash, and Harness-receipt hash. Kernel budget gates cover hidden comparator arms as well as admitted outcomes.
+- Added explicit adapters for the existing three-arm team Runtime and matched organization-ablation Runtime. Coordinator identity is bound separately where the legacy execution result stores it outside cognitive member IDs.
+- Added a hash-chained feedback repository with blocked-event preservation, transactional receipt persistence, restart reconstruction, snapshot verification, tamper rejection, duplicate-trial protection, and a read-only `OrganizationTrialRecordSource` port for later Selector runs.
+- Kept the bridge, Selector, Provider support, adapters, persistence, Kernel request contracts, outcome contracts, and admission gate in focused modules. Architecture tests cap facade size and reject Kernel dependencies on Runtime or filesystem APIs.
+- Added a deterministic LIFE-Cog3R smoke that executes two independent real three-arm trials: the first remains insufficient, the second closes matched evidence, and a restarted downstream Selector obtains project-scoped authorization without manually supplied records.
+- Verified 289 local tests, Python compilation, a short-path clean-copy regression, focused budget and binding failures, real execution feedback, restart replay, and independent manifest/hash/ZIP artifact auditing.
+
 ## 0.4.0-alpha.11 - 2026-07-19
 
 - Added a modular `ContextualOrganizationPolicyRuntime` that selects among seven executable role policies from structured problem requirements, exact-context matched evidence, registry feasibility, explicit budgets, and risk envelopes.

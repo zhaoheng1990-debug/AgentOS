@@ -92,6 +92,19 @@ from .contextual_policy_contracts import (
 from .contextual_policy_provider import ContextualOrganizationProviderAdvisor
 from .contextual_policy_repository import ContextualPolicyRepository
 from .contextual_policy_runtime import ContextualOrganizationPolicyRuntime
+from .organization_record_source import OrganizationTrialRecordSource
+from .selection_execution_adapters import (
+    AblationExecutionPolicyAdapter,
+    SelectionPolicyExecutionAdapter,
+    TeamExecutionPolicyAdapter,
+)
+from .selection_feedback_bridge import SelectionExecutionFeedbackBridge
+from .selection_feedback_contracts import (
+    SELECTION_EXECUTION_FEEDBACK_RUNTIME_VERSION,
+    SelectionExecutionFeedbackReceipt,
+    SelectionExecutionFeedbackSnapshot,
+)
+from .selection_feedback_repository import SelectionFeedbackRepository
 
 __all__ = [
     "CognitiveAgent",
@@ -110,6 +123,15 @@ __all__ = [
     "ContextualOrganizationSelectionReceipt",
     "ContextualPolicyRepository",
     "ContextualProviderAdvice",
+    "OrganizationTrialRecordSource",
+    "AblationExecutionPolicyAdapter",
+    "SelectionPolicyExecutionAdapter",
+    "TeamExecutionPolicyAdapter",
+    "SelectionExecutionFeedbackBridge",
+    "SelectionExecutionFeedbackReceipt",
+    "SelectionExecutionFeedbackSnapshot",
+    "SelectionFeedbackRepository",
+    "SELECTION_EXECUTION_FEEDBACK_RUNTIME_VERSION",
     "CoordinationProposal",
     "PrivateAgentWorkspace",
     "ProviderCognitiveAgentAdapter",

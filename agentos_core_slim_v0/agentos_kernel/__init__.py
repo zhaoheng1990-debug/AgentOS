@@ -83,8 +83,22 @@ from .contextual_policy_models import (
     OrganizationRiskEnvelope,
     default_contextual_role_policies,
 )
-from .contextual_policy_evidence import ContextualMatchedEvidenceEvaluator
+from .contextual_policy_evidence import (
+    CONTEXTUAL_POLICY_COMPARATORS,
+    ContextualMatchedEvidenceEvaluator,
+)
 from .contextual_policy_selector import ContextualOrganizationPolicySelector
+from .selection_execution_models import (
+    SELECTION_EXECUTION_FEEDBACK_VERSION,
+    SelectionExecutionBudget,
+    SelectionExecutionRequest,
+)
+from .selection_execution_outcomes import (
+    ExecutedProtocolFootprint,
+    PolicyExecutionBundle,
+    PolicyExecutionOutcome,
+)
+from .selection_feedback_gate import SelectionExecutionFeedbackGate
 from .epistemic_review import (
     ClaimCandidate,
     EpistemicReviewDecision,
@@ -222,6 +236,7 @@ __all__ = [
     "ConstraintAlignedRetentionGate",
     "CognitionRunObservation",
     "CONTEXTUAL_POLICY_IDS",
+    "CONTEXTUAL_POLICY_COMPARATORS",
     "CONTEXTUAL_POLICY_ROLE_MAP",
     "ContextualMatchedEvidenceEvaluator",
     "ContextualOrganizationPolicyDecision",
@@ -230,6 +245,13 @@ __all__ = [
     "ContextualProblemStructure",
     "ContextualProviderPolicyAssessment",
     "ContextualRolePolicy",
+    "ExecutedProtocolFootprint",
+    "PolicyExecutionBundle",
+    "PolicyExecutionOutcome",
+    "SelectionExecutionFeedbackGate",
+    "SelectionExecutionBudget",
+    "SelectionExecutionRequest",
+    "SELECTION_EXECUTION_FEEDBACK_VERSION",
     "CognitiveModuleRegistry",
     "CognitiveRuntimeModule",
     "CognitiveTrialHarnessReceipt",

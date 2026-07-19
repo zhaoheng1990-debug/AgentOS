@@ -1,6 +1,6 @@
 # Modular Group Cognition Runtime
 
-AgentOS CoreSlim 0.4.0-alpha.11 retains the pluggable P0-P5 group cognition layer. The design
+AgentOS CoreSlim 0.4.0-alpha.12 retains the pluggable P0-P5 group cognition layer. The design
 keeps the Kernel as the cognitive and policy owner while allowing providers,
 runners, Harnesses, evaluators, and state stores to be replaced independently.
 
@@ -45,6 +45,8 @@ strong witness/task/receipt binding, candidate-only legacy migration, and persis
 `CONTEXTUAL_ORGANIZATION_POLICY_SELECTOR.md` documents how problem structure, exact-context
 matched evidence, registry feasibility, budget, risk, and Provider advice are combined while the
 Kernel retains final role-policy authority.
+`SELECTION_EXECUTION_FEEDBACK_BRIDGE.md` documents the bounded bridge from a selected policy to
+existing team or ablation execution, Harness-owned outcomes, matched evidence, and Selector reuse.
 
 ## Modules
 
@@ -62,6 +64,7 @@ Kernel retains final role-policy authority.
 | Organization learning | `CognitiveOrganizationLearningRuntime` | context-isolated protocol evidence, bounded diagnosis, policy candidates, and experiment proposals | unsupported causality, route selection, or self-authorization |
 | Organization ablation | `CognitiveOrganizationAblationRuntime` | authorized full-team and one-component-omission execution, replay, blind assessment, and Harness-owned metrics | self-authorization, hidden truth, causal promotion, or policy acceptance |
 | Contextual organization selection | `ContextualOrganizationPolicyRuntime` | exact-context evidence aggregation, bounded Provider advice, registry feasibility, Kernel policy selection, persistence, and replay | universal role ranking, cross-context pooling, self-authorization, or production activation |
+| Selection-execution feedback | `SelectionExecutionFeedbackBridge` | thin composition of frozen selection, explicit execution budget, existing execution adapter, Kernel admission, persistent records, and replay | policy selection, team cognition, Harness scoring, semantic promotion, or production activation |
 | SRO retention | `SRORetentionRuntime` | Provider-backed witness/task matching, Kernel route ownership, legacy migration candidates, persistent delayed retrieval and replay | global memory, unbound reuse, production activation, synthetic-weight deployment, or theory promotion |
 
 `CognitiveModuleRegistry` is the thin composition root. It only installs,
@@ -81,9 +84,15 @@ P3 isolated agents -> P1 review/replication -> P2 credit history
        |                    |                       |
        |                    +-> P5 invalidation ----+
        v
-P0 group evaluation -> organization learning -> P4 agenda selection
+P0 group evaluation -> organization learning -> contextual policy selection
               |                    |
               +-> bounded ablation proposal -> separate Kernel authorization
+              |
+              v
+selection-execution bridge -> existing execution Runtime -> matched evidence feedback
+              |
+              v
+P4 agenda selection
               |
               v
 Kernel scope, safety, candidate-state, replay, rollback, and final decision

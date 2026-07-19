@@ -29,6 +29,7 @@ from .contextual_policy_contracts import (
 )
 from .contextual_policy_provider import ContextualOrganizationProviderAdvisor
 from .contextual_policy_repository import ContextualPolicyRepository
+from .organization_record_source import OrganizationTrialRecordSource, collect_organization_records
 
 
 class ContextualOrganizationPolicyRuntime:
@@ -53,6 +54,7 @@ class ContextualOrganizationPolicyRuntime:
         policies: tuple[ContextualRolePolicy, ...] | None = None,
         evidence_evaluator: ContextualMatchedEvidenceEvaluator | None = None,
         kernel_selector: ContextualOrganizationPolicySelector | None = None,
+        record_source: OrganizationTrialRecordSource | None = None,
     ) -> None:
         if not re.fullmatch(r"[A-Za-z0-9_.-]+", runtime_id):
             raise ValueError("contextual_policy_runtime_id_invalid")
@@ -64,6 +66,7 @@ class ContextualOrganizationPolicyRuntime:
         self.policies = policies or default_contextual_role_policies()
         self.evidence_evaluator = evidence_evaluator or ContextualMatchedEvidenceEvaluator()
         self.kernel_selector = kernel_selector or ContextualOrganizationPolicySelector()
+        self.record_source = record_source
         self._repository = ContextualPolicyRepository(
             runtime_id=runtime_id,
             project_scope=project_scope,
@@ -84,7 +87,7 @@ class ContextualOrganizationPolicyRuntime:
         *,
         selection_id: str,
         problem: ContextualProblemStructure,
-        records: tuple[OrganizationTrialRecord, ...],
+        records: tuple[OrganizationTrialRecord, ...] = (),
         evidence_tier: str,
         budget: OrganizationBudgetEnvelope,
         risk: OrganizationRiskEnvelope,
@@ -96,8 +99,15 @@ class ContextualOrganizationPolicyRuntime:
             raise ValueError(f"duplicate_contextual_policy_selection:{selection_id}")
         if problem.project_scope != self.project_scope:
             raise ValueError("contextual_policy_problem_scope_mismatch")
+        admitted_records = collect_organization_records(
+            source=self.record_source,
+            project_scope=self.project_scope,
+            context_key=problem.context_key,
+            evidence_tier=evidence_tier,
+            explicit=records,
+        )
         matched_evidence = self.evidence_evaluator.evaluate(
-            records,
+            admitted_records,
             context_key=problem.context_key,
             evidence_tier=evidence_tier,
         )
