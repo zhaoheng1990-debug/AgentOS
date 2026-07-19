@@ -119,3 +119,20 @@ def test_low_value_candidates_trigger_explicit_stop():
 def test_candidate_without_provider_support_receipt_is_rejected():
     with pytest.raises(ValueError, match="agenda_candidate_provider_backed_identity_required"):
         candidate("candidate-unbacked", provider_support_receipt_ref="")
+
+
+def test_kernel_can_apply_provider_backed_group_selection_without_execution_authority():
+    loop = EndogenousAgendaLoop()
+    loop.register_problem(problem())
+    loop.propose(candidate("candidate-provider-selected"))
+
+    selection = loop.select_candidate(
+        "candidate-provider-selected",
+        "provider-receipt://group-agenda-selection",
+    )
+
+    assert selection.decision == "SELECT"
+    assert selection.candidate_id == "candidate-provider-selected"
+    assert selection.provider_support_receipt_ref == "provider-receipt://group-agenda-selection"
+    assert selection.execution_authorized is False
+    assert loop.problem("problem-1").status == "ACTIVE"

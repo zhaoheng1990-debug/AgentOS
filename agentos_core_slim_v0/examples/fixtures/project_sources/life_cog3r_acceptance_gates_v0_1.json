@@ -1,0 +1,38 @@
+{
+  "experiment_id": "LIFE_COG3R",
+  "version": "0.1",
+  "primary_rules_required": 2,
+  "primary_seed_count": 30,
+  "gates": {
+    "G0_integrity": {
+      "exact_parent_copy_required": true,
+      "three_way_environment_split_required": true,
+      "matched_proposal_streams_required": true
+    },
+    "G3_retention_eligibility": {
+      "effect_size_d_min": 0.25,
+      "corrected_p_max": 0.01,
+      "positive_rules_min": 2
+    },
+    "G4_generalization_gap": {
+      "corrected_p_max": 0.01
+    },
+    "G5_aligned_cbit": {
+      "incremental_r2_over_raw_min": 0.05,
+      "positive_rules_min": 2
+    },
+    "G6_negative_controls": {
+      "validation_label_shuffle_required": true,
+      "retention_parent_shuffle_required": true,
+      "alignment_temporal_shuffle_required": true,
+      "genotype_outcome_permutation_required": true
+    },
+    "G8_boundary": {
+      "forbidden_claims": [
+        "life ontology identified",
+        "cognition identified",
+        "selection or retention is universally sufficient"
+      ]
+    }
+  }
+}

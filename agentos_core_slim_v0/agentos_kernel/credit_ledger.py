@@ -11,7 +11,7 @@ from typing import Any, Protocol
 
 CREDIT_LEDGER_VERSION = "epistemic_credit_ledger_v0_1"
 
-SUBJECT_KINDS = {"agent", "provider", "operator"}
+SUBJECT_KINDS = {"agent", "provider", "operator", "team"}
 OUTCOME_POLARITY = {
     "CLAIM_SURVIVED_REPLICATION": 1,
     "CLAIM_FALSIFIED": -1,
@@ -21,6 +21,20 @@ OUTCOME_POLARITY = {
     "NEGATIVE_TRANSFER_CAUSED": -1,
     "RECEIPT_VALIDATED": 1,
     "RECEIPT_INVALIDATED": -1,
+    "PROBLEM_FORECAST_CALIBRATED": 1,
+    "PROBLEM_FORECAST_MISALIGNED": -1,
+    "PROBLEM_QUALITY_GATE_REJECTED": -1,
+    "INDEPENDENT_BASELINE_VALIDATED": 1,
+    "INDEPENDENT_BASELINE_UNDERPERFORMED": -1,
+    "TEAM_COMPOSITION_VALIDATED": 1,
+    "TEAM_COMPOSITION_UNDERPERFORMED": -1,
+    "TEAM_COMPOSITION_INCONCLUSIVE": 0,
+    "FIXED_TEAM_EXECUTION_VALIDATED": 1,
+    "FIXED_TEAM_EXECUTION_UNDERPERFORMED": -1,
+    "FIXED_TEAM_EXECUTION_INCONCLUSIVE": 0,
+    "TEAM_FORMATION_FORECAST_CALIBRATED": 1,
+    "TEAM_FORMATION_FORECAST_MISALIGNED": -1,
+    "TEAM_FORMATION_FORECAST_INCONCLUSIVE": 0,
 }
 
 
@@ -179,6 +193,9 @@ class CreditLedger:
 
     def events_for(self, subject_id: str) -> tuple[CreditEvent, ...]:
         return tuple(event for event in self._events if event.subject_id == subject_id)
+
+    def has_event(self, event_id: str) -> bool:
+        return event_id in self._event_ids
 
     def profile(self, subject_id: str) -> CreditProfile:
         events = self.events_for(subject_id)

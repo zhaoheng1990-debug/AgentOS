@@ -9,7 +9,7 @@ from typing import Any
 
 CASCADING_INVALIDATION_VERSION = "cascading_invalidation_graph_v0_1"
 
-NODE_TYPES = {"claim", "evidence", "receipt", "operator", "memory", "report"}
+NODE_TYPES = {"claim", "evidence", "receipt", "operator", "memory", "report", "problem", "trial"}
 NODE_STATUSES = {"ACTIVE", "QUARANTINED", "INVALIDATED"}
 PROPAGATION_MODES = {"INVALIDATE", "QUARANTINE"}
 STATUS_STRENGTH = {"ACTIVE": 0, "QUARANTINED": 1, "INVALIDATED": 2}

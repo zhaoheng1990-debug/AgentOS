@@ -2,18 +2,24 @@
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Any
 
 
-ENDOGENOUS_AGENDA_VERSION = "endogenous_agenda_loop_v0_1"
+ENDOGENOUS_AGENDA_VERSION = "endogenous_agenda_loop_v0_2"
 
-PROBLEM_STATUSES = {"OPEN", "ACTIVE", "RESOLVED"}
-FEEDBACK_STATUSES = {"RESOLVED", "PARTIAL", "UNRESOLVED"}
+PROBLEM_STATUSES = {"OPEN", "ACTIVE", "RESOLVED", "INVALIDATED"}
+FEEDBACK_STATUSES = {"RESOLVED", "PARTIAL", "UNRESOLVED", "INVALIDATED"}
 
 
 def _validate_unit_interval(name: str, value: float) -> None:
-    if not 0.0 <= value <= 1.0:
+    if (
+        not isinstance(value, (int, float))
+        or isinstance(value, bool)
+        or not math.isfinite(value)
+        or not 0.0 <= value <= 1.0
+    ):
         raise ValueError(f"{name}_outside_unit_interval")
 
 
@@ -103,7 +109,7 @@ class AgendaSelection:
 class AgendaFeedback:
     candidate_id: str
     problem_resolution: str
-    observed_cbit_gain: float
+    observed_cbit_gain: float | None
     evidence_refs: tuple[str, ...]
     provider_support_receipt_ref: str
     residual_problems: tuple[OpenProblem, ...] = ()
@@ -111,7 +117,8 @@ class AgendaFeedback:
     def __post_init__(self) -> None:
         if self.problem_resolution not in FEEDBACK_STATUSES:
             raise ValueError(f"unknown_problem_resolution:{self.problem_resolution}")
-        _validate_unit_interval("observed_cbit_gain", self.observed_cbit_gain)
+        if self.observed_cbit_gain is not None:
+            _validate_unit_interval("observed_cbit_gain", self.observed_cbit_gain)
         if not self.candidate_id or not self.provider_support_receipt_ref:
             raise ValueError("agenda_feedback_provider_backed_identity_required")
         if not self.evidence_refs:
@@ -170,6 +177,46 @@ class EndogenousAgendaLoop:
                 provider_support_receipt_ref="",
             )
         candidate_id, priority = ranked[0]
+        return self._activate_candidate(
+            candidate_id,
+            priority,
+            self._candidates[candidate_id].provider_support_receipt_ref,
+            "highest_provider_supported_candidate_passed_runtime_priority_gate",
+        )
+
+    def select_candidate(
+        self,
+        candidate_id: str,
+        selection_support_receipt_ref: str,
+    ) -> AgendaSelection:
+        """Apply a provider-backed group selection after deterministic eligibility gates."""
+
+        if not candidate_id or not selection_support_receipt_ref:
+            raise ValueError("provider_backed_agenda_selection_identity_required")
+        candidate = self._candidates.get(candidate_id)
+        if candidate is None:
+            raise KeyError(f"agenda_candidate_not_registered:{candidate_id}")
+        if self._candidate_states[candidate_id] != "CANDIDATE":
+            raise ValueError("agenda_selection_requires_candidate_state")
+        if self._problems[candidate.problem_id].status == "RESOLVED":
+            raise ValueError("cannot_select_candidate_for_resolved_problem")
+        priority = self._priority(candidate)
+        if priority < self.minimum_priority:
+            raise ValueError("provider_selected_candidate_below_runtime_priority_gate")
+        return self._activate_candidate(
+            candidate_id,
+            priority,
+            selection_support_receipt_ref,
+            "provider_backed_group_selection_passed_runtime_priority_gate",
+        )
+
+    def _activate_candidate(
+        self,
+        candidate_id: str,
+        priority: float,
+        provider_support_receipt_ref: str,
+        reason: str,
+    ) -> AgendaSelection:
         candidate = self._candidates[candidate_id]
         problem = self._problems[candidate.problem_id]
         self._candidate_states[candidate_id] = "SELECTED"
@@ -187,8 +234,8 @@ class EndogenousAgendaLoop:
             candidate_id=candidate_id,
             problem_id=candidate.problem_id,
             priority_score=priority,
-            reason="highest_provider_supported_candidate_passed_runtime_priority_gate",
-            provider_support_receipt_ref=candidate.provider_support_receipt_ref,
+            reason=reason,
+            provider_support_receipt_ref=provider_support_receipt_ref,
         )
 
     def record_feedback(self, feedback: AgendaFeedback) -> tuple[str, ...]:
@@ -199,7 +246,12 @@ class EndogenousAgendaLoop:
             raise ValueError("agenda_feedback_requires_selected_candidate")
 
         problem = self._problems[candidate.problem_id]
-        next_status = "RESOLVED" if feedback.problem_resolution == "RESOLVED" else "OPEN"
+        if feedback.problem_resolution == "RESOLVED":
+            next_status = "RESOLVED"
+        elif feedback.problem_resolution == "INVALIDATED":
+            next_status = "INVALIDATED"
+        else:
+            next_status = "OPEN"
         self._problems[problem.problem_id] = OpenProblem(
             problem_id=problem.problem_id,
             statement=problem.statement,

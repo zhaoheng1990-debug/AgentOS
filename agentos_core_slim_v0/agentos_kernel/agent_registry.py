@@ -6,14 +6,19 @@ from dataclasses import dataclass
 from typing import Any, Protocol
 
 
-AGENT_REGISTRY_VERSION = "cognitive_agent_registry_v0_1"
+AGENT_REGISTRY_VERSION = "cognitive_agent_registry_v0_3"
 
 AGENT_ROLES = {
     "HYPOTHESIS_GENERATOR",
     "ADVERSARIAL_REVIEWER",
     "REPLICATOR",
     "SYNTHESIZER",
+    "COORDINATOR",
     "AGENDA_SCOUT",
+    "PROBLEM_FRAMER",
+    "PROBLEM_CRITIC",
+    "RESEARCHABILITY_ASSESSOR",
+    "AGENDA_SYNTHESIZER",
 }
 
 
@@ -27,6 +32,7 @@ class AgentDescriptor:
     provider_id: str
     context_isolation_key: str
     allowed_evidence_scopes: tuple[str, ...]
+    model_id: str = ""
     enabled: bool = True
     provider_support_mode: str = "required"
 
@@ -86,6 +92,7 @@ class EnsembleAssignment:
                     "runner_id": agent.runner_id,
                     "harness_id": agent.harness_id,
                     "provider_id": agent.provider_id,
+                    "model_id": agent.model_id,
                     "context_isolation_key": agent.context_isolation_key,
                     "allowed_evidence_scopes": list(agent.allowed_evidence_scopes),
                 }
@@ -149,6 +156,9 @@ class AgentRegistry:
             for agent in self._agents.values()
             if agent.enabled and agent.role == requirement.role and required.issubset(agent.capabilities)
         )
+
+    def registered_agents(self) -> tuple[AgentDescriptor, ...]:
+        return tuple(self._agents.values())
 
     def form_team(
         self,

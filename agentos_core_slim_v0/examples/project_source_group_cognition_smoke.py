@@ -23,6 +23,7 @@ from typing import Any
 
 CORE_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = CORE_ROOT.parent
+PORTABLE_SOURCE_ROOT = CORE_ROOT / "examples" / "fixtures" / "project_sources"
 sys.path.insert(0, str(CORE_ROOT))
 
 from agentos_kernel import (  # noqa: E402
@@ -94,9 +95,60 @@ def load_source_dossier(source_pack: Path, gate_file: Path) -> tuple[dict[str, A
         raise FileNotFoundError("source_pack_and_gate_file_required")
 
     inventory = [
-        {"path": str(source_pack), "sha256": _hash_bytes(source_pack.read_bytes()), "kind": "source_pack"},
+        {
+            "path": str(source_pack),
+            "sha256": _hash_bytes(source_pack.read_bytes()),
+            "kind": "source_fixture" if source_pack.suffix.lower() == ".json" else "source_pack",
+        },
         {"path": str(gate_file), "sha256": _hash_bytes(gate_file.read_bytes()), "kind": "frozen_gate"},
     ]
+    gates = json.loads(gate_file.read_text(encoding="utf-8"))
+    if source_pack.suffix.lower() == ".json":
+        fixture = json.loads(source_pack.read_text(encoding="utf-8"))
+        required = {
+            "source_project",
+            "machine_verdict",
+            "independent_structural_qa",
+            "pm_summary",
+            "execution_receipt",
+        }
+        missing = sorted(required.difference(fixture))
+        if missing:
+            raise ValueError(f"source_fixture_fields_missing:{','.join(missing)}")
+        fixture_entries = {
+            SOURCE_ENTRIES[0]: fixture["machine_verdict"],
+            SOURCE_ENTRIES[1]: fixture["independent_structural_qa"],
+            SOURCE_ENTRIES[2]: fixture["pm_summary"],
+            SOURCE_ENTRIES[3]: fixture["execution_receipt"],
+        }
+        for entry, value in fixture_entries.items():
+            data = (
+                json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
+                if isinstance(value, dict)
+                else str(value).encode("utf-8")
+            )
+            inventory.append(
+                {
+                    "path": f"{source_pack}#{entry}",
+                    "sha256": _hash_bytes(data),
+                    "kind": "source_fixture_entry",
+                }
+            )
+        source_refs = [item["path"] for item in inventory]
+        return (
+            {
+                "source_project": fixture["source_project"],
+                "evidence_coordinate": "Bundled Frozen Project Evidence",
+                "frozen_acceptance_gates": gates,
+                "machine_verdict": fixture["machine_verdict"],
+                "independent_structural_qa": fixture["independent_structural_qa"],
+                "pm_summary": fixture["pm_summary"],
+                "execution_receipt": fixture["execution_receipt"],
+                "source_refs": source_refs,
+            },
+            inventory,
+        )
+
     with zipfile.ZipFile(source_pack) as archive:
         missing = [entry for entry in SOURCE_ENTRIES if entry not in archive.namelist()]
         if missing:
@@ -113,7 +165,6 @@ def load_source_dossier(source_pack: Path, gate_file: Path) -> tuple[dict[str, A
 
     machine_verdict = json.loads(entry_bytes[SOURCE_ENTRIES[0]])
     independent_qa = json.loads(entry_bytes[SOURCE_ENTRIES[1]])
-    gates = json.loads(gate_file.read_text(encoding="utf-8"))
     dossier = {
         "source_project": "LIFE_COG3R",
         "evidence_coordinate": "Internal Project Evidence",
@@ -971,21 +1022,9 @@ def run_smoke(source_pack: Path, gate_file: Path, output_dir: Path) -> dict[str,
 
 
 def default_paths() -> tuple[Path, Path]:
-    source_root = (
-        REPO_ROOT
-        / "archive"
-        / "20260717_legacy_research_line"
-        / "workspace_materials"
-        / "outputs"
-        / "20260715_life_cog3r_retention_eligibility"
-    )
     return (
-        source_root / "run" / "LIFE_COG3R_RetentionEligibility_AlignedCbit_Return_Pack_v0_1.zip",
-        source_root
-        / "seed"
-        / "LIFE_COG3R_RetentionEligibility_AlignedCbit_Seed_Pack_v0_1"
-        / "specs"
-        / "acceptance_gates_LIFE_COG3R_v0_1.json",
+        PORTABLE_SOURCE_ROOT / "life_cog3r_source_v0_1.json",
+        PORTABLE_SOURCE_ROOT / "life_cog3r_acceptance_gates_v0_1.json",
     )
 
 

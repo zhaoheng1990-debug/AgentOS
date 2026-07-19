@@ -1,0 +1,6 @@
+{
+  "fixture_id": "ocs1r2-frozen-source-contract-extract-v0-1",
+  "analysis_freeze_source": "ANALYSIS_PLAN = {\n    \"timing\": \"Frozen after symmetry hard gate and before any complete model outcome table existed.\",\n    \"high_alignment_threshold\": 0.75,\n    \"confidence_interval\": 0.95,\n    \"hidden_stop_rule\": \"Run only if R2.1-R2.5 all pass.\"\n}\n",
+  "qa_contract_source": "QA_CONTRACT = {\n    \"hidden_stop_rule_obeyed\": \"required\",\n    \"numeric_results_finite\": \"required\",\n    \"required_artifacts_present\": \"required\"\n}\n",
+  "preflight_source": "PREFLIGHT_CONTRACT = {\n    \"analysis_plan_frozen\": True,\n    \"outcome_artifacts_required_before_claim\": True\n}\n"
+}

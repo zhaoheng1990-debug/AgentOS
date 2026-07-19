@@ -1,0 +1,41 @@
+{
+  "fixture_id": "math-cbit1-frozen-source-extract-v0-1",
+  "frozen_config": {
+    "frozen_before_late_evaluation": true,
+    "tuning_source": "validation-period references only; candidate grid frozen before final late metrics",
+    "weights": {
+      "compression": 0.5,
+      "future_expansion": 1.5,
+      "load_bearing": 1.0,
+      "cross_namespace": 0.5,
+      "cost": 0.5,
+      "high_compression_low_utility_risk": 1.0
+    },
+    "seed": 20260715
+  },
+  "retention_score_audit": {
+    "n": "840",
+    "retention_vs_late_spearman": "-0.016921924480736844",
+    "compression_only_vs_late_spearman": "0.03445294386577382",
+    "load_only_vs_late_spearman": "-0.09316107246927799",
+    "frozen_before_late": "True"
+  },
+  "chronological_holdout_rows": {
+    "baseline": {
+      "feature_set": "baseline",
+      "spearman": "0.22470152035914698"
+    },
+    "compression": {
+      "feature_set": "compression",
+      "spearman": "0.22473629708209775",
+      "permutation_delta_spearman": "3.477672295077724e-05",
+      "permutation_p": "0.4077961019490255"
+    },
+    "full": {
+      "feature_set": "full",
+      "spearman": "0.2630156479475533",
+      "permutation_delta_spearman": "0.03827935086545552",
+      "permutation_p": "0.001999000499750125"
+    }
+  }
+}

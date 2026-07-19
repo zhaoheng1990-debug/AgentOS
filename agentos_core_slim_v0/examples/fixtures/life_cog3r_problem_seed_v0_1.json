@@ -1,0 +1,80 @@
+{
+  "fixture_id": "life-cog3r-endogenous-problem-live-v0-4-minimal",
+  "source_snapshot_seed_hash": "9d0257d0187aec70881c5e9fbad06ff43a69929bfedc907b0ee9dfda11a0d042",
+  "deliberation_seed": {
+    "seed_id": "seed-life-cog3r-endogenous-problem-live-LIFE_COG3R_P02",
+    "source_problem_id": "LIFE_COG3R_P02",
+    "objective": "Why did all negative control interventions (alignment_temporal_shuffle, genotype_outcome_permutation, retention_parent_shuffle, validation_label_shuffle) fail to falsify the primary finding, violating G6?",
+    "research_object": "Identify root causes of negative control failures in the LIFE_COG3R experimental design and propose corrections.",
+    "project_scope": "project://LIFE_COG3R",
+    "rival_explanations": [
+      "Negative controls lack statistical power (only 12 rows total across 4 controls, 3 per condition) to detect confounds or false positives.",
+      "The negative control interventions are insufficiently disruptive because the experimental pipeline has hidden invariants (e.g., fixed seed, deterministic coupling between arms).",
+      "The existing evidence for generalization gap improvement is a false positive that negative controls cannot rule out due to design limitations."
+    ],
+    "operationalization": "Redesign the negative control suite, increase intervention coverage, and validate control power against known null effects within project://LIFE_COG3R.",
+    "falsifier": "A redesigned negative control set successfully falsifies at least one false-positive signal.",
+    "required_harnesses": [
+      "LIFE_COG3R experimental harness",
+      "Negative control generation module",
+      "Power analysis tools"
+    ],
+    "unresolved_conflicts": [
+      "G4 appears positive while G6 fails, so the primary finding may be artifactual.",
+      "Control underpower and insufficiently disruptive interventions remain competing explanations."
+    ],
+    "expected_cbit_gain": 0.85,
+    "agenda_selection_receipt_ref": "problem-selection://9ca052acfbf2f39a6360977a565988d9dc7b43103ce7d78e919f8d340b20c2d1"
+  },
+  "messages": [
+    {
+      "message_type": "PROBLEM_CANDIDATE_SET",
+      "payload": {
+        "problem_candidates": [
+          {
+            "problem_id": "LIFE_COG3R_P01",
+            "question": "Why did validation-gated elitist selection reduce the generalization gap in DayNight and HighLife substrates, while failing to demonstrate retention eligibility or aligned Cbit improvement?",
+            "urgency": 0.9,
+            "novelty": 0.6
+          },
+          {
+            "problem_id": "LIFE_COG3R_P02",
+            "question": "Why did all negative control interventions (alignment_temporal_shuffle, genotype_outcome_permutation, retention_parent_shuffle, validation_label_shuffle) fail to falsify the primary finding, violating G6?",
+            "urgency": 0.95,
+            "novelty": 0.7
+          },
+          {
+            "problem_id": "LIFE_COG3R_P03",
+            "question": "Why did the retention eligibility (G3) and aligned Cbit (G5) gates register zero positive rules despite structural QA confirming data integrity?",
+            "urgency": 0.8,
+            "novelty": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "message_type": "PROBLEM_CRITIQUE",
+      "payload": {
+        "candidate_reviews": [
+          {
+            "problem_id": "LIFE_COG3R_P02",
+            "negative_transfer_risk": 0.3
+          }
+        ]
+      }
+    },
+    {
+      "message_type": "RESEARCHABILITY_REPORT",
+      "payload": {
+        "assessments": [
+          {
+            "problem_id": "LIFE_COG3R_P02",
+            "falsifiability": 0.9,
+            "tractability": 0.8,
+            "normalized_cost": 0.5
+          }
+        ]
+      }
+    }
+  ]
+}

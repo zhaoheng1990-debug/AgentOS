@@ -1,0 +1,56 @@
+{
+  "fixture_id": "life-cog3r-frozen-source-extract-v0-1",
+  "source_project": "LIFE_COG3R",
+  "machine_verdict": {
+    "experiment_id": "LIFE_COG3R",
+    "machine_classification": "FAIL_NEGATIVE_CONTROLS",
+    "primary_seed_count": 30,
+    "gates": {
+      "G0_integrity": true,
+      "G1_selection_replication_positive_rules": 0,
+      "G2_literal_retention_positive_rules": 0,
+      "G3_retention_eligibility_positive_rules": 0,
+      "G4_generalization_gap_positive_rules": 2,
+      "G5_aligned_cbit_positive_rules": 0,
+      "G6_negative_controls": false,
+      "G7_composite_diversity": true,
+      "G8_boundary": true
+    },
+    "passing_primary_comparisons": [
+      {
+        "test_family": "generalization_gap_family",
+        "substrate": "DayNight",
+        "metric": "generalization_gap",
+        "benefit_direction": "focal_lower",
+        "paired_effect_d": 0.5795975397469793,
+        "corrected_p": 0.00639872025594881
+      },
+      {
+        "test_family": "generalization_gap_family",
+        "substrate": "HighLife",
+        "metric": "generalization_gap",
+        "benefit_direction": "focal_lower",
+        "paired_effect_d": 0.5033232535517519,
+        "corrected_p": 0.0005998800239952009
+      }
+    ],
+    "highest_allowed_conclusions": [],
+    "baseline_writeback": "PM decision only",
+    "ontological_boundary": "Operational CA selection and retention evidence does not identify life, cognition, consciousness, biological identity, or universality."
+  },
+  "independent_structural_qa": {
+    "primary_outcome_rows": 2160,
+    "primary_unique_keys": 2160,
+    "negative_control_rows": 12,
+    "negative_control_interventions": [
+      "alignment_temporal_shuffle",
+      "genotype_outcome_permutation",
+      "retention_parent_shuffle",
+      "validation_label_shuffle"
+    ],
+    "heldout_leakage_rows": 0,
+    "structural_qa_pass": true
+  },
+  "pm_summary": "The frozen machine verdict failed the negative-control gate. Local G4 results for DayNight and HighLife do not establish overall retention, causal, aligned-Cbit, or ontological conclusions.",
+  "execution_receipt": "Frozen source extract. Machine gates only; PM retains final theory and baseline writeback authority."
+}
