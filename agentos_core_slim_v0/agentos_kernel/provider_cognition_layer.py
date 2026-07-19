@@ -14,7 +14,7 @@ from hashlib import sha256
 from typing import Any
 
 
-PROVIDER_COGNITION_LAYER_ID = "provider_backed_runtime_cognition_layer_v0_7"
+PROVIDER_COGNITION_LAYER_ID = "provider_backed_runtime_cognition_layer_v0_8"
 
 PROVIDER_REQUIRED = "PROVIDER_REQUIRED"
 PROVIDER_OPTIONAL = "PROVIDER_OPTIONAL"
@@ -434,6 +434,20 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         "block_the_team_arm_without_a_complete_provider_backed_normalized_candidate",
     ),
     CognitionOperationContract(
+        "contextual_organization_policy_assessment",
+        "cognitive_ensemble_runtime",
+        PROVIDER_REQUIRED,
+        "assess the structural fit, expected Cbit, bounded cost, residual risk, uncertainty, and anti-additive pressure of each registered organization policy for one bound problem",
+        "validate exact policy coverage, problem and evidence binding, matched-evidence provenance, budget and risk gates, registry feasibility, and retain final Kernel selection authority",
+        (
+            "recommended_policy_id",
+            "policy_assessments",
+            "global_uncertainty",
+            "evidence_refs",
+        ),
+        "abstain_from_contextual_role_selection_without_complete_provider_supported_assessment",
+    ),
+    CognitionOperationContract(
         "cognitive_organization_failure_diagnosis",
         "cognitive_ensemble_runtime",
         PROVIDER_REQUIRED,
@@ -532,6 +546,15 @@ MECHANICAL_RUNTIME_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         "propagate admitted invalidation roots through registered hard and quarantine dependency edges",
         (),
         "block_reuse_for_invalidated_or_quarantined_nodes",
+    ),
+    CognitionOperationContract(
+        "contextual_organization_policy_kernel_selection",
+        "runtime_mechanical",
+        PROVIDER_FORBIDDEN,
+        "none",
+        "apply exact-context matched-evidence, role-structure, budget, risk, registry feasibility, and authorization gates to Provider-supported policy assessments",
+        (),
+        "abstain_when_no_registered_policy_passes_kernel_gates",
     ),
     CognitionOperationContract(
         "organization_matched_ablation_and_protocol_calibration",

@@ -20,6 +20,7 @@ from agentos_runtime import (  # noqa: E402
     SRORetentionRuntime,
     SRORetentionTask,
 )
+from agentos_runtime.sro_retention_persistence import JsonlDelayedRetrievalEventStore
 
 
 HASH_A = "a" * 64
@@ -402,7 +403,7 @@ def test_persistent_runtime_and_delayed_ledger_reload_after_restart(tmp_path):
 
 def test_persistent_delayed_ledger_rejects_tamper_on_reload(tmp_path):
     path = tmp_path / "delayed.jsonl"
-    ledger = DelayedRetrievalLedger(path)
+    ledger = DelayedRetrievalLedger(JsonlDelayedRetrievalEventStore(path))
     ledger.register_prediction(
         DelayedRetrievalPrediction(
             prediction_id="DR-TAMPER",
@@ -420,13 +421,13 @@ def test_persistent_delayed_ledger_rejects_tamper_on_reload(tmp_path):
     path.write_text(json.dumps(event) + "\n", encoding="utf-8")
 
     with pytest.raises(ValueError, match="delayed_retrieval_ledger_replay_invalid"):
-        DelayedRetrievalLedger(path)
+        DelayedRetrievalLedger(JsonlDelayedRetrievalEventStore(path))
 
 
 def test_persistent_delayed_ledger_detects_stale_concurrent_writer(tmp_path):
     path = tmp_path / "concurrent.jsonl"
-    first = DelayedRetrievalLedger(path)
-    stale = DelayedRetrievalLedger(path)
+    first = DelayedRetrievalLedger(JsonlDelayedRetrievalEventStore(path))
+    stale = DelayedRetrievalLedger(JsonlDelayedRetrievalEventStore(path))
     first.register_prediction(
         DelayedRetrievalPrediction(
             prediction_id="DR-FIRST",

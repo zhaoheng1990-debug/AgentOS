@@ -2,6 +2,22 @@
 
 All notable CoreSlim changes are recorded here.
 
+## Unreleased
+
+## 0.4.0-alpha.11 - 2026-07-19
+
+- Added a modular `ContextualOrganizationPolicyRuntime` that selects among seven executable role policies from structured problem requirements, exact-context matched evidence, registry feasibility, explicit budgets, and risk envelopes.
+- Added one bounded Provider assessment operation for structure fit, expected Cbit, cost, residual risk, anti-additive pressure, and uncertainty. Provider recommendations remain advisory; the Kernel owns every hard gate, selected policy, activation mode, and assignment authority.
+- Added project-scoped authorization, exploratory-trial-only, and abstention outcomes. Unmatched evidence cannot authorize execution, high-risk cases require matched evidence, adverse matched outcomes block, and cross-context evidence is never pooled.
+- Added self-validating matched-evidence commitments, strong advice/decision/assignment bindings, hash-chained selection events, blocked-Provider receipts, restart reconstruction, snapshot verification, and tamper rejection.
+- Split contracts, evidence aggregation, Provider support, Kernel selection, persistence, and the Runtime facade into focused modules. Architecture tests prevent Kernel-to-Runtime/filesystem dependencies and cap facade growth.
+- Added a deterministic smoke and auditable return pack in which Provider recommends an over-budget full team and the Kernel selects the evidence-supported feasible role combination.
+- Refactored the SRO retention slice from two monolithic modules into focused Kernel contracts, matcher-receipt validation, reuse policy, delayed state, Runtime contracts, legacy migration, Provider matching, repository/replay, and JSONL persistence adapters.
+- Reduced `SRORetentionRuntime` to a compatibility facade that coordinates independently testable services while preserving the alpha.10 public imports and behavior.
+- Removed filesystem access from the SRO Kernel path. `DelayedRetrievalLedger` now depends on an event-store port, with `JsonlDelayedRetrievalEventStore` implemented in `agentos_runtime`.
+- Added architecture regression tests that reject Kernel-to-Runtime/filesystem dependencies and verify compatibility exports resolve to the focused module types.
+- Verified 272 local tests, Python compilation, deterministic Selector smoke output, restart replay, artifact manifest/hash/ZIP integrity, and a short-path clean-copy run.
+
 ## 0.4.0-alpha.10 - 2026-07-19
 
 - Integrated retention/SFI research through the latest closed v1.8 result as a bounded, project-scoped `SRORetentionRuntime`; the planned, unexecuted v1.9 result is not promoted.

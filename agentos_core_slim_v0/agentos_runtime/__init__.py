@@ -79,6 +79,19 @@ from .sro_retention import (
     SRORetentionRuntimeSnapshot,
     SRORetentionTask,
 )
+from .sro_retention_migration import LegacyRetentionMigrator
+from .sro_retention_persistence import JsonlDelayedRetrievalEventStore
+from .sro_retention_provider import ProviderBackedSROMatcher
+from .sro_retention_repository import SRORetentionRepository
+from .contextual_policy_contracts import (
+    CONTEXTUAL_ORGANIZATION_POLICY_RUNTIME_VERSION,
+    ContextualOrganizationPolicySnapshot,
+    ContextualOrganizationSelectionReceipt,
+    ContextualProviderAdvice,
+)
+from .contextual_policy_provider import ContextualOrganizationProviderAdvisor
+from .contextual_policy_repository import ContextualPolicyRepository
+from .contextual_policy_runtime import ContextualOrganizationPolicyRuntime
 
 __all__ = [
     "CognitiveAgent",
@@ -90,6 +103,13 @@ __all__ = [
     "CognitiveExecutionReceipt",
     "CognitiveMessage",
     "CognitiveRoleContract",
+    "CONTEXTUAL_ORGANIZATION_POLICY_RUNTIME_VERSION",
+    "ContextualOrganizationPolicyRuntime",
+    "ContextualOrganizationPolicySnapshot",
+    "ContextualOrganizationProviderAdvisor",
+    "ContextualOrganizationSelectionReceipt",
+    "ContextualPolicyRepository",
+    "ContextualProviderAdvice",
     "CoordinationProposal",
     "PrivateAgentWorkspace",
     "ProviderCognitiveAgentAdapter",
@@ -135,9 +155,13 @@ __all__ = [
     "organization_records_from_ablation_smoke_result",
     "SRO_RETENTION_RUNTIME_VERSION",
     "LegacyRetentionMigrationCandidate",
+    "LegacyRetentionMigrator",
+    "JsonlDelayedRetrievalEventStore",
+    "ProviderBackedSROMatcher",
     "SROCalibrationContract",
     "SRORetentionRouteReceipt",
     "SRORetentionRuntime",
     "SRORetentionRuntimeSnapshot",
     "SRORetentionTask",
+    "SRORetentionRepository",
 ]

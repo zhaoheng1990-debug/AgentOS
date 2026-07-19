@@ -1,6 +1,6 @@
 # Modular Group Cognition Runtime
 
-AgentOS CoreSlim 0.4.0-alpha.10 retains the pluggable P0-P5 group cognition layer. The design
+AgentOS CoreSlim 0.4.0-alpha.11 retains the pluggable P0-P5 group cognition layer. The design
 keeps the Kernel as the cognitive and policy owner while allowing providers,
 runners, Harnesses, evaluators, and state stores to be replaced independently.
 
@@ -42,6 +42,9 @@ execution, including the Generator-bound no-Synthesizer projection, blind assess
 hidden-truth Harness measurement, repeated learning feedback, and non-pooled cross-project audit.
 `SRO_RETENTION_RUNTIME.md` documents Provider-backed, query-conditioned reuse routing,
 strong witness/task/receipt binding, candidate-only legacy migration, and persistent delayed retrieval.
+`CONTEXTUAL_ORGANIZATION_POLICY_SELECTOR.md` documents how problem structure, exact-context
+matched evidence, registry feasibility, budget, risk, and Provider advice are combined while the
+Kernel retains final role-policy authority.
 
 ## Modules
 
@@ -58,6 +61,7 @@ strong witness/task/receipt binding, candidate-only legacy migration, and persis
 | Team execution | `CognitiveTeamExecutionRuntime` | isolated three-arm execution, replay admission, Harness evaluation and feedback | hidden truth, publication, or automatic promotion |
 | Organization learning | `CognitiveOrganizationLearningRuntime` | context-isolated protocol evidence, bounded diagnosis, policy candidates, and experiment proposals | unsupported causality, route selection, or self-authorization |
 | Organization ablation | `CognitiveOrganizationAblationRuntime` | authorized full-team and one-component-omission execution, replay, blind assessment, and Harness-owned metrics | self-authorization, hidden truth, causal promotion, or policy acceptance |
+| Contextual organization selection | `ContextualOrganizationPolicyRuntime` | exact-context evidence aggregation, bounded Provider advice, registry feasibility, Kernel policy selection, persistence, and replay | universal role ranking, cross-context pooling, self-authorization, or production activation |
 | SRO retention | `SRORetentionRuntime` | Provider-backed witness/task matching, Kernel route ownership, legacy migration candidates, persistent delayed retrieval and replay | global memory, unbound reuse, production activation, synthetic-weight deployment, or theory promotion |
 
 `CognitiveModuleRegistry` is the thin composition root. It only installs,

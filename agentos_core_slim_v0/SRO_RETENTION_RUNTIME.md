@@ -141,13 +141,42 @@ The Provider cannot return identity, scope, authority or route-state fields.
 Unknown fields, unknown evidence, missing provenance, failed schema, receipt
 hash mismatch, or project mismatch block before a route receipt is formed.
 
+## Modular architecture
+
+`SRORetentionRuntime` is a compatibility facade, not the owner of every SRO
+mechanism. The implementation follows an inward dependency direction:
+
+```text
+agentos_runtime.sro_retention
+  -> LegacyRetentionMigrator
+  -> ProviderBackedSROMatcher
+  -> SRORetentionRepository
+  -> JsonlDelayedRetrievalEventStore
+
+agentos_kernel.sro_retention_receipt
+  -> mechanical receipt and strong-binding validation
+
+agentos_kernel.sro_retention_policy
+  -> Kernel-owned safety thresholds and final route
+
+agentos_kernel.delayed_retrieval
+  -> pure prediction/reveal state machine over an event-store port
+```
+
+Contracts are isolated in `sro_retention_contracts.py` and
+`sro_retention_models.py`. Provider invocation, migration, persistence and
+replay can therefore be tested independently. Kernel modules do not import
+`agentos_runtime`, `pathlib`, or `os`; filesystem ownership remains in the
+Runtime adapter.
+
 ## Persistent delayed retrieval and replay
 
-The delayed ledger is an append-only JSONL hash chain. Each write verifies the
-on-disk head, appends and `fsync`s the event. Restart reconstructs predictions
-and scores only after sequence, previous-hash, event-hash and payload-hash
-checks pass. A stale second writer is blocked instead of silently forking the
-chain. Runtime events and snapshots form a separate public replay chain.
+The delayed ledger is a pure append-only prediction/reveal state machine. Its
+Runtime JSONL adapter verifies the on-disk head, appends and `fsync`s each
+event. Restart reconstructs predictions and scores only after sequence,
+previous-hash, event-hash and payload-hash checks pass. A stale second writer
+is blocked instead of silently forking the chain. Runtime events and snapshots
+form a separate public replay chain.
 
 ## Legacy migration lifecycle
 
@@ -201,7 +230,7 @@ Must not claim:
 From `agentos_core_slim_v0`:
 
 ```powershell
-python -m pytest -q tests/test_sro_retention_runtime.py tests/test_sro_retention_orchestrator.py tests/test_sro_retention_runtime_smoke.py
+python -m pytest -q tests/test_sro_retention_modularity.py tests/test_sro_retention_runtime.py tests/test_sro_retention_orchestrator.py tests/test_sro_retention_runtime_smoke.py
 python examples/sro_retention_runtime_smoke.py --output-dir ../outputs/sro_retention_runtime_alpha10_smoke
 python -m compileall -q agentos_kernel agentos_runtime tests examples
 ```
