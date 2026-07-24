@@ -12,6 +12,7 @@ from .sro_retention_models import (
     unit_interval,
 )
 from .sro_retention_receipt import SROMatcherReceiptValidator, SROReceiptValidationResult
+from .cognitive_work_models import CognitiveWorkControlDecision, validate_control_binding
 
 
 class GradedSROCompatibilityGate:
@@ -51,6 +52,7 @@ class GradedSROCompatibilityGate:
         witness: SerialSelectionWitness | None = None,
         task_commitment_hash: str = "",
         provider_invocation_receipt_hash: str = "",
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> GradedSROCompatibilityDecision:
         validation = self.receipt_validator.validate(
             receipt,
@@ -65,7 +67,27 @@ class GradedSROCompatibilityGate:
                 validation.reason,
                 failures=validation.failures,
             )
-        return self._route_validated(validation)
+        decision = self._route_validated(validation)
+        if cognitive_work_control is None:
+            return decision
+        if witness is None:
+            raise ValueError("cognitive_work_sro_binding_requires_witness")
+        validate_control_binding(
+            cognitive_work_control,
+            project_scope=witness.project_scope_ref,
+        )
+        if decision.route != "DIRECT_REUSE" or cognitive_work_control.allow_direct_sro_reuse:
+            return decision
+        route = "REVISE" if cognitive_work_control.action == "REORGANIZE" else "OBSERVE"
+        return self._decision(
+            route,
+            decision.matcher_receipt_hash,
+            "cognitive_work_trajectory_does_not_support_direct_reuse",
+            confidence=decision.confidence,
+            uncertainty=decision.uncertainty,
+            drift_risk=decision.drift_risk,
+            factors=(f"cognitive_work_control:{cognitive_work_control.decision_hash}",),
+        )
 
     def _route_validated(self, validation: SROReceiptValidationResult) -> GradedSROCompatibilityDecision:
         values = validation.values or {}

@@ -5,7 +5,11 @@ from __future__ import annotations
 from dataclasses import replace
 from typing import Any
 
-from agentos_kernel import ConstraintAlignedRetentionGate, SerialSelectionWitness
+from agentos_kernel import (
+    CognitiveWorkControlDecision,
+    ConstraintAlignedRetentionGate,
+    SerialSelectionWitness,
+)
 from agentos_kernel import methodology_candidate_commitment
 from .anti_additive_source import (
     AntiAdditiveMethodologyReceiptSource,
@@ -39,6 +43,7 @@ class LegacyRetentionMigrator:
         *,
         migration_authority_ref: str,
         methodology_audit_id: str = "",
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> LegacyRetentionMigrationCandidate:
         self._require_kernel_authority(
             migration_authority_ref,
@@ -50,6 +55,7 @@ class LegacyRetentionMigrator:
             candidate,
             methodology_receipt=methodology,
             require_methodology_receipt=self.anti_additive_source is not None,
+            cognitive_work_control=cognitive_work_control,
         )
         evidence_refs = tuple(candidate.get("evidence_refs") or ())
         state = self._initial_state(candidate, decision.eligible_for_retention)
@@ -76,6 +82,7 @@ class LegacyRetentionMigrator:
         *,
         kernel_authorization_ref: str,
         methodology_audit_id: str = "",
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> LegacyRetentionMigrationCandidate:
         self._require_kernel_authority(
             kernel_authorization_ref,
@@ -94,6 +101,7 @@ class LegacyRetentionMigrator:
             revalidated_candidate,
             methodology_receipt=methodology,
             require_methodology_receipt=self.anti_additive_source is not None,
+            cognitive_work_control=cognitive_work_control,
         )
         return replace(
             migration,

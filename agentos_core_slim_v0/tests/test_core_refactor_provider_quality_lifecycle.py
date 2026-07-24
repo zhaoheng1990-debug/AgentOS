@@ -61,10 +61,10 @@ def _task():
     )
 
 
-def test_version_preserves_patch_seed_and_declares_calibrated_anti_additive_feature_set():
-    assert AGENTOS_CORE_SLIM_VERSION == "0.4.0-alpha.17"
+def test_version_preserves_patch_seed_and_declares_selection_retention_feature_set():
+    assert AGENTOS_CORE_SLIM_VERSION == "0.4.0-alpha.21"
     assert AGENTOS_CORE_SLIM_PATCH_SEED == "AgentOS_CoreRefactor_ProviderCognition_QualityLifecycle_Seed_v0_1"
-    assert AGENTOS_CORE_SLIM_FEATURE_SET == "anti_additive_calibration_and_shared_receipt_source_v0_1"
+    assert AGENTOS_CORE_SLIM_FEATURE_SET == "typed_evidence_and_selection_first_retention_v0_1"
 
 
 def test_provider_task_routes_through_two_adapters_with_same_contract():

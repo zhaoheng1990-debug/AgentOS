@@ -11,6 +11,8 @@ from .anti_additive_models import (
     AntiAdditiveProviderJudgment,
 )
 from .anti_additive_control import AntiAdditiveCalibrationControl
+from .cognitive_work_models import CognitiveWorkControlDecision
+from .cognitive_work_integrations import apply_anti_additive_work_control
 
 
 class AntiAdditiveMethodologyGate:
@@ -24,6 +26,7 @@ class AntiAdditiveMethodologyGate:
         policy: AntiAdditiveMethodologyPolicy,
         kernel_authorization_ref: str,
         calibration_control: AntiAdditiveCalibrationControl | None = None,
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> AntiAdditiveMethodologyReceipt:
         if judgment.candidate_hash != candidate.candidate_hash:
             raise ValueError("anti_additive_candidate_judgment_mismatch")
@@ -51,6 +54,9 @@ class AntiAdditiveMethodologyGate:
                 "BLOCK_CALIBRATION_DRIFT",
                 "anti_additive_prediction_calibration_drifted",
             )
+        state, reason = apply_anti_additive_work_control(
+            candidate=candidate, control=cognitive_work_control, state=state, reason=reason
+        )
         active = tuple(item.trigger_id for item in judgment.trigger_assessments if item.triggered)
         decision = AntiAdditiveMethodologyDecision.create(
             audit_id=candidate.audit_id,

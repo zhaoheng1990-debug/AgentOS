@@ -1,0 +1,114 @@
+{
+  "schema_version": "agentos-sro-retention-kernel-patch-manifest-v0.1",
+  "built_at_utc": "2026-07-19T03:33:03.100499+00:00",
+  "package_status": "APPLIED_AND_REPLAY_VALIDATED",
+  "repository": "C:\\Users\\ZH\\Documents\\Logos-AgentOS",
+  "branch": "AgentOS-core-refactor",
+  "captured_head": "5028cc085de2f7b5ce3a46f01f63c802830ada0c",
+  "active_worktree_version": "0.4.0-alpha.9",
+  "preimage_hashes": {
+    "agentos_core_slim_v0/agentos_kernel/__init__.py": "e6e6056158edc8bed22b9ea5181082aa5e19d61b4d24680d70eb062f87df81e1",
+    "agentos_core_slim_v0/agentos_kernel/provider_cognition_layer.py": "f9577eceac67a4423a99db27f8b5ac50887f639633b1e7a6a7d1e68e96e241c2"
+  },
+  "unchanged_anchor_hashes": {
+    "agentos_core_slim_v0/agentos_kernel/constraint_aligned_retention.py": "0a07f3d918e0f62d26f217c479dc4654a4d1798bc6eebc0cb41dbccb0bcdcf36",
+    "agentos_core_slim_v0/agentos_kernel/version.py": "f2846089862171cc76f614d71014894af733d00f556851fc6579348c2cdb5872"
+  },
+  "postimage_hashes": {
+    "agentos_core_slim_v0/agentos_kernel/__init__.py": "6cb5cd9709b84c49c83c91afb110d67413ac898b82dcd4bd5af41244eb92e3e7",
+    "agentos_core_slim_v0/agentos_kernel/provider_cognition_layer.py": "97482770304dd130814562c573c1f151ff13bd5cdc15a1915433c6e467edc2a5",
+    "agentos_core_slim_v0/agentos_kernel/sro_retention_runtime.py": "c0d9e082ad1269407b89d4b47039728a0944c46cee45bbbbf01fbfee2b3473bf",
+    "agentos_core_slim_v0/tests/test_sro_retention_runtime.py": "312b6721dacf7231ef86739c990d4489ede402a14710d4144e3bae74ab1d78a7",
+    "agentos_core_slim_v0/SRO_RETENTION_RUNTIME.md": "3247f29759523ed94076e78c1f1e13cf57a3adb50994714405cace6ec553331b"
+  },
+  "patch": {
+    "path": "patch/AgentOS_SRORetentionKernel_Patch_v0_1.patch",
+    "sha256": "5f043c435d9c6954177cfe560b62ed7e7046cf378dfcbfde6a427c17d978e8e3",
+    "isolated_replay": "PASS",
+    "isolated_rollback": "PASS"
+  },
+  "verification": {
+    "prepatch_relevant": "18 passed",
+    "targeted_patch": "33 passed",
+    "full_regression": "235 passed",
+    "compileall": "PASS",
+    "diff_check": "PASS"
+  },
+  "evidence_index_sha256": "3895f3a5a5c0b354f9f691c7d386d4ac233e0a21b978071becdbc427e4e01ada",
+  "preexisting_dirty_worktree_preserved": true,
+  "release_version_bump_included": false,
+  "production_activation": false,
+  "global_memory_write_authority": false,
+  "files": [
+    {
+      "path": "00_README.md",
+      "bytes": 2036,
+      "sha256": "05bbc79a9ca4372243a27e0d63fc1a753143e00ef30107bbaa5ffdb8a58c74e1"
+    },
+    {
+      "path": "01_THEORY_TO_ENGINEERING_MAP.md",
+      "bytes": 2957,
+      "sha256": "b9d6ecf1e85a9f4f524cb1a9bc42c8b37a8c9ee3e2bfada06e38403e45f99968"
+    },
+    {
+      "path": "02_IMPLEMENTATION_CONTRACT.md",
+      "bytes": 2186,
+      "sha256": "3c5757926ef13c38da6ecb258d91de67af08de5771ac5ff12947ae3c067e512a"
+    },
+    {
+      "path": "03_TEST_REPORT.md",
+      "bytes": 1456,
+      "sha256": "796a3f0a998d1f3ff5fcb1de069da6db65ea214c909aefe8443dd7c342408479"
+    },
+    {
+      "path": "04_APPLY_AND_ROLLBACK.md",
+      "bytes": 2082,
+      "sha256": "be4f9c260aab88e74438ecbd714e6704b1c429051fd8376f2dd14c044a168001"
+    },
+    {
+      "path": "build_engineering_pack.py",
+      "bytes": 12017,
+      "sha256": "7f5bf19fda30918d45c03f0209664a62abde5ac622b9823800f9ddae9cf851c7"
+    },
+    {
+      "path": "evidence/EVIDENCE_INDEX.json",
+      "bytes": 4124,
+      "sha256": "3895f3a5a5c0b354f9f691c7d386d4ac233e0a21b978071becdbc427e4e01ada"
+    },
+    {
+      "path": "overlay/agentos_core_slim_v0/agentos_kernel/__init__.py",
+      "bytes": 7641,
+      "sha256": "6cb5cd9709b84c49c83c91afb110d67413ac898b82dcd4bd5af41244eb92e3e7"
+    },
+    {
+      "path": "overlay/agentos_core_slim_v0/agentos_kernel/provider_cognition_layer.py",
+      "bytes": 36126,
+      "sha256": "97482770304dd130814562c573c1f151ff13bd5cdc15a1915433c6e467edc2a5"
+    },
+    {
+      "path": "overlay/agentos_core_slim_v0/agentos_kernel/sro_retention_runtime.py",
+      "bytes": 24928,
+      "sha256": "c0d9e082ad1269407b89d4b47039728a0944c46cee45bbbbf01fbfee2b3473bf"
+    },
+    {
+      "path": "overlay/agentos_core_slim_v0/SRO_RETENTION_RUNTIME.md",
+      "bytes": 4742,
+      "sha256": "3247f29759523ed94076e78c1f1e13cf57a3adb50994714405cace6ec553331b"
+    },
+    {
+      "path": "overlay/agentos_core_slim_v0/tests/test_sro_retention_runtime.py",
+      "bytes": 10490,
+      "sha256": "312b6721dacf7231ef86739c990d4489ede402a14710d4144e3bae74ab1d78a7"
+    },
+    {
+      "path": "patch/AgentOS_SRORetentionKernel_Patch_v0_1.patch",
+      "bytes": 45440,
+      "sha256": "5f043c435d9c6954177cfe560b62ed7e7046cf378dfcbfde6a427c17d978e8e3"
+    },
+    {
+      "path": "verify_engineering_pack.py",
+      "bytes": 2200,
+      "sha256": "b852783976d26d8f1296bf73f9c44cd100101ab3e1389c2cc5f2d0b340ce07ed"
+    }
+  ]
+}

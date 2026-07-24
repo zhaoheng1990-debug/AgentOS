@@ -1,0 +1,1190 @@
+diff --git a/agentos_core_slim_v0/agentos_kernel/__init__.py b/agentos_core_slim_v0/agentos_kernel/__init__.py
+--- a/agentos_core_slim_v0/agentos_kernel/__init__.py
++++ b/agentos_core_slim_v0/agentos_kernel/__init__.py
+@@ -17,6 +17,16 @@
+ from .constraint_aligned_retention import (
+     ConstraintAlignedRetentionDecision,
+     ConstraintAlignedRetentionGate,
++)
++from .sro_retention_runtime import (
++    SRO_MATCHER_ROUTES,
++    SRO_ROUTES,
++    DelayedRetrievalLedger,
++    DelayedRetrievalPrediction,
++    DelayedRetrievalScore,
++    GradedSROCompatibilityDecision,
++    GradedSROCompatibilityGate,
++    SerialSelectionWitness,
+ )
+ from .group_cognition_eval import (
+     CognitionRunObservation,
+@@ -200,6 +210,9 @@
+     "CreditEventStore",
+     "CreditLedger",
+     "CreditProfile",
++    "DelayedRetrievalLedger",
++    "DelayedRetrievalPrediction",
++    "DelayedRetrievalScore",
+     "DependencyEdge",
+     "EvidenceAdmissionGate",
+     "EvidenceDimensionRegistry",
+@@ -211,6 +224,8 @@
+     "EndogenousAgendaLoop",
+     "GroupCognitionEvaluation",
+     "GroupCognitionEvalHarness",
++    "GradedSROCompatibilityDecision",
++    "GradedSROCompatibilityGate",
+     "InvalidationReceipt",
+     "InvalidationTransition",
+     "JsonlCreditEventStore",
+@@ -243,7 +258,10 @@
+     "ReplicationReceipt",
+     "RetentionDecision",
+     "RuntimeTaskLifecycle",
++    "SRO_MATCHER_ROUTES",
++    "SRO_ROUTES",
+     "ScopeCoverageGate",
++    "SerialSelectionWitness",
+     "SOURCE_GROUP",
+     "SOURCE_HUMAN_BASELINE",
+     "SOURCE_MEMBER",
+diff --git a/agentos_core_slim_v0/agentos_kernel/provider_cognition_layer.py b/agentos_core_slim_v0/agentos_kernel/provider_cognition_layer.py
+--- a/agentos_core_slim_v0/agentos_kernel/provider_cognition_layer.py
++++ b/agentos_core_slim_v0/agentos_kernel/provider_cognition_layer.py
+@@ -14,7 +14,7 @@
+ from typing import Any
+ 
+ 
+-PROVIDER_COGNITION_LAYER_ID = "provider_backed_runtime_cognition_layer_v0_6"
++PROVIDER_COGNITION_LAYER_ID = "provider_backed_runtime_cognition_layer_v0_7"
+ 
+ PROVIDER_REQUIRED = "PROVIDER_REQUIRED"
+ PROVIDER_OPTIONAL = "PROVIDER_OPTIONAL"
+@@ -74,6 +74,29 @@
+         "validate schema, record SRO receipt, enforce scope and SafetyKernel boundary",
+         ("constraint_field", "hidden_constraints", "reuse_mode", "transfer_risk", "operator_candidates", "confidence"),
+         "block_or_candidate_only_no_local_semantic_guess",
++    ),
++    CognitionOperationContract(
++        "graded_sro_retention_candidate_routing",
++        "memory_runtime",
++        PROVIDER_REQUIRED,
++        "estimate calibrated structural-role compatibility, route probabilities, uncertainty, drift, validity, and negative-transfer risk for one witness-task pair",
++        "validate frozen calibration and evidence scope, apply safety overrides, distinguish observe from abstain, and own the final project-scoped route",
++        (
++            "route_probabilities",
++            "uncertainty",
++            "drift_risk",
++            "negative_transfer_risk",
++            "structural_compatibility",
++            "role_compatibility",
++            "boundary_compatibility",
++            "interface_compatibility",
++            "trace_sufficiency",
++            "calibration_error",
++            "validity_state",
++            "evidence_scope",
++            "confidence",
++        ),
++        "abstain_or_observe_no_unvalidated_retention_reuse",
+     ),
+     CognitionOperationContract(
+         "structural_routing_operator_fiber_ranking",
+diff --git a/agentos_core_slim_v0/agentos_kernel/sro_retention_runtime.py b/agentos_core_slim_v0/agentos_kernel/sro_retention_runtime.py
+new file mode 100644
+--- /dev/null
++++ b/agentos_core_slim_v0/agentos_kernel/sro_retention_runtime.py
+@@ -0,0 +1,632 @@
++"""Project-scoped SRO-conditioned serial-memory routing primitives.
++
++This module separates three decisions that must not be collapsed:
++
++1. whether a candidate is eligible for durable retention (owned by the
++   existing ``ConstraintAlignedRetentionGate``);
++2. whether and how an already retained witness applies to a later task
++   (owned here by ``GradedSROCompatibilityGate``); and
++3. whether the predicted reuse route produced delayed value (recorded by the
++   append-only ``DelayedRetrievalLedger``).
++
++The runtime validates calibrated matcher receipts but does not embed the
++synthetic v1.8 experimental weights.  It grants no global-memory, production,
++or theory-baseline write authority.
++"""
++
++from __future__ import annotations
++
++import json
++import re
++from dataclasses import dataclass, replace
++from datetime import datetime
++from decimal import Decimal, InvalidOperation
++from hashlib import sha256
++from typing import Any
++
++
++SRO_MATCHER_ROUTES = (
++    "DIRECT_REUSE",
++    "LOCAL_RECONSTRUCTION",
++    "OBSERVE",
++    "REJECT",
++    "REVISE",
++)
++SRO_ROUTES = SRO_MATCHER_ROUTES + ("ABSTAIN",)
++
++WITNESS_STATES = {
++    "PRECOMMITTED",
++    "IMMEDIATE_DELTA_OBSERVED",
++    "DELAYED_VALUE_OBSERVED",
++}
++VALIDITY_STATES = {"CURRENT", "UNKNOWN", "DRIFTED", "STALE"}
++EVIDENCE_SCOPES = {"SYNTHETIC_FORMAL", "INTERNAL_PROJECT", "EXTERNAL_VALIDATED"}
++CALIBRATION_STATUSES = {"FROZEN_HELD_OUT", "FROZEN_PROJECT_SCOPED"}
++
++_SHA256_PATTERN = re.compile(r"^[0-9a-fA-F]{64}$")
++
++
++def _hash_payload(payload: Any) -> str:
++    serialized = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
++    return sha256(serialized.encode("utf-8")).hexdigest()
++
++
++def _require_text(name: str, value: Any) -> str:
++    if not isinstance(value, str) or not value.strip():
++        raise ValueError(f"{name}_required")
++    return value
++
++
++def _require_sha256(name: str, value: Any) -> str:
++    value = _require_text(name, value)
++    if not _SHA256_PATTERN.fullmatch(value):
++        raise ValueError(f"{name}_must_be_sha256")
++    return value.lower()
++
++
++def _parse_timestamp(name: str, value: Any) -> datetime:
++    value = _require_text(name, value)
++    try:
++        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
++    except ValueError as exc:
++        raise ValueError(f"{name}_must_be_iso8601") from exc
++    if parsed.tzinfo is None:
++        raise ValueError(f"{name}_must_include_timezone")
++    return parsed
++
++
++def _unit_interval(value: Any) -> Decimal | None:
++    if isinstance(value, bool) or value is None:
++        return None
++    try:
++        parsed = Decimal(str(value))
++    except (InvalidOperation, ValueError):
++        return None
++    return parsed if Decimal("0") <= parsed <= Decimal("1") else None
++
++
++@dataclass(frozen=True)
++class SerialSelectionWitness:
++    """Reference-only minimal serial-memory witness.
++
++    The schema stores semantic-role addresses and immutable evidence pointers,
++    not raw chat or private episode payloads.  A new immutable revision is
++    created when immediate or delayed outcomes become observable.
++    """
++
++    witness_id: str
++    status: str
++    selection_context_ref: str
++    sro_address_ref: str
++    validity_boundary_ref: str
++    reconstruction_ref: str
++    authority_ref: str
++    privacy_boundary: str
++    precommit_hash: str
++    sealed_at: str
++    evidence_refs: tuple[str, ...]
++    delta_ref: str = ""
++    delayed_value_ref: str = ""
++    scope: str = "project_scoped"
++    schema_version: str = "serial-selection-witness-v0.1"
++
++    def __post_init__(self) -> None:
++        for name in (
++            "witness_id",
++            "selection_context_ref",
++            "sro_address_ref",
++            "validity_boundary_ref",
++            "reconstruction_ref",
++            "authority_ref",
++            "privacy_boundary",
++            "schema_version",
++        ):
++            _require_text(name, getattr(self, name))
++        if self.scope != "project_scoped":
++            raise ValueError("witness_scope_must_be_project_scoped")
++        if self.status not in WITNESS_STATES:
++            raise ValueError(f"unknown_witness_status:{self.status}")
++        _require_sha256("precommit_hash", self.precommit_hash)
++        _parse_timestamp("sealed_at", self.sealed_at)
++        if not self.evidence_refs or any(not isinstance(ref, str) or not ref for ref in self.evidence_refs):
++            raise ValueError("witness_evidence_refs_required")
++        if self.status == "PRECOMMITTED" and (self.delta_ref or self.delayed_value_ref):
++            raise ValueError("precommitted_witness_cannot_contain_outcome_refs")
++        if self.status in {"IMMEDIATE_DELTA_OBSERVED", "DELAYED_VALUE_OBSERVED"} and not self.delta_ref:
++            raise ValueError("observed_witness_requires_delta_ref")
++        if self.status == "IMMEDIATE_DELTA_OBSERVED" and self.delayed_value_ref:
++            raise ValueError("immediate_witness_cannot_contain_delayed_value_ref")
++        if self.status == "DELAYED_VALUE_OBSERVED" and not self.delayed_value_ref:
++            raise ValueError("delayed_witness_requires_delayed_value_ref")
++
++    def as_dict(self) -> dict[str, Any]:
++        payload = {
++            "schema_version": self.schema_version,
++            "witness_id": self.witness_id,
++            "status": self.status,
++            "scope": self.scope,
++            "selection_context_ref": self.selection_context_ref,
++            "sro_address_ref": self.sro_address_ref,
++            "validity_boundary_ref": self.validity_boundary_ref,
++            "reconstruction_ref": self.reconstruction_ref,
++            "authority_ref": self.authority_ref,
++            "privacy_boundary": self.privacy_boundary,
++            "precommit_hash": self.precommit_hash.lower(),
++            "sealed_at": self.sealed_at,
++            "evidence_refs": list(self.evidence_refs),
++            "delta_ref": self.delta_ref,
++            "delayed_value_ref": self.delayed_value_ref,
++        }
++        payload["record_hash"] = _hash_payload(payload)
++        return payload
++
++    def with_immediate_delta(self, delta_ref: str, *evidence_refs: str) -> "SerialSelectionWitness":
++        _require_text("delta_ref", delta_ref)
++        if self.status != "PRECOMMITTED":
++            raise ValueError("immediate_delta_requires_precommitted_witness")
++        return replace(
++            self,
++            status="IMMEDIATE_DELTA_OBSERVED",
++            delta_ref=delta_ref,
++            evidence_refs=self.evidence_refs + tuple(evidence_refs),
++        )
++
++    def with_delayed_value(self, delayed_value_ref: str, *evidence_refs: str) -> "SerialSelectionWitness":
++        _require_text("delayed_value_ref", delayed_value_ref)
++        if self.status != "IMMEDIATE_DELTA_OBSERVED":
++            raise ValueError("delayed_value_requires_immediate_delta_witness")
++        return replace(
++            self,
++            status="DELAYED_VALUE_OBSERVED",
++            delayed_value_ref=delayed_value_ref,
++            evidence_refs=self.evidence_refs + tuple(evidence_refs),
++        )
++
++
++@dataclass(frozen=True)
++class GradedSROCompatibilityDecision:
++    """Kernel-owned, auditable query-time retention route."""
++
++    route: str
++    candidate_admitted: bool
++    reuse_allowed: bool
++    reconstruction_required: bool
++    observation_required: bool
++    revision_required: bool
++    confidence: float | None
++    uncertainty: float | None
++    drift_risk: float | None
++    reason: str
++    decision_factors: tuple[str, ...]
++    hard_gate_failures: tuple[str, ...]
++    matcher_receipt_hash: str
++
++    def as_dict(self) -> dict[str, Any]:
++        return {
++            "route": self.route,
++            "candidate_admitted": self.candidate_admitted,
++            "reuse_allowed": self.reuse_allowed,
++            "reconstruction_required": self.reconstruction_required,
++            "observation_required": self.observation_required,
++            "revision_required": self.revision_required,
++            "confidence": self.confidence,
++            "uncertainty": self.uncertainty,
++            "drift_risk": self.drift_risk,
++            "reason": self.reason,
++            "decision_factors": list(self.decision_factors),
++            "hard_gate_failures": list(self.hard_gate_failures),
++            "matcher_receipt_hash": self.matcher_receipt_hash,
++            "global_memory_write_authority": False,
++            "production_activation": False,
++        }
++
++
++class GradedSROCompatibilityGate:
++    """Validate a calibrated matcher receipt and emit a bounded route.
++
++    Provider/model cognition supplies the semantic compatibility estimates.
++    The Kernel owns validation, safety overrides, abstention, and the final
++    project-scoped route.
++    """
++
++    SIGNAL_FIELDS = (
++        "uncertainty",
++        "drift_risk",
++        "negative_transfer_risk",
++        "structural_compatibility",
++        "role_compatibility",
++        "boundary_compatibility",
++        "interface_compatibility",
++        "trace_sufficiency",
++        "calibration_error",
++    )
++
++    def __init__(
++        self,
++        *,
++        confidence_threshold: float = 0.70,
++        uncertainty_ceiling: float = 0.30,
++        calibration_error_ceiling: float = 0.10,
++        trace_sufficiency_threshold: float = 0.60,
++        structural_compatibility_threshold: float = 0.60,
++        role_compatibility_threshold: float = 0.60,
++        boundary_compatibility_threshold: float = 0.70,
++        direct_interface_threshold: float = 0.70,
++        direct_drift_ceiling: float = 0.30,
++        revision_drift_threshold: float = 0.65,
++        negative_transfer_ceiling: float = 0.30,
++    ) -> None:
++        for name, value in locals().copy().items():
++            if name in {"self"}:
++                continue
++            parsed = _unit_interval(value)
++            if parsed is None:
++                raise ValueError(f"{name}_must_be_in_unit_interval")
++            setattr(self, name, parsed)
++        if self.direct_drift_ceiling >= self.revision_drift_threshold:
++            raise ValueError("direct_drift_ceiling_must_be_below_revision_drift_threshold")
++
++    def evaluate(self, receipt: dict[str, Any]) -> GradedSROCompatibilityDecision:
++        receipt_hash = _hash_payload(receipt)
++        if receipt.get("scope") != "project_scoped":
++            return self._decision(
++                "ABSTAIN",
++                receipt_hash,
++                "scope_not_project_scoped",
++                failures=("scope_not_project_scoped",),
++            )
++
++        missing_audit = [
++            name
++            for name in (
++                "matcher_id",
++                "matcher_version",
++                "task_id",
++                "witness_id",
++                "evidence_refs",
++                "calibration_ref",
++                "provider_support_receipt_ref",
++            )
++            if not receipt.get(name)
++        ]
++        if receipt.get("replayable_evidence") is not True:
++            missing_audit.append("replayable_evidence")
++        if missing_audit:
++            return self._decision(
++                "ABSTAIN",
++                receipt_hash,
++                "matcher_receipt_missing_audit_contract",
++                failures=tuple(f"missing:{name}" for name in sorted(set(missing_audit))),
++            )
++
++        evidence_scope = receipt.get("evidence_scope")
++        calibration_status = receipt.get("calibration_status")
++        if evidence_scope not in EVIDENCE_SCOPES:
++            return self._decision(
++                "ABSTAIN",
++                receipt_hash,
++                "unknown_evidence_scope",
++                failures=("unknown_evidence_scope",),
++            )
++        if calibration_status not in CALIBRATION_STATUSES:
++            return self._decision(
++                "ABSTAIN",
++                receipt_hash,
++                "matcher_not_frozen_calibrated",
++                failures=("matcher_not_frozen_calibrated",),
++            )
++
++        values: dict[str, Decimal] = {}
++        invalid = []
++        for name in self.SIGNAL_FIELDS:
++            parsed = _unit_interval(receipt.get(name))
++            if parsed is None:
++                invalid.append(name)
++            else:
++                values[name] = parsed
++        probabilities, probability_failures = self._probabilities(receipt.get("route_probabilities"))
++        invalid.extend(probability_failures)
++        validity_state = receipt.get("validity_state")
++        if validity_state not in VALIDITY_STATES:
++            invalid.append("validity_state")
++        if invalid:
++            return self._decision(
++                "ABSTAIN",
++                receipt_hash,
++                "invalid_or_incomplete_matcher_metrics",
++                failures=tuple(f"invalid:{name}" for name in sorted(set(invalid))),
++            )
++
++        confidence = max(probabilities.values())
++        uncertainty = values["uncertainty"]
++        drift_risk = values["drift_risk"]
++        metrics = {
++            "confidence": float(confidence),
++            "uncertainty": float(uncertainty),
++            "drift_risk": float(drift_risk),
++        }
++
++        if values["trace_sufficiency"] < self.trace_sufficiency_threshold or validity_state == "UNKNOWN":
++            return self._decision(
++                "OBSERVE",
++                receipt_hash,
++                "task_trace_or_validity_state_insufficient",
++                factors=("insufficient_trace",),
++                **metrics,
++            )
++        if values["negative_transfer_risk"] > self.negative_transfer_ceiling:
++            return self._decision(
++                "REJECT",
++                receipt_hash,
++                "negative_transfer_risk_exceeds_ceiling",
++                factors=("negative_transfer_risk",),
++                **metrics,
++            )
++        incompatible = []
++        if values["structural_compatibility"] < self.structural_compatibility_threshold:
++            incompatible.append("structural_incompatibility")
++        if values["role_compatibility"] < self.role_compatibility_threshold:
++            incompatible.append("role_incompatibility")
++        if values["boundary_compatibility"] < self.boundary_compatibility_threshold:
++            incompatible.append("boundary_incompatibility")
++        if incompatible:
++            return self._decision(
++                "REJECT",
++                receipt_hash,
++                "structural_role_or_boundary_incompatible",
++                factors=tuple(incompatible),
++                **metrics,
++            )
++        if validity_state in {"DRIFTED", "STALE"} or drift_risk >= self.revision_drift_threshold:
++            return self._decision(
++                "REVISE",
++                receipt_hash,
++                "stored_validity_requires_revision",
++                factors=("validity_drift",),
++                **metrics,
++            )
++        if (
++            confidence < self.confidence_threshold
++            or uncertainty > self.uncertainty_ceiling
++            or values["calibration_error"] > self.calibration_error_ceiling
++        ):
++            factors = []
++            if confidence < self.confidence_threshold:
++                factors.append("low_confidence")
++            if uncertainty > self.uncertainty_ceiling:
++                factors.append("high_uncertainty")
++            if values["calibration_error"] > self.calibration_error_ceiling:
++                factors.append("calibration_error")
++            return self._decision(
++                "ABSTAIN",
++                receipt_hash,
++                "matcher_commitment_not_calibrated_enough",
++                factors=tuple(factors),
++                **metrics,
++            )
++
++        predicted = max(SRO_MATCHER_ROUTES, key=lambda route: probabilities[route])
++        if predicted == "DIRECT_REUSE":
++            if evidence_scope == "SYNTHETIC_FORMAL":
++                return self._decision(
++                    "LOCAL_RECONSTRUCTION",
++                    receipt_hash,
++                    "synthetic_formal_evidence_cannot_authorize_direct_reuse",
++                    factors=("evidence_scope_ceiling",),
++                    **metrics,
++                )
++            if (
++                values["interface_compatibility"] < self.direct_interface_threshold
++                or drift_risk > self.direct_drift_ceiling
++            ):
++                return self._decision(
++                    "LOCAL_RECONSTRUCTION",
++                    receipt_hash,
++                    "compatible_family_requires_local_interface_or_drift_adaptation",
++                    factors=("local_adaptation_required",),
++                    **metrics,
++                )
++        return self._decision(
++            predicted,
++            receipt_hash,
++            "frozen_matcher_route_passed_kernel_gates",
++            factors=("calibrated_matcher_route",),
++            **metrics,
++        )
++
++    @staticmethod
++    def _probabilities(value: Any) -> tuple[dict[str, Decimal], list[str]]:
++        if not isinstance(value, dict) or set(value) != set(SRO_MATCHER_ROUTES):
++            return {}, ["route_probabilities"]
++        parsed: dict[str, Decimal] = {}
++        for route in SRO_MATCHER_ROUTES:
++            probability = _unit_interval(value.get(route))
++            if probability is None:
++                return {}, [f"route_probability:{route}"]
++            parsed[route] = probability
++        if abs(sum(parsed.values(), Decimal("0")) - Decimal("1")) > Decimal("0.000001"):
++            return {}, ["route_probability_sum"]
++        return parsed, []
++
++    @staticmethod
++    def _decision(
++        route: str,
++        matcher_receipt_hash: str,
++        reason: str,
++        *,
++        confidence: float | None = None,
++        uncertainty: float | None = None,
++        drift_risk: float | None = None,
++        factors: tuple[str, ...] = (),
++        failures: tuple[str, ...] = (),
++    ) -> GradedSROCompatibilityDecision:
++        return GradedSROCompatibilityDecision(
++            route=route,
++            candidate_admitted=route in {"DIRECT_REUSE", "LOCAL_RECONSTRUCTION"},
++            reuse_allowed=route == "DIRECT_REUSE",
++            reconstruction_required=route == "LOCAL_RECONSTRUCTION",
++            observation_required=route == "OBSERVE",
++            revision_required=route == "REVISE",
++            confidence=confidence,
++            uncertainty=uncertainty,
++            drift_risk=drift_risk,
++            reason=reason,
++            decision_factors=factors,
++            hard_gate_failures=failures,
++            matcher_receipt_hash=matcher_receipt_hash,
++        )
++
++
++@dataclass(frozen=True)
++class DelayedRetrievalPrediction:
++    """Pre-outcome prediction binding a stored witness to a later task."""
++
++    prediction_id: str
++    source_witness_id: str
++    target_task_id: str
++    predicted_route: str
++    source_witness_hash: str
++    target_task_commitment_hash: str
++    sealed_at: str
++    evidence_refs: tuple[str, ...]
++
++    def __post_init__(self) -> None:
++        for name in ("prediction_id", "source_witness_id", "target_task_id"):
++            _require_text(name, getattr(self, name))
++        if self.predicted_route not in SRO_ROUTES:
++            raise ValueError(f"unknown_predicted_route:{self.predicted_route}")
++        _require_sha256("source_witness_hash", self.source_witness_hash)
++        _require_sha256("target_task_commitment_hash", self.target_task_commitment_hash)
++        _parse_timestamp("sealed_at", self.sealed_at)
++        if not self.evidence_refs or any(not isinstance(ref, str) or not ref for ref in self.evidence_refs):
++            raise ValueError("prediction_evidence_refs_required")
++
++    def as_dict(self) -> dict[str, Any]:
++        payload = {
++            "prediction_id": self.prediction_id,
++            "source_witness_id": self.source_witness_id,
++            "target_task_id": self.target_task_id,
++            "predicted_route": self.predicted_route,
++            "source_witness_hash": self.source_witness_hash.lower(),
++            "target_task_commitment_hash": self.target_task_commitment_hash.lower(),
++            "sealed_at": self.sealed_at,
++            "evidence_refs": list(self.evidence_refs),
++        }
++        payload["prediction_hash"] = _hash_payload(payload)
++        return payload
++
++
++@dataclass(frozen=True)
++class DelayedRetrievalScore:
++    prediction_id: str
++    predicted_route: str
++    observed_route: str
++    route_supported: bool
++    role_reconstruction_fidelity: float
++    negative_transfer_penalty: float
++    delayed_retrieval_score: float
++    outcome_ref: str
++    outcome_hash: str
++    revealed_at: str
++    scoring_authority_ref: str
++
++    def as_dict(self) -> dict[str, Any]:
++        payload = {
++            "prediction_id": self.prediction_id,
++            "predicted_route": self.predicted_route,
++            "observed_route": self.observed_route,
++            "route_supported": self.route_supported,
++            "role_reconstruction_fidelity": self.role_reconstruction_fidelity,
++            "negative_transfer_penalty": self.negative_transfer_penalty,
++            "delayed_retrieval_score": self.delayed_retrieval_score,
++            "outcome_ref": self.outcome_ref,
++            "outcome_hash": self.outcome_hash,
++            "revealed_at": self.revealed_at,
++            "scoring_authority_ref": self.scoring_authority_ref,
++        }
++        payload["score_hash"] = _hash_payload(payload)
++        return payload
++
++
++class DelayedRetrievalLedger:
++    """Append-only prediction/reveal ledger with a deterministic hash chain."""
++
++    def __init__(self) -> None:
++        self._predictions: dict[str, DelayedRetrievalPrediction] = {}
++        self._scores: dict[str, DelayedRetrievalScore] = {}
++        self._events: list[dict[str, Any]] = []
++
++    def register_prediction(self, prediction: DelayedRetrievalPrediction) -> dict[str, Any]:
++        if prediction.prediction_id in self._predictions:
++            raise ValueError(f"duplicate_delayed_retrieval_prediction:{prediction.prediction_id}")
++        self._predictions[prediction.prediction_id] = prediction
++        return self._append("PREDICTION_SEALED", prediction.as_dict())
++
++    def score_outcome(
++        self,
++        prediction_id: str,
++        *,
++        observed_route: str,
++        role_reconstruction_fidelity: float,
++        negative_transfer_penalty: float,
++        outcome_ref: str,
++        outcome_hash: str,
++        revealed_at: str,
++        scoring_authority_ref: str,
++    ) -> DelayedRetrievalScore:
++        if prediction_id not in self._predictions:
++            raise ValueError(f"unknown_delayed_retrieval_prediction:{prediction_id}")
++        if prediction_id in self._scores:
++            raise ValueError(f"duplicate_delayed_retrieval_outcome:{prediction_id}")
++        if observed_route not in SRO_ROUTES:
++            raise ValueError(f"unknown_observed_route:{observed_route}")
++        fidelity = _unit_interval(role_reconstruction_fidelity)
++        penalty = _unit_interval(negative_transfer_penalty)
++        if fidelity is None:
++            raise ValueError("role_reconstruction_fidelity_must_be_in_unit_interval")
++        if penalty is None:
++            raise ValueError("negative_transfer_penalty_must_be_in_unit_interval")
++        _require_text("outcome_ref", outcome_ref)
++        outcome_hash = _require_sha256("outcome_hash", outcome_hash)
++        scoring_authority_ref = _require_text("scoring_authority_ref", scoring_authority_ref)
++        reveal_time = _parse_timestamp("revealed_at", revealed_at)
++        prediction = self._predictions[prediction_id]
++        if reveal_time <= _parse_timestamp("sealed_at", prediction.sealed_at):
++            raise ValueError("delayed_retrieval_outcome_must_follow_prediction_seal")
++        score = DelayedRetrievalScore(
++            prediction_id=prediction_id,
++            predicted_route=prediction.predicted_route,
++            observed_route=observed_route,
++            route_supported=prediction.predicted_route == observed_route,
++            role_reconstruction_fidelity=float(fidelity),
++            negative_transfer_penalty=float(penalty),
++            delayed_retrieval_score=float(fidelity - penalty),
++            outcome_ref=outcome_ref,
++            outcome_hash=outcome_hash,
++            revealed_at=revealed_at,
++            scoring_authority_ref=scoring_authority_ref,
++        )
++        self._scores[prediction_id] = score
++        self._append("OUTCOME_REVEALED_AND_SCORED", score.as_dict())
++        return score
++
++    def events(self) -> tuple[dict[str, Any], ...]:
++        return tuple(dict(event) for event in self._events)
++
++    def prediction(self, prediction_id: str) -> DelayedRetrievalPrediction | None:
++        return self._predictions.get(prediction_id)
++
++    def score(self, prediction_id: str) -> DelayedRetrievalScore | None:
++        return self._scores.get(prediction_id)
++
++    def _append(self, event_type: str, payload: dict[str, Any]) -> dict[str, Any]:
++        previous_hash = self._events[-1]["event_hash"] if self._events else ""
++        event = {
++            "sequence": len(self._events) + 1,
++            "event_type": event_type,
++            "previous_event_hash": previous_hash,
++            "payload": payload,
++        }
++        event["event_hash"] = _hash_payload(event)
++        self._events.append(event)
++        return dict(event)
+diff --git a/agentos_core_slim_v0/tests/test_sro_retention_runtime.py b/agentos_core_slim_v0/tests/test_sro_retention_runtime.py
+new file mode 100644
+--- /dev/null
++++ b/agentos_core_slim_v0/tests/test_sro_retention_runtime.py
+@@ -0,0 +1,305 @@
++import sys
++from pathlib import Path
++
++import pytest
++
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++
++from agentos_kernel import (  # noqa: E402
++    DelayedRetrievalLedger,
++    DelayedRetrievalPrediction,
++    GradedSROCompatibilityGate,
++    SerialSelectionWitness,
++)
++from agentos_kernel.provider_cognition_layer import (  # noqa: E402
++    BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING,
++    PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT,
++    ProviderBackedRuntimeCognitionLayer,
++)
++
++
++HASH_A = "a" * 64
++HASH_B = "b" * 64
++
++
++def precommitted_witness() -> SerialSelectionWitness:
++    return SerialSelectionWitness(
++        witness_id="PW-0002",
++        status="PRECOMMITTED",
++        selection_context_ref="selection://SCR-0006",
++        sro_address_ref="sro://retention-routing",
++        validity_boundary_ref="boundary://v1",
++        reconstruction_ref="reconstruction://witness-protocol",
++        authority_ref="authority://user-plus-kernel",
++        privacy_boundary="reference_only_no_raw_chat",
++        precommit_hash=HASH_A,
++        sealed_at="2026-07-19T02:50:05+00:00",
++        evidence_refs=("evidence://selection",),
++    )
++
++
++def matcher_receipt(**overrides):
++    receipt = {
++        "matcher_id": "matcher://graded-sro-v1",
++        "matcher_version": "1.0",
++        "task_id": "task://later-1",
++        "witness_id": "PW-0002",
++        "scope": "project_scoped",
++        "evidence_refs": ["evidence://heldout"],
++        "calibration_ref": "calibration://frozen-heldout",
++        "provider_support_receipt_ref": "provider://sro-support",
++        "replayable_evidence": True,
++        "evidence_scope": "INTERNAL_PROJECT",
++        "calibration_status": "FROZEN_PROJECT_SCOPED",
++        "route_probabilities": {
++            "DIRECT_REUSE": 0.82,
++            "LOCAL_RECONSTRUCTION": 0.08,
++            "OBSERVE": 0.03,
++            "REJECT": 0.03,
++            "REVISE": 0.04,
++        },
++        "uncertainty": 0.12,
++        "drift_risk": 0.10,
++        "negative_transfer_risk": 0.08,
++        "structural_compatibility": 0.91,
++        "role_compatibility": 0.90,
++        "boundary_compatibility": 0.92,
++        "interface_compatibility": 0.88,
++        "trace_sufficiency": 0.94,
++        "calibration_error": 0.03,
++        "validity_state": "CURRENT",
++    }
++    receipt.update(overrides)
++    return receipt
++
++
++def test_serial_witness_lifecycle_preserves_precommit_and_reference_only_roles():
++    precommit = precommitted_witness()
++    immediate = precommit.with_immediate_delta("delta://PW-0002", "evidence://delta")
++    delayed = immediate.with_delayed_value("delayed://DR-0002", "evidence://delayed")
++
++    assert precommit.status == "PRECOMMITTED"
++    assert precommit.delta_ref == ""
++    assert immediate.status == "IMMEDIATE_DELTA_OBSERVED"
++    assert immediate.precommit_hash == precommit.precommit_hash
++    assert delayed.status == "DELAYED_VALUE_OBSERVED"
++    assert delayed.delayed_value_ref == "delayed://DR-0002"
++    assert "raw_chat" not in delayed.as_dict()
++    assert delayed.as_dict()["record_hash"]
++
++
++def test_precommit_rejects_outcome_leakage():
++    with pytest.raises(ValueError, match="precommitted_witness_cannot_contain_outcome_refs"):
++        SerialSelectionWitness(
++            **{**precommitted_witness().__dict__, "delta_ref": "delta://future"}
++        )
++
++
++def test_calibrated_internal_receipt_can_directly_reuse():
++    decision = GradedSROCompatibilityGate().evaluate(matcher_receipt())
++
++    assert decision.route == "DIRECT_REUSE"
++    assert decision.candidate_admitted is True
++    assert decision.reuse_allowed is True
++    assert decision.hard_gate_failures == ()
++
++
++def test_synthetic_formal_receipt_cannot_authorize_direct_reuse():
++    decision = GradedSROCompatibilityGate().evaluate(
++        matcher_receipt(
++            evidence_scope="SYNTHETIC_FORMAL",
++            calibration_status="FROZEN_HELD_OUT",
++        )
++    )
++
++    assert decision.route == "LOCAL_RECONSTRUCTION"
++    assert decision.reuse_allowed is False
++    assert decision.reconstruction_required is True
++    assert decision.reason == "synthetic_formal_evidence_cannot_authorize_direct_reuse"
++
++
++def test_trace_insufficiency_routes_to_observe_not_model_abstention():
++    decision = GradedSROCompatibilityGate().evaluate(
++        matcher_receipt(trace_sufficiency=0.2, uncertainty=0.9)
++    )
++
++    assert decision.route == "OBSERVE"
++    assert decision.observation_required is True
++    assert decision.reason == "task_trace_or_validity_state_insufficient"
++
++
++def test_model_uncertainty_routes_to_abstain():
++    decision = GradedSROCompatibilityGate().evaluate(
++        matcher_receipt(uncertainty=0.45)
++    )
++
++    assert decision.route == "ABSTAIN"
++    assert "high_uncertainty" in decision.decision_factors
++    assert decision.observation_required is False
++
++
++def test_role_collision_rejects_despite_high_structural_match():
++    decision = GradedSROCompatibilityGate().evaluate(
++        matcher_receipt(structural_compatibility=0.96, role_compatibility=0.15)
++    )
++
++    assert decision.route == "REJECT"
++    assert "role_incompatibility" in decision.decision_factors
++
++
++def test_validity_drift_routes_to_revise_before_reuse():
++    decision = GradedSROCompatibilityGate().evaluate(
++        matcher_receipt(drift_risk=0.82, validity_state="DRIFTED")
++    )
++
++    assert decision.route == "REVISE"
++    assert decision.revision_required is True
++    assert decision.reuse_allowed is False
++
++
++def test_interface_mismatch_downgrades_direct_prediction_to_local_reconstruction():
++    decision = GradedSROCompatibilityGate().evaluate(
++        matcher_receipt(interface_compatibility=0.45)
++    )
++
++    assert decision.route == "LOCAL_RECONSTRUCTION"
++    assert decision.reconstruction_required is True
++
++
++def test_invalid_probability_contract_fails_closed():
++    probabilities = dict(matcher_receipt()["route_probabilities"])
++    probabilities["DIRECT_REUSE"] = 0.90
++    decision = GradedSROCompatibilityGate().evaluate(
++        matcher_receipt(route_probabilities=probabilities)
++    )
++
++    assert decision.route == "ABSTAIN"
++    assert "invalid:route_probability_sum" in decision.hard_gate_failures
++
++
++def test_boolean_metric_is_not_treated_as_unit_interval_number():
++    decision = GradedSROCompatibilityGate().evaluate(
++        matcher_receipt(boundary_compatibility=True)
++    )
++
++    assert decision.route == "ABSTAIN"
++    assert "invalid:boundary_compatibility" in decision.hard_gate_failures
++
++
++def test_missing_provider_support_receipt_fails_closed():
++    receipt = matcher_receipt()
++    del receipt["provider_support_receipt_ref"]
++    decision = GradedSROCompatibilityGate().evaluate(receipt)
++
++    assert decision.route == "ABSTAIN"
++    assert "missing:provider_support_receipt_ref" in decision.hard_gate_failures
++
++
++def test_provider_layer_declares_and_fail_closes_graded_sro_operation():
++    layer = ProviderBackedRuntimeCognitionLayer()
++    operation_id = "graded_sro_retention_candidate_routing"
++    contracts = {
++        item["operation_id"]: item
++        for item in layer.contract()["provider_required_operations"]
++    }
++
++    assert operation_id in contracts
++    blocked = layer.audit_operation(operation_id, {"operation_id": operation_id})
++    assert blocked["status"] == BLOCKED_PROVIDER_SUPPORT_RECEIPT_MISSING
++    complete = matcher_receipt()["route_probabilities"]
++    receipt = {
++        "route_probabilities": complete,
++        "uncertainty": 0.12,
++        "drift_risk": 0.10,
++        "negative_transfer_risk": 0.08,
++        "structural_compatibility": 0.91,
++        "role_compatibility": 0.90,
++        "boundary_compatibility": 0.92,
++        "interface_compatibility": 0.88,
++        "trace_sufficiency": 0.94,
++        "calibration_error": 0.03,
++        "validity_state": "CURRENT",
++        "evidence_scope": "INTERNAL_PROJECT",
++        "confidence": 0.82,
++    }
++    passed = layer.audit_operation(
++        operation_id,
++        {"operation_id": operation_id, "provider_support_receipt": receipt},
++    )
++    assert passed["status"] == PASS_PROVIDER_SUPPORT_RECEIPT_PRESENT
++
++
++def test_delayed_retrieval_prediction_reveal_and_hash_chain():
++    ledger = DelayedRetrievalLedger()
++    prediction = DelayedRetrievalPrediction(
++        prediction_id="DR-0001",
++        source_witness_id="PW-0001",
++        target_task_id="PW-0002",
++        predicted_route="LOCAL_RECONSTRUCTION",
++        source_witness_hash=HASH_A,
++        target_task_commitment_hash=HASH_B,
++        sealed_at="2026-07-19T02:50:54+00:00",
++        evidence_refs=("evidence://preoutcome",),
++    )
++
++    first = ledger.register_prediction(prediction)
++    score = ledger.score_outcome(
++        "DR-0001",
++        observed_route="LOCAL_RECONSTRUCTION",
++        role_reconstruction_fidelity=1.0,
++        negative_transfer_penalty=0.0,
++        outcome_ref="outcome://v1.8",
++        outcome_hash=HASH_B,
++        revealed_at="2026-07-19T02:59:52+00:00",
++        scoring_authority_ref="authority://frozen-verifier",
++    )
++    second = ledger.events()[1]
++
++    assert score.route_supported is True
++    assert score.delayed_retrieval_score == 1.0
++    assert first["previous_event_hash"] == ""
++    assert second["previous_event_hash"] == first["event_hash"]
++    assert ledger.score("DR-0001") == score
++
++
++def test_delayed_outcome_cannot_precede_prediction_or_be_rewritten():
++    ledger = DelayedRetrievalLedger()
++    prediction = DelayedRetrievalPrediction(
++        prediction_id="DR-0002",
++        source_witness_id="PW-0002",
++        target_task_id="PW-0003",
++        predicted_route="OBSERVE",
++        source_witness_hash=HASH_A,
++        target_task_commitment_hash=HASH_B,
++        sealed_at="2026-07-19T03:00:00+00:00",
++        evidence_refs=("evidence://preoutcome",),
++    )
++    ledger.register_prediction(prediction)
++
++    kwargs = {
++        "observed_route": "OBSERVE",
++        "role_reconstruction_fidelity": 0.8,
++        "negative_transfer_penalty": 0.1,
++        "outcome_ref": "outcome://future",
++        "outcome_hash": HASH_B,
++        "scoring_authority_ref": "authority://verifier",
++    }
++    with pytest.raises(ValueError, match="outcome_must_follow_prediction_seal"):
++        ledger.score_outcome(
++            "DR-0002",
++            revealed_at="2026-07-19T02:59:59+00:00",
++            **kwargs,
++        )
++
++    ledger.score_outcome(
++        "DR-0002",
++        revealed_at="2026-07-19T03:00:01+00:00",
++        **kwargs,
++    )
++    with pytest.raises(ValueError, match="duplicate_delayed_retrieval_outcome"):
++        ledger.score_outcome(
++            "DR-0002",
++            revealed_at="2026-07-19T03:00:02+00:00",
++            **kwargs,
++        )
+diff --git a/agentos_core_slim_v0/SRO_RETENTION_RUNTIME.md b/agentos_core_slim_v0/SRO_RETENTION_RUNTIME.md
+new file mode 100644
+--- /dev/null
++++ b/agentos_core_slim_v0/SRO_RETENTION_RUNTIME.md
+@@ -0,0 +1,146 @@
++# AgentOS SRO-conditioned Retention Runtime v0.1
++
++Status: `PROJECT_SCOPED_KERNEL_PATCH__NO_PRODUCTION_ACTIVATION`
++
++## Purpose
++
++This patch turns the bounded retention/SFI research results into AgentOS
++infrastructure contracts. It does not make AgentOS the research object and it
++does not deploy the synthetic v1.8 matcher weights.
++
++The runtime separates three decisions:
++
++```text
++candidate formation / durable retention eligibility
++  -> ConstraintAlignedRetentionGate
++
++stored witness + current task
++  -> GradedSROCompatibilityGate
++  -> DIRECT_REUSE / LOCAL_RECONSTRUCTION / OBSERVE /
++     REJECT / REVISE / ABSTAIN
++
++predicted route + later outcome
++  -> DelayedRetrievalLedger
++  -> role fidelity - negative-transfer penalty
++```
++
++## Theory-to-engineering correspondence
++
++```text
++UpperOntologyObject
++  TemporalSRO + RankedCompatibilityFiber + MemoryUnit address/guidance
++
++ProjectObject
++  SerialSelectionWitness + GradedSROCompatibilityGate
++  + DelayedRetrievalLedger
++
++ObservableProxy
++  frozen provider/matcher receipt with route probabilities,
++  compatibility, uncertainty, drift, validity and evidence scope
++
++Metric
++  route, confidence, uncertainty, drift risk, delayed retrieval score,
++  negative-transfer penalty and hash-chain integrity
++```
++
++Correspondence is not ontological identity. A passing matcher receipt is a
++project-scoped runtime input, not proof of a universal memory mechanism.
++
++## Public kernel objects
++
++### `SerialSelectionWitness`
++
++Reference-only representation of:
++
++```text
++W_i = <C_i^sel, Delta_i, B_i^valid, A_i^SRO,
++       R_i^recon, Authority_i, Privacy_i>
++```
++
++The schema stores immutable artifact addresses, hashes and evidence refs. It
++does not store raw chat. Its lifecycle is append-only by replacement:
++
++```text
++PRECOMMITTED
++  -> IMMEDIATE_DELTA_OBSERVED
++  -> DELAYED_VALUE_OBSERVED
++```
++
++A precommit cannot contain future outcome refs.
++
++### `GradedSROCompatibilityGate`
++
++The Provider/model supplies bounded semantic estimates. AgentOSKernel validates:
++
++- exact five-class probability schema and probability sum;
++- frozen calibration and evidence scope;
++- replayable evidence and provider-support receipt refs;
++- structural, role, boundary and interface compatibility;
++- trace sufficiency, uncertainty, drift, validity and negative-transfer risk.
++
++The Kernel owns the final route. Safety invariants include:
++
++- missing/invalid matcher contracts -> `ABSTAIN`;
++- insufficient task trace or unknown validity -> `OBSERVE`;
++- structural-role/boundary mismatch or high negative-transfer risk -> `REJECT`;
++- stale/drifted validity -> `REVISE`;
++- insufficiently calibrated commitment -> `ABSTAIN`;
++- compatible family with interface/drift adaptation -> `LOCAL_RECONSTRUCTION`;
++- direct reuse only under project/internal or external evidence with low drift;
++- synthetic/formal evidence cannot authorize `DIRECT_REUSE` and is downgraded to `LOCAL_RECONSTRUCTION`.
++
++`OBSERVE` is environment-facing evidence acquisition. `ABSTAIN` is
++matcher-facing refusal to commit.
++
++### `DelayedRetrievalLedger`
++
++The ledger seals a route prediction before later-task reveal, then records one
++immutable outcome and computes:
++
++```text
++DR_score = role_reconstruction_fidelity - negative_transfer_penalty
++```
++
++Predictions and outcomes form a deterministic hash chain. Duplicate outcomes,
++outcomes without a prediction, and reveals at or before the prediction seal are
++rejected.
++
++## Provider contract
++
++`provider_backed_runtime_cognition_layer_v0_7` adds:
++
++```text
++graded_sro_retention_candidate_routing
++```
++
++Provider cognition estimates semantic compatibility and calibrated route
++probabilities. It has no final route, durable-write, production-activation or
++theory-promotion authority.
++
++## Compatibility
++
++- The existing `ConstraintAlignedRetentionGate` API is unchanged.
++- Existing project-scoped durable stores are unchanged.
++- No migration of existing retention candidates is automatic.
++- Existing candidates need an explicit `SerialSelectionWitness` reconstruction
++  and a new matcher receipt before query-time routing.
++- No release version bump is included; the active AgentOS release owner decides
++  when this candidate patch enters a release.
++
++## Evidence boundary
++
++May claim:
++
++- AgentOS can represent a privacy-minimal serial witness;
++- AgentOS can fail closed on uncalibrated or incomplete SRO receipts;
++- AgentOS can distinguish direct reuse, local reconstruction, observation,
++  rejection, revision and abstention;
++- AgentOS can audit pre-outcome delayed retrieval predictions.
++
++Must not claim:
++
++- the v1.8 synthetic matcher is production-valid;
++- universal/natural SRO accuracy;
++- mature memory value or minimality;
++- online family-language invention, split or retirement;
++- autonomous global-memory or theory-baseline write authority.

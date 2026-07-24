@@ -12,6 +12,7 @@ from decimal import Decimal, InvalidOperation
 from typing import Any
 
 from .anti_additive_models import AntiAdditiveMethodologyReceipt, methodology_candidate_commitment
+from .cognitive_work_models import CognitiveWorkControlDecision, validate_control_binding
 
 
 SUPPORTED_DECISION_STATUSES = {
@@ -76,7 +77,23 @@ class ConstraintAlignedRetentionGate:
         *,
         methodology_receipt: AntiAdditiveMethodologyReceipt | None = None,
         require_methodology_receipt: bool = False,
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> ConstraintAlignedRetentionDecision:
+        if cognitive_work_control is not None:
+            project_scope = candidate.get("project_scope_ref") or candidate.get("project_scope")
+            validate_control_binding(cognitive_work_control, project_scope=project_scope)
+            if cognitive_work_control.evidence_ref not in (candidate.get("evidence_refs") or []):
+                return self._blocked(
+                    "BLOCK_INSUFFICIENT_EVIDENCE",
+                    "cognitive_work_control_not_bound_to_retention_evidence",
+                    "cognitive_work_evidence_binding",
+                )
+            if not cognitive_work_control.retention_eligible:
+                return self._blocked(
+                    "OBSERVE_LOW_RETENTION_SCORE",
+                    "cognitive_work_trajectory_not_retention_eligible",
+                    "cognitive_work_retention_gate",
+                )
         if candidate.get("scope") != "project_scoped":
             return self._blocked(
                 "REQUEST_HUMAN_SCOPE_ESCALATION",

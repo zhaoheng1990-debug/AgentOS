@@ -19,6 +19,8 @@ from .contextual_policy_models import (
 )
 from .contextual_policy_calibration import ContextualPolicyCalibrationControl
 from .contextual_policy_calibration_gate import ContextualPolicyCalibrationGate
+from .cognitive_work_models import CognitiveWorkControlDecision
+from .cognitive_work_integrations import policy_work_failure, validate_policy_work_control, work_control_evidence_refs
 
 
 class ContextualOrganizationPolicySelector:
@@ -53,6 +55,7 @@ class ContextualOrganizationPolicySelector:
         feasible_policy_ids: tuple[str, ...],
         kernel_authorization_ref: str,
         calibration_controls: tuple[ContextualPolicyCalibrationControl, ...] | None = None,
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> ContextualOrganizationPolicyDecision:
         calibration_controls = calibration_controls or tuple(
             ContextualPolicyCalibrationControl.unmonitored(
@@ -62,6 +65,9 @@ class ContextualOrganizationPolicySelector:
                 policy_id=policy_id,
             )
             for policy_id in CONTEXTUAL_POLICY_IDS
+        )
+        validate_policy_work_control(
+            cognitive_work_control, project_scope=problem.project_scope, context_key=problem.context_key
         )
         self._validate_inputs(
             problem,
@@ -88,6 +94,7 @@ class ContextualOrganizationPolicySelector:
                 risk,
                 feasible_policy_ids,
                 control_by_policy[policy.policy_id],
+                cognitive_work_control,
             )
             for policy in policies
         )
@@ -95,7 +102,7 @@ class ContextualOrganizationPolicySelector:
         selected = max(eligible, key=lambda item: item.rank_vector) if eligible else None
         activation_mode = self._activation_mode(selected)
         evidence_refs = self._evidence_refs(
-            problem, matched_evidence, provider_assessments, calibration_controls
+            problem, matched_evidence, provider_assessments, calibration_controls, cognitive_work_control
         )
         return self._decision(
             decision_id=decision_id,
@@ -135,6 +142,7 @@ class ContextualOrganizationPolicySelector:
         risk: OrganizationRiskEnvelope,
         feasible_policy_ids: tuple[str, ...],
         calibration_control: ContextualPolicyCalibrationControl,
+        cognitive_work_control: CognitiveWorkControlDecision | None,
     ) -> ContextualPolicyCandidateEvaluation:
         failures = []
         if policy.policy_id not in feasible_policy_ids:
@@ -173,6 +181,9 @@ class ContextualOrganizationPolicySelector:
             if len(policy.roles) > risk.exploration_max_roles:
                 failures.append("exploration_role_ceiling_exceeded")
         failures.extend(self.calibration_gate.hard_failures(calibration_control))
+        work_failure = policy_work_failure(cognitive_work_control, policy.policy_id)
+        if work_failure:
+            failures.append(work_failure)
         if (
             calibration_control.control_mode == "EXPLORATION_ONLY"
             and len(policy.roles) > risk.exploration_max_roles
@@ -235,6 +246,7 @@ class ContextualOrganizationPolicySelector:
         matched_evidence: tuple[MatchedPolicyEvidence, ...],
         provider_assessments: tuple[ContextualProviderPolicyAssessment, ...],
         calibration_controls: tuple[ContextualPolicyCalibrationControl, ...],
+        cognitive_work_control: CognitiveWorkControlDecision | None,
     ) -> tuple[str, ...]:
         return tuple(
             dict.fromkeys(
@@ -247,6 +259,7 @@ class ContextualOrganizationPolicySelector:
                         for item in calibration_controls
                         if item.calibration_receipt_ref
                     ),
+                    *work_control_evidence_refs(cognitive_work_control),
                 )
             )
         )

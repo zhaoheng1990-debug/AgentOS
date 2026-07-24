@@ -6,6 +6,7 @@ from typing import Any, Callable
 
 from agentos_kernel import (
     GradedSROCompatibilityGate,
+    CognitiveWorkControlDecision,
     ProviderBackedRuntimeCognitionLayer,
     ProviderCognitiveTask,
     ProviderTaskRouter,
@@ -58,6 +59,7 @@ class ProviderBackedSROMatcher:
         calibration: SROCalibrationContract,
         *,
         route_sequence: int,
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> SRORetentionRouteReceipt:
         allowed_evidence = tuple(
             dict.fromkeys((*witness.evidence_refs, *task.evidence_refs, *calibration.evidence_refs))
@@ -80,6 +82,7 @@ class ProviderBackedSROMatcher:
             witness=witness,
             task_commitment_hash=task.task_commitment_hash,
             provider_invocation_receipt_hash=invocation["receipt_hash"],
+            cognitive_work_control=cognitive_work_control,
         )
         route_id = f"sro-route-{hash_payload([witness.witness_id, task.task_id, invocation['receipt_hash']])[:16]}"
         return SRORetentionRouteReceipt(

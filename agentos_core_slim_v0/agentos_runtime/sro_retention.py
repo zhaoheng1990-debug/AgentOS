@@ -8,6 +8,7 @@ from typing import Any
 
 from agentos_kernel import (
     ConstraintAlignedRetentionGate,
+    CognitiveWorkControlDecision,
     DelayedRetrievalPrediction,
     DelayedRetrievalScore,
     GradedSROCompatibilityGate,
@@ -88,6 +89,7 @@ class SRORetentionRuntime:
         *,
         migration_authority_ref: str,
         methodology_audit_id: str = "",
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> LegacyRetentionMigrationCandidate:
         legacy_hash = hash_payload(candidate)
         existing = self._repository.migration_by_legacy_hash(legacy_hash)
@@ -97,6 +99,7 @@ class SRORetentionRuntime:
             candidate,
             migration_authority_ref=migration_authority_ref,
             methodology_audit_id=methodology_audit_id,
+            cognitive_work_control=cognitive_work_control,
         )
         self._repository.save_migration_created(migration)
         return migration
@@ -127,6 +130,7 @@ class SRORetentionRuntime:
         *,
         kernel_authorization_ref: str,
         methodology_audit_id: str = "",
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> LegacyRetentionMigrationCandidate:
         migration = self._require_migration(migration_id)
         updated = self._migrator.revalidate(
@@ -134,6 +138,7 @@ class SRORetentionRuntime:
             revalidated_candidate,
             kernel_authorization_ref=kernel_authorization_ref,
             methodology_audit_id=methodology_audit_id,
+            cognitive_work_control=cognitive_work_control,
         )
         self._repository.save_migration_revalidated(
             updated,
@@ -194,6 +199,7 @@ class SRORetentionRuntime:
         witness_id: str,
         task: SRORetentionTask,
         calibration: SROCalibrationContract,
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> SRORetentionRouteReceipt:
         witness = self._repository.witness(witness_id)
         if witness is None:
@@ -205,6 +211,7 @@ class SRORetentionRuntime:
             task,
             calibration,
             route_sequence=self._repository.route_count + 1,
+            cognitive_work_control=cognitive_work_control,
         )
         self._repository.save_route(route_receipt)
         return route_receipt

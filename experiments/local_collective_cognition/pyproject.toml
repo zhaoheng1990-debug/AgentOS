@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentos-local-collective-cognition"
+version = "0.94.0"
+description = "Optional local Provider and benchmark experiment pack for AgentOS"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+local-transformers = ["accelerate", "torch", "transformers"]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["local_collective_cognition*"]

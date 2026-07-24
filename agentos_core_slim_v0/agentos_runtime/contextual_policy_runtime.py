@@ -12,6 +12,7 @@ from agentos_kernel import (
     ContextualOrganizationPolicySelector,
     ContextualProblemStructure,
     ContextualRolePolicy,
+    CognitiveWorkControlDecision,
     OrganizationBudgetEnvelope,
     OrganizationRiskEnvelope,
     OrganizationTrialRecord,
@@ -103,6 +104,7 @@ class ContextualOrganizationPolicyRuntime:
         budget: OrganizationBudgetEnvelope,
         risk: OrganizationRiskEnvelope,
         kernel_authorization_ref: str,
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> ContextualOrganizationSelectionReceipt:
         if not re.fullmatch(r"[A-Za-z0-9_.-]+", selection_id):
             raise ValueError("contextual_policy_selection_id_invalid")
@@ -151,6 +153,7 @@ class ContextualOrganizationPolicyRuntime:
             feasible_policy_ids=tuple(assignments),
             kernel_authorization_ref=kernel_authorization_ref,
             calibration_controls=calibration_controls,
+            cognitive_work_control=cognitive_work_control,
         )
         assignment = self._assignment_planner.authorized_assignment(
             decision.selected_policy_id,

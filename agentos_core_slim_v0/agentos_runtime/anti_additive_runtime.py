@@ -10,6 +10,7 @@ from agentos_kernel import (
     AntiAdditiveMethodologyGate,
     AntiAdditiveMethodologyPolicy,
     AntiAdditiveMethodologyReceipt,
+    CognitiveWorkControlDecision,
     ProviderTaskRouter,
 )
 
@@ -72,6 +73,7 @@ class AntiAdditiveMethodologyRuntime:
         *,
         candidate: AntiAdditiveChangeCandidate,
         kernel_authorization_ref: str,
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> AntiAdditiveMethodologyReceipt:
         if candidate.project_scope != self.project_scope:
             raise ValueError("anti_additive_runtime_cross_scope_candidate")
@@ -86,6 +88,7 @@ class AntiAdditiveMethodologyRuntime:
             policy=self.policy,
             kernel_authorization_ref=kernel_authorization_ref,
             calibration_control=calibration_control,
+            cognitive_work_control=cognitive_work_control,
         )
         self._repository.persist_receipt(receipt)
         return receipt
@@ -94,7 +97,4 @@ class AntiAdditiveMethodologyRuntime:
         return self._repository.verify_replay()
 
     def methodology_receipt(self, *, audit_id: str, project_scope: str):
-        return self._repository.methodology_receipt(
-            audit_id=audit_id,
-            project_scope=project_scope,
-        )
+        return self._repository.methodology_receipt(audit_id=audit_id, project_scope=project_scope)

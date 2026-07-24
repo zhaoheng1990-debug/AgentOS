@@ -9,6 +9,8 @@ from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
+from .cognitive_work_models import CognitiveWorkControlDecision
+
 
 TASK_STATES = {
     "INTAKE",
@@ -124,6 +126,35 @@ class RuntimeTaskLifecycle:
 
     def complete(self, run_id: str) -> TaskRunState:
         return self._transition(run_id, "COMPLETED", "complete", {})
+
+    def apply_cognitive_work_control(
+        self,
+        run_id: str,
+        control: CognitiveWorkControlDecision,
+    ) -> TaskRunState:
+        """Bind Kernel cognitive-work control to the durable task schedule."""
+        state = self.load(run_id)
+        if state.run_id != control.trajectory_id:
+            raise ValueError("cognitive_work_task_run_binding_invalid")
+        target_state = {
+            "CONTINUE": "RUNNING",
+            "STOP_SUFFICIENT": "PAUSED",
+            "STOP_LOW_MARGINAL": "PAUSED",
+            "REORGANIZE": "PLANNED",
+            "ESCALATE": "WAITING",
+            "BLOCK_BUDGET": "BLOCKED",
+        }[control.action]
+        return self._transition(
+            run_id,
+            target_state,
+            "cognitive_work_schedule",
+            {
+                "action": control.action,
+                "reason": control.reason,
+                "cognitive_work_control_hash": control.decision_hash,
+                "allow_additional_round": control.allow_additional_round,
+            },
+        )
 
     def rollback(self, run_id: str, target_stage: str) -> dict[str, Any]:
         state = self.load(run_id)

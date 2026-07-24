@@ -22,6 +22,7 @@ from .anti_additive_models import (
     AntiAdditiveMethodologyReceipt,
     methodology_candidate_commitment,
 )
+from .cognitive_work_models import CognitiveWorkControlDecision, validate_control_binding
 
 
 POLICY_OWNER = "AgentOSKernel.ICMEvolutionPolicy"
@@ -103,6 +104,7 @@ class AutonomousICMEvolutionPolicy:
         self,
         candidate: dict[str, Any],
         methodology_receipt: AntiAdditiveMethodologyReceipt | None = None,
+        cognitive_work_control: CognitiveWorkControlDecision | None = None,
     ) -> EvolutionReview:
         if candidate.get("scope") not in {"project_scoped", "AgentOS project runtime policy selection"}:
             return EvolutionReview("REQUEST_HUMAN_SCOPE_ESCALATION", "None", "scope_not_project_bounded", False)
@@ -113,6 +115,25 @@ class AutonomousICMEvolutionPolicy:
         if candidate.get("future_cbit_gain") not in {"positive", "high", True}:
             return EvolutionReview("NO_WRITE_KEEP_CANDIDATE", "None", "future_cbit_gain_not_positive", False)
         kind = candidate.get("target_type") or ("OperatorMemory" if "UPS" in candidate.get("research_line", "").upper() or "UtilityPolicySelector" in candidate.get("research_line", "") else "MemoryUnit")
+        if cognitive_work_control is not None:
+            validate_control_binding(
+                cognitive_work_control,
+                project_scope=candidate.get("project_scope_ref", ""),
+            )
+            if cognitive_work_control.evidence_ref not in (candidate.get("evidence_refs") or []):
+                return EvolutionReview(
+                    "BLOCK_WRITE_INSUFFICIENT_EVIDENCE",
+                    "None",
+                    "cognitive_work_control_not_bound_to_candidate",
+                    False,
+                )
+            if kind == "OperatorMemory" and not cognitive_work_control.operator_memory_eligible:
+                return EvolutionReview(
+                    "NO_WRITE_KEEP_CANDIDATE",
+                    "None",
+                    "cognitive_work_trajectory_not_operator_memory_eligible",
+                    False,
+                )
         methodology_failure = self._methodology_failure(candidate, kind, methodology_receipt)
         if methodology_failure:
             return EvolutionReview("NO_WRITE_KEEP_CANDIDATE", "None", methodology_failure, False)

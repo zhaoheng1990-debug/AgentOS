@@ -14,7 +14,7 @@ from hashlib import sha256
 from typing import Any
 
 
-PROVIDER_COGNITION_LAYER_ID = "provider_backed_runtime_cognition_layer_v0_9"
+PROVIDER_COGNITION_LAYER_ID = "provider_backed_runtime_cognition_layer_v0_10"
 
 PROVIDER_REQUIRED = "PROVIDER_REQUIRED"
 PROVIDER_OPTIONAL = "PROVIDER_OPTIONAL"
@@ -514,6 +514,40 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         "keep_the_organization_policy_open_without_a_bounded_provider_supported_diagnosis",
     ),
     CognitionOperationContract(
+        "cognitive_work_round_assessment",
+        "cognitive_organization_runtime",
+        PROVIDER_REQUIRED,
+        "judge evidence novelty, constraint coverage, hypothesis diversity, redundancy, correlated error, problem drift, and residual uncertainty for one admitted work round",
+        "own exact token, call, latency, tool, cost, Harness Cbit, budget, marginal-efficiency, stop, reorganization, escalation, retention, and memory-authority decisions",
+        (
+            "evidence_novelty",
+            "constraint_coverage",
+            "hypothesis_diversity",
+            "redundancy",
+            "error_correlation",
+            "problem_drift",
+            "uncertainty",
+            "recommended_action",
+            "rationale",
+            "evidence_refs",
+        ),
+        "block_round_accounting_without_semantic_support_no_local_semantic_guess",
+    ),
+    CognitionOperationContract(
+        "organization_evolution_proposal",
+        "cognitive_organization_runtime",
+        PROVIDER_REQUIRED,
+        "propose bounded role, contract, and communication-topology mutations from the frozen task, incumbent organization, registered operators, and historical operator credit",
+        "freeze the task and incumbent, mechanically apply registered operators, obtain Harness outcomes, enforce cost and cross-stage stability gates, update credit, and retain final candidate authority",
+        (
+            "proposals",
+            "global_rationale",
+            "uncertainty",
+            "evidence_refs",
+        ),
+        "block_the_generation_without_a_bounded_provider_supported_mutation_proposal",
+    ),
+    CognitionOperationContract(
         "knowledge_invalidation_root_assessment",
         "cognitive_ensemble_runtime",
         PROVIDER_REQUIRED,
@@ -522,9 +556,91 @@ PROVIDER_REQUIRED_OPERATIONS: tuple[CognitionOperationContract, ...] = (
         ("invalidation_roots", "adjudication_basis", "affected_scope", "revalidation_need", "evidence_refs"),
         "quarantine_candidate_roots_without_local_semantic_invalidation_guess",
     ),
+    CognitionOperationContract(
+        "cognitive_action_semantic_execution",
+        "cognitive_organization_runtime",
+        PROVIDER_REQUIRED,
+        "perform one role-bounded cognitive action over an explicit object and return support, counterevidence, uncertainty, changed commitments, and next-action candidates",
+        "validate role capability, object and evidence binding, action cost, receipt hash, and preserve final Kernel state authority",
+        (
+            "action_type",
+            "object_ref",
+            "result_state",
+            "result",
+            "support",
+            "counterevidence",
+            "uncertainty",
+            "changed_commitments",
+            "recommended_next_actions",
+            "evidence_refs",
+        ),
+        "keep_the_object_open_without_a_valid_role_bounded_action_receipt",
+    ),
+    CognitionOperationContract(
+        "typed_relation_evidence_binding",
+        "evidence_runtime",
+        PROVIDER_REQUIRED,
+        "bind source object, target outcome, evidence design, primary evidence, corroboration, counterevidence, and evidence gaps without deciding relation truth",
+        "require strict primary-evidence consensus, merge only nonconflicting typed auxiliary evidence, block cross-type conflicts, and retain truth-state authority",
+        (
+            "relation_id",
+            "source_object_ref",
+            "target_object_ref",
+            "source_object_binding",
+            "target_outcome_binding",
+            "evidence_design",
+            "primary_evidence_refs",
+            "corroborating_evidence_refs",
+            "counterevidence_refs",
+            "gap_evidence_refs",
+        ),
+        "block_truth_state_assessment_until_typed_binding_consensus",
+    ),
+    CognitionOperationContract(
+        "prospective_selection_semantic_routing",
+        "kernel",
+        PROVIDER_REQUIRED,
+        "rank real alternatives before consequences are known and estimate path change, applicability, expected Cbit, residual risk, and uncertainty",
+        "seal alternatives and the selected, rejected, and deferred partition before consequences; enforce SRO, validity, reconstruction, and authority boundaries",
+        (
+            "ranked_alternative_refs",
+            "selected_ref",
+            "path_change_hypothesis_ref",
+            "expected_cbit_gain",
+            "residual_risk",
+            "uncertainty",
+            "evidence_refs",
+        ),
+        "do_not_create_a_selection_event_without_provider_supported_routing",
+    ),
+    CognitionOperationContract(
+        "selection_portfolio_retention_assessment",
+        "memory_runtime",
+        PROVIDER_REQUIRED,
+        "judge the retained value of a precommitted selection from separately bound applicability, consequence, value, validity, and negative-transfer evidence",
+        "keep consequences unassigned, enforce non-compensable validity and binding gates, issue only project-scoped shadow candidates, and retain final write authority",
+        (
+            "applicability_assessment",
+            "value_assessment",
+            "validity_assessment",
+            "negative_transfer_risk",
+            "recommended_candidate_state",
+            "evidence_refs",
+        ),
+        "observe_or_quarantine_without_complete_selection_portfolio_support",
+    ),
 )
 
 MECHANICAL_RUNTIME_OPERATIONS: tuple[CognitionOperationContract, ...] = (
+    CognitionOperationContract(
+        "cognitive_work_trajectory_accounting",
+        "runtime_mechanical",
+        PROVIDER_FORBIDDEN,
+        "none",
+        "sum admitted token, call, latency, tool, and cost counters; bind Harness Cbit; calculate marginal efficiency; enforce budgets; and issue final bounded trajectory control",
+        (),
+        "reject_unbound_rounds_or_block_budget_and_authority_overreach",
+    ),
     CognitionOperationContract(
         "anti_additive_methodology_kernel_gate",
         "runtime_mechanical",

@@ -3,7 +3,7 @@
 **Harness 与 Runner 的认知运行时操作系统**<br>
 **A cognitive runtime operating system for Harnesses and Runners**
 
-当前版本 / Current version: **AgentOS CoreSlim 0.4.0-alpha.17**
+当前版本 / Current version: **AgentOS CoreSlim 0.4.0-alpha.21**
 
 [中文](#中文) | [English](#english) | [Apache-2.0](LICENSE)
 
@@ -66,7 +66,10 @@ flowchart TB
 | 组件 | 作用 |
 | --- | --- |
 | Temporal SRO 与保留复用运行时 | Provider 支撑约束场、结构匹配、迁移风险和复用路线判断；Runtime 绑定证据、对象与状态，Kernel 作最终路由裁决 |
+| Selection-first Retention | 在结果出现前封存真实备选、选择、拒绝/延后项与路径变化假设；结果出现后先进入 `UNASSIGNED` 后果账本，再分别评估适用性、价值与有效性 |
 | Task Lifecycle | 管理任务状态、checkpoint、暂停、恢复、重试和 rollback |
+| Cognitive Work Accounting | 逐轮绑定 token、调用、工具、延迟、成本与 Harness Cbit；由 Provider 支撑新颖性、冗余、相关错误和漂移诊断，Kernel 决定继续、停止、重组或升级 |
+| Organization Evolution | 将角色、契约、通信拓扑和实际 Agent/模型执行绑定变成任务绑定的可演化对象；Provider 提出有界变异，Harness 评测，Kernel 按能力证据、收益、成本和跨阶段稳定性保留候选 |
 | Provider Execution Plane | 路由 provider 任务，执行 schema 校验、fallback、调用回执与 provenance 记录 |
 | Provider Cognition Layer | 要求语义操作具有 provider 支持，并检查 evidence/judgment consistency；冲突时 fail closed |
 | Quality Decision Matrix | 分离证据准入、范围覆盖、基线资格、阅读完整性、发布与保留判断 |
@@ -95,10 +98,13 @@ flowchart TB
 - **Calibration-controlled Selector**：Selector 显式读取最新、可回放、同范围的 calibration receipt；无观测或样本不足只能探索，`WATCH` 取消项目级授权，`DRIFTED` 阻断对应政策，只有 `CALIBRATED` 才保留既有 matched-evidence 授权资格。
 - **Anti-Additive Methodology Runtime**：把 MethodologyKernel 的七类补丁堆积信号变成 Provider-backed、Kernel-owned 的元规则门；prediction-outcome calibration 用真实 Harness 结果约束预测权威，同一可回放 receipt source 按对象强绑定接入问题准入、retention promotion 与 baseline evolution。
 - **Provider-backed SRORetentionRuntime**：把 retention admission 与 query-time reuse 分开，以项目绑定 witness、Provider 调用回执和持久哈希链约束复用；旧记录只能迁移为待重建、待复验或隔离候选。
+- **Selection-first Retention Object Model**：以 `CognitiveActionReceipt`、typed evidence consensus 和结果前封存的 `ProspectiveSelectionEvent` 替代事后归因；后果默认 `UNASSIGNED`，适用性、Cbit 价值和有效性保持分离，旧 `SerialSelectionWitness` 只能迁移为待补全候选。
+- **Cognitive Work Accounting Runtime**：核算每轮在线认知工作和边际 Cbit，把同一哈希绑定控制回执接入 SRO、任务调度、组织策略、Anti-Additive、Retention 与 OperatorMemory；成功不授予全局记忆或生产权限。
+- **Organization Evolution Runtime**：从冻结基线组织出发，在注册角色、契约和 Agent 能力范围内生成、执行和比较工作流变体；支持角色与通信边增删、角色专业化、基于同上下文证据的 Agent/模型换绑、自适应算子信用、跨阶段稳定性、预算停止和完整回放。
 
 ### 第一阶段认知角色
 
-0.4.0-alpha.17 保留了已经从 prompt 标签拆出的四个独立运行时 Agent，并增加受 Kernel 约束的认知协调者：
+0.4.0-alpha.20 保留了已经从 prompt 标签拆出的四个独立运行时 Agent，并增加受 Kernel 约束的认知协调者：
 
 - Generator、Reviewer、Replicator、Synthesizer 分别拥有独立身份、上下文和私有记忆；
 - Reviewer 只能读取正式 proposal，Replicator 不能读取 Reviewer 回执；
@@ -216,6 +222,8 @@ Runner 下方可以连接多个 Harness，例如代码执行、浏览器、搜�
 21. 对保留候选执行 Provider-backed SRO 匹配；Kernel 按强对象绑定选择复用、适配、复验、重推导或拒绝，并将延迟结果写入持久校准账本；
 22. 输出 candidate、manifest、hash inventory、replay/rollback pointer 和下一轮候选；
 23. 只有通过明确 promotion gate 的资产才能进入 accepted 基线。
+24. 需要优化给定任务的工作流时，冻结基线组织、角色契约目录、anchor surface 和预算；Organization Evolution Runtime 让 Provider 提出有界变异、Harness 执行候选、Kernel 保留通过收益与跨阶段稳定性门控的最优组织。
+25. 需要比较小模型、强模型或不同 Harness 绑定时，把执行者绑定写入 organization genome；新绑定先通过 Registry、能力、范围和同上下文证据门，再由同一冻结 Harness 比较 Cbit、成本、纠错与 anchor 负迁移。
 
 ### 快速验证
 
@@ -247,9 +255,17 @@ review = modules.require_one("epistemic_review")
 
 ### 当前能力边界
 
-CoreSlim 0.4.0-alpha.17 为 Anti-Additive 预测加入了结果校准和统一 receipt source。Provider 继续支撑对象充分性、七类补丁堆积触发器以及预期 Cbit/复杂度判断；Kernel 用实际 Harness outcome 计算误差和正 margin 存活率，并将精确 scope 标为 exploration-only、trusted 或 drift-blocked。问题准入与 baseline evolution 只消费 candidate authority，retention promotion 和 Autonomous ICM Evolution 持久写入要求 durable authority；任何 receipt 都不授予 accepted baseline、全局记忆或生产权限。本版在最小 clean copy 中通过 Python 编译和全部 348 个测试；三条 smoke 的 manifest、hash、ZIP CRC 与条目集合均通过独立审计。
+CoreSlim 0.4.0-alpha.21 在 alpha.20 的能力条件化组织演化之上，新增 selection-first retention 对象模型。Runtime 现在可以在后果出现前封存真实备选与选择路径，在后果出现后保持逻辑后果未归因，并用相互不可补偿的 applicability、value 和 validity 证据形成项目级保留候选。typed evidence 合同来自 v0.63 revealed mechanism calibration 的完整通过，但尚未经过 fresh generalization，因此这里只同步合同与硬门，不授予自动 retention、baseline 或 production 权限。小模型群体达到强模型上限仍是开放验证目标。
+
+工作站外置实验进一步给出了一个更具体的边界：在不明示“对象存在歧义”的配对 holdout 上，Gemma 2B/Qwen 1.5B 表现为高召回的歧义提出者，DeepSeek-R1 32B 表现为高特异度的 null 质疑者，但三者都只有 `0.50` balanced accuracy。朴素 OR/多数票可升至 `0.625`，仍因 null specificity 仅 `0.25` 而未通过冻结门控。这说明角色互补的误差方向已经出现，但协调收益尚未闭合；Kimi K2.5 目前只是来自另一语义标注任务的协调者候选，必须在全新隐藏样本上单独校准。
+
+随后完成的 12 项全新协调 holdout 进一步收窄了边界。Kimi K2.5 在两种有界 batch 构造下都没有形成可解析语义决策；校准策略允许的 DeepSeek V4 Flash 备用协调者则把冻结 OR 的 balanced accuracy 从 `0.50` 提升到 `0.75`，修正 4 题、伤害 1 题，并通过调用与 token 预算，但 null specificity 为 `0.667`，未达到 `0.75` 门槛。当前证据支持“协调可以产生正 Cbit”，尚不支持“协调角色已经可靠可用”。
 
 首次 live 数据没有证明认知乘法，反而给出了必要的负结果：最佳成员 observed Cbit 为 `1.00`，固定团队和动态团队均为 `0.60`；计入语义质量与成本后，动态团队相对最佳成员为 `-0.5375`，相对固定团队为 `-0.13`。系统据此给团队和编队 Provider 记录负信用，而没有把协作包装成成功。一次独立保留的 Moonshot 运行因 Reviewer 连续两次 `PROVIDER_UNAVAILABLE` 被 Kernel 阻断；成功运行使用 DeepSeek 下不同模型与独立上下文，因此只证明 live 多角色执行，不证明 live 多 Provider 稳健性。生产可靠性、外部 Replicator Harness、跨项目 live 重复、长期议程学习和信用迁移仍待验证。
+
+最新的工作站外置 v0.54 实验进一步验证了“角色拆分不等于放弃 Runtime 主体性”。两个决策盲、上下文隔离的 evidence-first 角色只比较已实现证据 Cbit 与未来试验期权，不读取初始仲裁结论、对方回执或私有结果；只有两者同时支持 delta 后，Runtime 才能继续执行 lineage、lane、容量和 supported-null 保护门。在 8 个全新领域、3 次复现的 holdout 上，22/22 份盲审回执合法，8 次共识救回在后验中全部为 beneficial、0 次 harmful，正 oracle 捕获率由 v0.53 的 `0.500` 升至 `0.833`。
+
+这仍不是可晋级的基座能力。v0.54 的十个接纳项虽然 gross Cbit 均为 `+2.0` 且没有 gross loss，但全部集中在 informative-null lane；另有一个非 distinct delta 被 lineage 门正确阻断，跨复现 relation Jaccard 也低于冻结条件。因此 closure 只记录“盲审仲裁假设得到内部合成证据支持”，整阶段仍为 `REJECT`，没有 CoreSlim、selection、retention、baseline 或 production authority。
 
 ## English
 
@@ -267,6 +283,8 @@ A Runner hosts interaction and advances work. Harnesses perform concrete actions
 - provider routing, schema validation, fallback, provenance, and invocation receipts;
 - source-grounded semantic consistency gates with fail-closed revalidation;
 - provider-backed SRO retention and query-time reuse with project-bound witnesses, invocation-bound matcher receipts, Kernel-owned routes, and persistent delayed calibration replay;
+- selection-first retention with pre-consequence alternative sealing, unassigned consequence binding, separate applicability/value/validity evidence, and candidate-only portfolio decisions;
+- role-bounded cognitive-action receipts and typed relation-evidence consensus with strict primary evidence and nonconflicting auxiliary union;
 - durable task lifecycle, checkpoints, replay, hashes, and rollback;
 - evidence admission, quality decisions, artifact versions, and cognitive asset states;
 - falsification-first review, independent replication, epistemic credit, endogenous agenda selection, and cascading invalidation;
@@ -283,6 +301,8 @@ A Runner hosts interaction and advances work. Harnesses perform concrete actions
 - exact-scope Selector calibration that binds Provider predictions to admitted Harness outcomes, computes mechanical error/bias/coverage profiles, uses Provider-supported semantic drift diagnosis, and leaves final prediction-trust state with the Kernel;
 - calibration-controlled contextual selection that binds all seven policy controls into the decision receipt, preserves legacy behavior without a source, downgrades missing/insufficient/watch states to exploration, and hard-blocks drifted policies;
 - Provider-backed Anti-Additive Methodology meta-governance with prediction-outcome calibration, exact-scope trust control, and one replayable receipt source that distinguishes candidate admission from durable project writes;
+- exact per-round cognitive-work accounting with Provider-supported novelty, redundancy, correlated-error and drift diagnosis, plus Kernel-owned marginal-Cbit, budget, stop, reorganization, escalation, retention, and OperatorMemory controls;
+- capability-conditioned organization evolution over registered roles, contracts, communication edges, and exact Agent/model/Provider/Runner/Harness bindings, with evidence-gated rebinding, Harness-owned outcomes, Kernel fitness and cross-stage stability, adaptive operator credit, budgeted stop, and replay;
 - measurable group evaluation against the best individual member.
 
 ### Using AgentOS
@@ -293,9 +313,37 @@ This repository currently exposes CoreSlim as Python source rather than a packag
 
 ### Status and limits
 
-CoreSlim 0.4.0-alpha.17 adds outcome calibration and a shared receipt source to Anti-Additive Methodology. Providers still support object adequacy, seven-trigger, and expected gain/cost judgments; the Kernel admits Harness outcomes, calculates exact-scope error and margin survival, and marks prediction authority as exploration-only, trusted, or drift-blocked. Problem admission and baseline evolution consume candidate authority, while retention promotion and Autonomous ICM Evolution durable writes require durable authority. No methodology receipt grants accepted-baseline, global-memory, or production authority. This release passes Python compilation and all 348 tests in a minimal clean copy; manifests, hashes, ZIP CRCs, and entry surfaces for all three smoke packs pass independent audit.
+CoreSlim 0.4.0-alpha.21 adds a selection-first retention object model above alpha.20's capability-conditioned organization evolution. It seals real alternatives and the selected path before consequences, keeps later consequences logically unassigned, and forms only project-scoped candidates from non-compensable applicability, value, and validity evidence. The typed-evidence contract passed the revealed v0.63 mechanism calibration, but has not passed fresh generalization; this release therefore synchronizes contracts and hard gates without granting automatic retention, baseline, or production authority. Live fresh-holdout evidence that a small-model collective reaches a strong-model ceiling remains an open validation target.
+
+An external workstation experiment sharpens that boundary. On a paired holdout that never states that an object is ambiguous, Gemma 2B and Qwen 1.5B behaved as high-recall ambiguity proposers while DeepSeek-R1 32B behaved as a high-specificity null skeptic; every individual reached only `0.50` balanced accuracy. Naive OR or majority voting reached `0.625` but failed the frozen gate with `0.25` null specificity. Opposed error orientations are therefore observed, but coordination gain is not closed. Kimi K2.5 is only a coordinator candidate transferred from a different semantic-label task and still requires a new hidden-sample calibration.
+
+The subsequent 12-item fresh coordination holdout narrowed the boundary again. Kimi K2.5 produced no parseable semantic decisions under two bounded batch constructions. The calibration-authorized DeepSeek V4 Flash fallback raised the frozen OR baseline from `0.50` to `0.75` balanced accuracy, correcting four cases and harming one within the call and token budgets. Its `0.667` null specificity missed the frozen `0.75` gate. The evidence now supports positive coordination Cbit, not a reliable or admitted coordinator role.
+
+An independent 16-item hard-null holdout then froze material-ambiguity and receipt-quality controls before execution and reused none of those 12 labels. The local proposer/skeptic orientations persisted, but DeepSeek V4 Flash completed only 8 controlled decisions and fell to `0.375` balanced accuracy with `0.25` hard-null specificity, below the frozen OR baseline by `0.125`. Two batches were rejected for internally inconsistent receipt-quality judgments. This negative result blocks coordinator admission and forbids further tuning on either revealed holdout.
+
+The follow-up moved receipt quality into its own independent calibration object rather than tuning the failed coordinator. Fourteen new receipt packets fed separately aliased GPT-5.6 and Gemini-3.1 annotation lanes; they agreed on 77/84 criterion cells, and identity-blind Kimi K3 adjudication resolved the remaining seven. This produced a complete model-panel reference candidate without claiming human gold or ground truth.
+
+Against that reference, the previously frozen DeepSeek V4 judge failed the semantic-quality gate: criterion agreement was `0.75`, packet-state accuracy was `0.429`, and false-usable rate was `0.667`. It marked eight of twelve reference-unusable receipts as usable, with the weakest performance on whether a question actually resolves a live ambiguity. The result is `RECEIPT_QUALITY_JUDGE_CALIBRATION_GATE_FAILED`; it grants no coordinator, selection, retention, or production authority.
+
+A new external holdout now tests a narrower architecture instead of tuning that failed judge. Eighteen fresh receipts are evaluated by the original six-criterion baseline plus two context-isolated negative-evidence roles: one checks whether a live object ambiguity actually remains, and one checks for invented premises or solution dependence. Kernel-side fusion is veto-only, so specialists can downgrade but never promote a baseline receipt. DeepSeek completed all 27 frozen calls in 42,717 tokens; the baseline marked 16/18 usable while split fusion retained six. This is only a pre-label candidate result. GPT-5.6/Gemini-3.1 annotation and identity-blind Kimi K3 adjudication must establish the model-panel reference before any gain, authority, or retention claim is allowed.
+
+The two independent annotation lanes validated and agreed on 96/108 criterion cells. Every one of the twelve disagreements concerned whether the proposed question resolves a genuinely live ambiguity; Kimi K3 resolved all twelve as `ABSENT`, with no unresolved label. The resulting candidate-only reference contains six usable and twelve unusable packets. The monolithic baseline falsely promoted ten of the twelve unusable packets, while veto fusion rejected all twelve and retained all six usable packets. False-usable rate therefore fell from `0.833` to `0`, usable recall remained `1.0`, unresolved rate was `0`, and the `3.0x` call multiplier stayed inside the frozen `3.2x` budget.
+
+This closes a calibration candidate, not a production capability. The reference is a three-model panel rather than human gold, and the corpus was designed around the two observed failure modes. AgentOS therefore grants no selection, retention, coordination, or production authority yet; the next requirement is a distribution-shifted holdout with different surface forms and mixed defect interactions.
+
+That distribution-shifted v0.2 holdout is now complete outside CoreSlim. It freezes 24 new receipts across six construction categories, four packet formats, mixed defects, and suspicious-looking clean cases. GPT-5.6 and Gemini-3.1 agreed on 136/144 blind criterion labels, and identity-blind Kimi K3 resolved the eight live-ambiguity disputes to complete a balanced 12-usable/12-unusable model-panel reference. Single and `3x` budget-matched monolithic inference each reached `0.50` packet accuracy and falsely promoted every unusable packet. Same-model role split reached `0.917` accuracy and zero false-usable output at `3.083x` calls, but its two false vetoes reduced usable recall to `0.833`, below the frozen safety gates. The architecture therefore remains `ROLE_STRUCTURE_GENERALIZATION_GATE_FAILED`: correction gain generalized, but veto precision did not.
+
+A separate v0.3 experiment tested conditional veto confirmation on 24 entirely new receipts. GPT-5.6 and Gemini-3.1 agreed on 133/144 blind criterion labels, and identity-blind Kimi K3 resolved the eleven live-ambiguity disputes to complete a balanced 12-usable/12-unusable reference. Naive veto reached `0.917` accuracy, `1.0` usable recall, and `0.167` false-usable rate at `3.0x` calls. The confirmer restored five vetoes, but every restored receipt was reference-unusable; accuracy fell to `0.708` and false-usable rate rose to `0.583` at `3.25x`. The result is `PRECISION_CONFIRMED_VETO_GATE_FAILED`: adding a same-model confirmation role produced measurable anti-additive harm rather than cognitive gain.
+
+The v0.4 external experiment now independently replicates the simpler three-role architecture and tests an equal-cost structured semantic defer. The structured Provider emits object-fixation, rival-validity, and question-function subjudgments while Runtime derives the final state. All 72 pre-reference calls completed except one structured consistency receipt. Naive replication retained 10/24 receipts; structured defer retained none, vetoed 22, and left two unresolved at the same `3.0x` arm budget. Private diagnostics show a universal-explicit-object collapse, so further Provider runs have stopped. The frozen experiment remains `AWAITING_MODEL_ANNOTATIONS`; its external panel will score naive replication and formally test the structured failure without granting authority early.
+
+The heterogeneous execution also exposed an operational boundary. Kimi K2.5 was unavailable for all twelve batches; a frozen transport-only full rerun moved the live specialist to local DeepSeek-R1 32B, which completed only five batches and failed seven for out-of-scope evidence references after bounded retries. The heterogeneous arm is therefore incomplete and over budget, while the complete same-model versus budget-matched comparison remains awaiting external labels.
 
 It did **not** establish universal cognitive multiplication. The evidence instead shows that role value changes with the problem context and measurement surface. A separate Moonshot-backed run failed closed after two provider-unavailable reviewer attempts; the successful runs therefore validate live multi-role execution within the tested bindings, not general multi-provider robustness. External Harness replication, repeated cross-provider trials, production reliability, long-running agenda learning, and credit transfer remain open.
+
+The workstation-local v0.54 experiment then tested whether role separation can reduce arbitration anchoring without transferring agency away from the Runtime. Two decision-blind, context-isolated evidence roles compared realized evidence Cbit with future test option value while seeing neither the initial decision, the other role, nor private outcomes. Only their agreement could enter a Runtime gate, which still enforced lineage, lane, capacity, and supported-null protection. Across eight fresh domains and three replications, all 22 blind receipts were valid. All eight consensus recoveries were beneficial in private synthetic posthoc, none was harmful, and positive-oracle capture rose from `0.500` in v0.53 to `0.833`.
+
+This is evidence for the arbitration hypothesis, not an admitted CoreSlim capability. All ten accepted gains were informative-null cases, one non-distinct delta correctly failed lineage validation, and relation reproducibility missed its frozen baseline-relative gate. The whole stage therefore remains `REJECT` with no CoreSlim, selection, retention, baseline, or production authority.
 
 ## Repository layout
 
@@ -313,6 +361,8 @@ It did **not** establish universal cognitive multiplication. The evidence instea
 | `agentos_core_slim_v0/SELECTOR_CALIBRATION_DRIFT_RUNTIME.md` | Prediction/outcome binding, exact-scope metrics, Provider drift diagnosis, Kernel trust state, revision ledger, and replay |
 | `agentos_core_slim_v0/CONTEXTUAL_POLICY_CALIBRATION_CONTROL.md` | Latest calibration source, seven-policy control surface, exploration downgrade, drift blocking, decision binding, and replay |
 | `agentos_core_slim_v0/ANTI_ADDITIVE_METHODOLOGY_RUNTIME.md` | Seven-trigger object audit, Cbit/complexity and upgrade/abstraction gates, ICM write binding, persistence, and replay |
+| `agentos_core_slim_v0/COGNITIVE_WORK_ACCOUNTING_RUNTIME.md` | Exact online-work ledger, Provider semantic support, Kernel marginal-Cbit control, six component integrations, and replay |
+| `agentos_core_slim_v0/ORGANIZATION_EVOLUTION_RUNTIME.md` | Task-bound organization genomes, bounded mutation operators, Harness evaluation, Kernel fitness and stability gates, operator credit, stop, and replay |
 | `agentos_core_slim_v0/PROBLEM_QUALITY_LIFECYCLE.md` | Blinded problem comparison, trial lifecycle, outcome, and feedback architecture |
 | `agentos_core_slim_v0/COGNITIVE_TEAM_FORMATION_RUNTIME.md` | Independent member baselines, dynamic team formation, Kernel authorization, and three-arm evaluation |
 | `agentos_core_slim_v0/COGNITIVE_TEAM_EXECUTION_RUNTIME.md` | Authorized three-arm execution, hidden-truth Harness evaluation, replay, and credit feedback |
@@ -321,6 +371,7 @@ It did **not** establish universal cognitive multiplication. The evidence instea
 | `agentos_core_slim_v0/CONTEXTUAL_ORGANIZATION_POLICY_SELECTOR.md` | Problem-conditioned role-policy selection, matched evidence, Provider advice, Kernel gates, persistence, and replay |
 | `agentos_core_slim_v0/SELECTION_EXECUTION_FEEDBACK_BRIDGE.md` | Frozen selection, explicit execution budget, Team/Ablation adapters, Harness outcome admission, persistent feedback, and replay |
 | `agentos_core_slim_v0/SRO_RETENTION_RUNTIME.md` | Provider-backed SRO retention/reuse orchestration, binding, migration, delayed calibration, and replay boundaries |
+| `agentos_core_slim_v0/SELECTION_RETENTION_OBJECT_MODEL.md` | Cognitive-action, typed-evidence, prospective-selection, consequence-ledger, and portfolio-retention boundaries |
 | `CHANGELOG.md` | Release history |
 
 ## License

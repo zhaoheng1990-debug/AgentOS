@@ -1,0 +1,79 @@
+{
+  "schema_version": "agentos-sro-retention-evidence-index-v0.1",
+  "evidence_boundary": "project-scoped theory-to-engineering source index; referenced artifacts are not bundled raw data",
+  "theory_updates": [
+    {
+      "version": "v1.0",
+      "path": "C:/Users/ZH/Desktop/AGI/理论基线/updates/Retention_Series_TheoryBaseline_SFI_SeriesClosure_20260718_v1_0.md",
+      "sha256": "5da5ccd68ed52d7a88ebcf785c5b03f0b459aa54645ae4df73a04ea5858414ed"
+    },
+    {
+      "version": "v1.1",
+      "path": "C:/Users/ZH/Desktop/AGI/理论基线/updates/Retention_Series_TheoryBaseline_Update_SFI_CompressionFormation_20260719_v1_1.md",
+      "sha256": "24a8b0898f33b3e789e9f62939cc6b6c13f22ced7c45526963cf5c91c3197f52"
+    },
+    {
+      "version": "v1.2",
+      "path": "C:/Users/ZH/Desktop/AGI/理论基线/updates/Retention_Series_TheoryBaseline_Update_SFI_OpenGrammarLifecycle_20260719_v1_2.md",
+      "sha256": "ad04e923e496ffa8c7dbe23aafb310664f4e2c398412cb3fc333ea26717fe385"
+    },
+    {
+      "version": "v1.3",
+      "path": "C:/Users/ZH/Desktop/AGI/理论基线/updates/Retention_Series_TheoryBaseline_Update_SFI_ExternalConsequenceMeasurement_20260719_v1_3.md",
+      "sha256": "9ae5fc9acf9d6e02187652f496a77d060232c2202339062e9b736f474343cd9e"
+    },
+    {
+      "version": "v1.4",
+      "path": "C:/Users/ZH/Desktop/AGI/理论基线/updates/Retention_Series_TheoryBaseline_Update_SFI_ResearchStateDeltaGraph_20260719_v1_4.md",
+      "sha256": "c5512951f7061c00a3efd4b96179ba29efa06ec20fe1549062af41245478d48e"
+    },
+    {
+      "version": "v1.5",
+      "path": "C:/Users/ZH/Desktop/AGI/理论基线/updates/Retention_Series_TheoryBaseline_Update_SFI_RoleLanguageAuthority_20260719_v1_5.md",
+      "sha256": "b69f03579258296a73ea4977f2283e1a71b635b322b86c210d9ad7cdde4cbeae"
+    },
+    {
+      "version": "v1.6",
+      "path": "C:/Users/ZH/Desktop/AGI/理论基线/updates/Retention_Series_TheoryBaseline_Update_SROConditionedMinimalSerialMemory_20260719_v1_6.md",
+      "sha256": "85fcb723b48da468fb0b45ef81dea02aad7e81123e92838ed1379654b67871b3"
+    },
+    {
+      "version": "v1.7",
+      "path": "C:/Users/ZH/Desktop/AGI/理论基线/updates/Retention_Series_TheoryBaseline_Update_ProspectiveSerialWitnessAcquisition_20260719_v1_7.md",
+      "sha256": "c1f71efa77f125f0e0b49869ba71cedcbeef6df20b8b4b2d36f880576336aa8c"
+    },
+    {
+      "version": "v1.8",
+      "path": "C:/Users/ZH/Desktop/AGI/理论基线/updates/Retention_Series_TheoryBaseline_Update_GradedSRODelayedRetrieval_20260719_v1_8.md",
+      "sha256": "6f3058d727fad8d1c754483ab800c72abdffb835f3c34f0d9151fb5ade0f91af"
+    }
+  ],
+  "verification_anchors": [
+    {
+      "object": "SRO-conditioned MinimalSerialMemory v1.6 independent verification",
+      "path": "C:/Users/ZH/Documents/研究逻辑基线整理/experiments/sro_conditioned_minimal_serial_memory_v1_6/outputs/independent_verification_v1_6.json",
+      "sha256": "b470a8c559ab30da109ff5fc7a397220bad23da11fa9d72d0c92f832fe4c803f"
+    },
+    {
+      "object": "Prospective witness acquisition v1.7 closure manifest",
+      "path": "C:/Users/ZH/Documents/研究逻辑基线整理/experiments/sro_prospective_natural_serial_witness_v1_7/08_Closure_Manifest_v1_7.json",
+      "sha256": "6a303ed5db12180ef55a1d8c8da93eb2174526fab43f4b3b8ee5aebf73932b27"
+    },
+    {
+      "object": "Graded SRO v1.8 closure manifest",
+      "path": "C:/Users/ZH/Documents/研究逻辑基线整理/experiments/sro_graded_drift_matching_v1_8/08_Closure_Manifest_v1_8.json",
+      "sha256": "0b986870a54946aa48523f4336cee976278802aaf83b6ab62d53cfff177a3dae"
+    },
+    {
+      "object": "Graded SRO v1.8 independent verification",
+      "path": "C:/Users/ZH/Documents/研究逻辑基线整理/experiments/sro_graded_drift_matching_v1_8/outputs/independent_verification_v1_8.json",
+      "sha256": "bfa82f3be131e754dd574916f3c356dd3440ffb3d634cded1fbcfde8ad21e64b"
+    }
+  ],
+  "prohibited_imports": [
+    "synthetic v1.8 learned weights as production policy",
+    "raw protected chat records",
+    "natural or universal memory claims",
+    "automatic global-memory or theory-baseline promotion"
+  ]
+}
