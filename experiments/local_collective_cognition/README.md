@@ -5,30 +5,26 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.67.0**
+Experiment pack version: **0.68.0**
 
-## Current v0.67 result
+## Current v0.68 result
 
-v0.67 replaces v0.66's free Provider synthesis with:
-`ComparisonFrameReceipt -> FrameBoundBasisReceipt ->
-DeterministicBasisCompiler`. The Provider resolves the study arms and evidence
-coordinates; local code alone compiles the final label or abstention.
+v0.68 keeps deterministic local label authority but replaces the ambiguous
+orientation enum with stable local arm IDs and explicit
+`subject_group_id/reference_group_id` evidence relations. Evidence relevance,
+statistical significance, and evidence role are separate coordinates.
 
-The 12-case calibration did not pass. Ten frames and ten bases compiled with
-zero compiler failures, but two semantically plausible frames failed an
-over-strict string-identity contract. Exact label accuracy was `6/12` versus
-the baseline's `9/12`. The compiler corrected the comparator-first error in
-`EI-CAL-5842`, but Provider receipts confused grammatical order with contrast
-direction in two controls and treated non-significant evidence as inadmissible
-in two null cases.
+The 12-case calibration produced complete frame, basis, and compiled receipts
+with zero structural failures. Accuracy improved from v0.67's `6/12` to
+`10/12`; effective Cbit reached `0.9111`, above the direct baseline's `0.8474`.
+The candidate corrected two baseline errors and improved evidence binding, but
+it still failed the frozen `11/12` and zero-harm gates.
 
-The deterministic compiler boundary is retained as a positive local result.
-The next candidate should replace the ambiguous orientation enum with explicit
-`subject_group` and `reference_group` identities, validate aliases
-semantically rather than by string equality, and keep evidence admissibility
-independent from statistical significance. The untouched 36-case holdout
-received zero Provider calls. CoreSlim remains `0.4.0-alpha.21`; v0.67 has no
-production memory, retention, baseline, or pointer authority.
+The remaining errors are narrower: one Provider receipt contradicted its own
+relation rationale, and one absolute no-adverse-event statement lacked an
+explicit comparative/significance coordinate. The untouched 36-case holdout
+again received zero Provider calls. CoreSlim remains `0.4.0-alpha.21`; v0.68
+has no production memory, retention, baseline, or pointer authority.
 
 ## Components
 
