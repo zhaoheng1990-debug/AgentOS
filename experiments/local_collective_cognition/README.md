@@ -5,27 +5,29 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.66.0**
+Experiment pack version: **0.67.0**
 
-## Current v0.66 result
+## Current v0.67 result
 
-v0.66 follows the v0.65 benchmark bridge with a typed semantic-basis chain:
-`Object/Timepoint Binding -> Comparator Orientation -> Significance Basis ->
-Material Ambiguity -> Outcome Label`. Every admitted span receives a separate
-typed record before a global Provider synthesis.
+v0.67 replaces v0.66's free Provider synthesis with:
+`ComparisonFrameReceipt -> FrameBoundBasisReceipt ->
+DeterministicBasisCompiler`. The Provider resolves the study arms and evidence
+coordinates; local code alone compiles the final label or abstention.
 
-The 12-case calibration did not pass. All 12 basis receipts were complete, but
-two of 12 synthesis receipts contradicted their own typed basis and were
-blocked by the consistency gate. Exact label accuracy fell from the v0.65
-baseline's `9/12` to `8/12`, with only `10/12` valid final receipts. The chain
-corrected a `p=0.07` trend error and safely exposed one measurement ambiguity,
-but it harmed two previously correct cases. The previously unused 36-case
-fresh holdout was frozen but never executed.
+The 12-case calibration did not pass. Ten frames and ten bases compiled with
+zero compiler failures, but two semantically plausible frames failed an
+over-strict string-identity contract. Exact label accuracy was `6/12` versus
+the baseline's `9/12`. The compiler corrected the comparator-first error in
+`EI-CAL-5842`, but Provider receipts confused grammatical order with contrast
+direction in two controls and treated non-significant evidence as inadmissible
+in two null cases.
 
-The result narrows the next object to an explicit multi-arm `ComparisonFrame`
-and a deterministic compiler from typed basis to candidate label or abstention.
-A second free-form synthesis Provider should not be allowed to override the
-coordinates it receives. CoreSlim remains `0.4.0-alpha.21`; v0.66 has no
+The deterministic compiler boundary is retained as a positive local result.
+The next candidate should replace the ambiguous orientation enum with explicit
+`subject_group` and `reference_group` identities, validate aliases
+semantically rather than by string equality, and keep evidence admissibility
+independent from statistical significance. The untouched 36-case holdout
+received zero Provider calls. CoreSlim remains `0.4.0-alpha.21`; v0.67 has no
 production memory, retention, baseline, or pointer authority.
 
 ## Components
