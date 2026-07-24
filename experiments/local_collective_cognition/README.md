@@ -5,27 +5,28 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.65.0**
+Experiment pack version: **0.66.0**
 
-## Current v0.65 result
+## Current v0.66 result
 
-v0.65 connects the local experiment pack to pinned public benchmark sources
-without moving raw benchmark data into AgentOS Core. It compares a one-pass
-evidence receipt with a staged `SpanAdmission -> RelationBinding` mechanism on
-Evidence Inference candidate-rationale panels.
+v0.66 follows the v0.65 benchmark bridge with a typed semantic-basis chain:
+`Object/Timepoint Binding -> Comparator Orientation -> Significance Basis ->
+Material Ambiguity -> Outcome Label`. Every admitted span receives a separate
+typed record before a global Provider synthesis.
 
-The nine-case validation calibration passed: staged processing raised label
-accuracy from 8/9 to 9/9 and effective Cbit from `0.9395` to `0.9842`, while
-using 2.18 times as many tokens. The frozen 36-case test-split transfer did not
-pass its full gate. Staging improved evidence F1 from `0.9120` to `0.9667` and
-effective Cbit from `0.9230` to `0.9491`, but produced one incomplete receipt
-and reduced label accuracy from 34/36 to 33/36. The preserved result is
-therefore **partial mechanism benefit without validated test-split transfer**.
+The 12-case calibration did not pass. All 12 basis receipts were complete, but
+two of 12 synthesis receipts contradicted their own typed basis and were
+blocked by the consistency gate. Exact label accuracy fell from the v0.65
+baseline's `9/12` to `8/12`, with only `10/12` valid final receipts. The chain
+corrected a `p=0.07` trend error and safely exposed one measurement ambiguity,
+but it harmed two previously correct cases. The previously unused 36-case
+fresh holdout was frozen but never executed.
 
-The remaining errors isolate three next objects: statistical-significance
-semantics, intervention/comparator orientation, and material ambiguity across
-measurement or timepoint variants. CoreSlim remains `0.4.0-alpha.21`; v0.65
-has no production memory, retention, baseline, or pointer authority.
+The result narrows the next object to an explicit multi-arm `ComparisonFrame`
+and a deterministic compiler from typed basis to candidate label or abstention.
+A second free-form synthesis Provider should not be allowed to override the
+coordinates it receives. CoreSlim remains `0.4.0-alpha.21`; v0.66 has no
+production memory, retention, baseline, or pointer authority.
 
 ## Components
 
