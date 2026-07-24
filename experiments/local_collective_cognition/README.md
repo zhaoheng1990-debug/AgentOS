@@ -7,6 +7,26 @@ adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
 Experiment pack version: **0.65.0**
 
+## Current v0.65 result
+
+v0.65 connects the local experiment pack to pinned public benchmark sources
+without moving raw benchmark data into AgentOS Core. It compares a one-pass
+evidence receipt with a staged `SpanAdmission -> RelationBinding` mechanism on
+Evidence Inference candidate-rationale panels.
+
+The nine-case validation calibration passed: staged processing raised label
+accuracy from 8/9 to 9/9 and effective Cbit from `0.9395` to `0.9842`, while
+using 2.18 times as many tokens. The frozen 36-case test-split transfer did not
+pass its full gate. Staging improved evidence F1 from `0.9120` to `0.9667` and
+effective Cbit from `0.9230` to `0.9491`, but produced one incomplete receipt
+and reduced label accuracy from 34/36 to 33/36. The preserved result is
+therefore **partial mechanism benefit without validated test-split transfer**.
+
+The remaining errors isolate three next objects: statistical-significance
+semantics, intervention/comparator orientation, and material ambiguity across
+measurement or timepoint variants. CoreSlim remains `0.4.0-alpha.21`; v0.65
+has no production memory, retention, baseline, or pointer authority.
+
 ## Components
 
 | Component | Responsibility | Authority boundary |
