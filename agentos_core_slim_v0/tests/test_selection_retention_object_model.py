@@ -1,4 +1,5 @@
 import ast
+import json
 import sys
 from dataclasses import replace
 from pathlib import Path
@@ -289,6 +290,93 @@ def test_selection_repository_replays_hash_chain_and_unassigned_ledger(
     assert snapshot.consequences == (outcome,)
     assert snapshot.as_dict()["retention_write_authority"] is False
     assert restarted.verify_replay()["valid"] is True
+
+
+def test_delayed_consequence_remains_unassigned_after_restart(tmp_path):
+    value = selection()
+    outcome = ConsequenceBinding.create(
+        binding_id="consequence-delayed",
+        project_scope=value.project_scope,
+        selection_event_hash=value.preconsequence_hash,
+        consequence_ref="harness://selection-outcome-delayed",
+        consequence_kind="DELAYED",
+        evidence_refs=EVIDENCE,
+        observed_at=NOW,
+    )
+    repository = SelectionRetentionRepository(
+        runtime_id="selection-runtime-delayed",
+        project_scope=value.project_scope,
+        workspace_root=tmp_path,
+    )
+    repository.save_selection(value)
+    repository.bind_consequence(outcome)
+    restarted = SelectionRetentionRepository(
+        runtime_id="selection-runtime-delayed",
+        project_scope=value.project_scope,
+        workspace_root=tmp_path,
+    )
+    restored = restarted.snapshot().consequences[0]
+    assert restored.consequence_kind == "DELAYED"
+    assert restored.assignment_state == "UNASSIGNED"
+
+
+def test_selection_repository_blocks_cross_project_consequence(tmp_path):
+    value = selection()
+    repository = SelectionRetentionRepository(
+        runtime_id="selection-runtime-scope",
+        project_scope=value.project_scope,
+        workspace_root=tmp_path,
+    )
+    repository.save_selection(value)
+    cross_project = ConsequenceBinding.create(
+        binding_id="consequence-cross-project",
+        project_scope="project://other",
+        selection_event_hash=value.preconsequence_hash,
+        consequence_ref="harness://selection-outcome-cross-project",
+        consequence_kind="DELAYED",
+        evidence_refs=EVIDENCE,
+        observed_at=NOW,
+    )
+    with pytest.raises(
+        ValueError, match="consequence_repository_scope_mismatch"
+    ):
+        repository.bind_consequence(cross_project)
+
+
+def test_selection_repository_rejects_tampered_replay_on_restart(tmp_path):
+    value = selection()
+    repository = SelectionRetentionRepository(
+        runtime_id="selection-runtime-tamper",
+        project_scope=value.project_scope,
+        workspace_root=tmp_path,
+    )
+    repository.save_selection(value)
+    events_path = (
+        tmp_path
+        / "selection-retention-public"
+        / "selection-runtime-tamper"
+        / "events.jsonl"
+    )
+    events = [
+        json.loads(line)
+        for line in events_path.read_text(encoding="utf-8").splitlines()
+    ]
+    events[-1]["payload"]["selection"][
+        "selection_context_ref"
+    ] = "context://tampered"
+    events_path.write_text(
+        "\n".join(json.dumps(event, sort_keys=True) for event in events)
+        + "\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(
+        ValueError, match="selection_repository_replay_invalid"
+    ):
+        SelectionRetentionRepository(
+            runtime_id="selection-runtime-tamper",
+            project_scope=value.project_scope,
+            workspace_root=tmp_path,
+        )
 
 
 def test_selection_retention_components_remain_modular():
