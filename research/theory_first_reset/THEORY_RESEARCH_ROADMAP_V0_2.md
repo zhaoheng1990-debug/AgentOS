@@ -176,7 +176,7 @@ compression-positive phase
 
 ## R4: Provider Adequacy
 
-Status: `PREREGISTERED_PROVIDER_CALLS_AUTHORIZED`
+Status: `V0_1_FAILED_MECHANICAL_RECEIPT_VALIDITY`
 
 Test whether local and remote Providers can instantiate:
 
@@ -188,6 +188,12 @@ Test whether local and remote Providers can instantiate:
 
 Provider quality failure revises the instantiation plan, not the organization
 theory automatically.
+
+R4 v0.1 stopped at its first logical role call after two identical
+probability-direction consistency failures. The result does not score Provider
+calibration or coordination. It adds one protocol-level requirement:
+deterministic projections of a semantic estimate belong to the Runtime and
+should not be duplicated as independent Provider outputs.
 
 ## R5: Fresh Benchmark
 
@@ -243,8 +249,9 @@ Require:
 | R3 standalone experiment code | authorized |
 | R3 result | complete, synthetic-formal only |
 | R4 theory and preregistration | authorized |
-| R4 Provider calls | authorized within v0.1 budget |
-| R4 claim ceiling | same-Provider context-isolation adequacy |
+| R4 v0.1 Provider calls | stopped after 2/22 physical attempts |
+| R4 v0.1 result | failed mechanical receipt validity; semantic gates unscorable |
+| R4 claim ceiling | no adequacy conclusion |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

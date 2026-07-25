@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentos-theory-first-r4"
+version = "0.1.0"
+description = "Standalone Provider adequacy calibration for AgentOS R4"
+requires-python = ">=3.10"
+dependencies = ["openai>=2.44.0"]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.scripts]
+agentos-r4-provider = "theory_first_r4.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["theory_first_r4*"]
+
