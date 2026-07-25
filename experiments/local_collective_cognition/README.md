@@ -7,6 +7,26 @@ adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
 Experiment pack version: **0.77.0**
 
+## v0.86: factorized external benchmark entry
+
+v0.86 responds to the externally harmful v0.85 study-relation mutations by
+separating the next evaluation surface into study-object binding, semantic
+warrant, and question-conditioned context utility. EBM-NLP, SciFact, and a
+pinned QASPER repository fixture now enter through independent adapters under
+one benchmark-neutral public-case contract. Private labels, rationale
+coordinates, answers, and object spans remain outside Provider-visible input.
+
+The locally cached artifacts passed frozen size and SHA-256 checks. SciFact
+contains 809 train claims, 300 dev claims, 300 unlabeled test claims, and 5,183
+corpus records. EBM-NLP contains 4,993 documents but remains
+`BLOCKED_LICENSE_UNCLEAR`. The QASPER artifact is only a four-case Apache-2.0
+repository fixture and is therefore `SMOKE_ONLY`, not a full benchmark.
+
+This stage deliberately makes no Provider-backed quality claim. None of the
+three sources directly validates AgentOS state-transition utility, so final
+state compilation remains a separate Kernel-owned, deterministic, no-write
+layer. See `FACTORIZED_BENCHMARK_ACQUISITION_V0_86.md`.
+
 ## Current v0.77 result
 
 v0.77 freezes an external typed-evidence reference workflow for the rejected
