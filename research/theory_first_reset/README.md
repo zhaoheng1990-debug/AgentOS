@@ -104,8 +104,9 @@ and blob identity, but its candidate code is not part of this branch.
 69. `R4_FACTORIZATION_CAUSAL_BENEFIT_PREREGISTRATION_V0_3J.md`
 70. `R4_FACTORIZATION_CAUSAL_BENEFIT_CORPUS_MANIFEST_V0_3J.json`
 71. `R4_FACTORIZATION_CAUSAL_BENEFIT_CLOSURE_V0_3J.md`
-72. `THEORY_PACKET_TEMPLATE.md`
-73. `ROLLBACK_POINTER.json`
+72. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_THEORY_V0_3K.md`
+73. `THEORY_PACKET_TEMPLATE.md`
+74. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -260,3 +261,8 @@ both rounds and added only 4.8 percent token cost, but wider receipts degraded
 provenance inference and witness binding. Factorized action agreement was 9/12
 versus legacy 12/12, including one false combine. Provider calls are paused
 pending theory-first role decomposition.
+
+R4 v0.3K is review-ready theory only. It defines roles as bounded semantic
+responsibilities rather than personas and proposes a matched two-context
+wide-versus-split comparison. Provider coordination, fresh data, experiment
+code, and Runtime changes remain unauthorized pending HumanGate freeze.

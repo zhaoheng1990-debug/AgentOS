@@ -338,6 +338,14 @@ versus legacy 12/12. One false combine and reverse-order tolerance-witness
 omissions localize the next object as cognitive-load interference in a wide
 receipt, not another ontology enum.
 
+R4 v0.3K is `REVIEW_READY_HUMAN_FREEZE_REQUIRED`. It defines a role as a
+bounded object view, evidence boundary, output contract, and responsibility,
+not a persona label. Its causal design matches two Provider contexts in both
+arms: paired wide calls are compared with isolated provenance-state and
+effect-scope calls while the deterministic composer stays fixed. A Provider
+semantic coordinator is deliberately excluded until role-local and
+composition-level failure can be separated.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -419,6 +427,7 @@ Require:
 | R4 v0.3H | closed construction fail; apparent pass void |
 | R4 v0.3I | 16/16 formal pass; factorization coherence supported |
 | R4 v0.3J | closed 13/18 fail; revalidation gain plus wide-receipt interference |
+| R4 v0.3K | role-decomposition theory review ready; HumanGate freeze required |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |
