@@ -229,6 +229,12 @@ R4 v0.3B is preregistered as a fresh same-Provider semantic relation test. It
 separates batch and single-case presentation, hides relation truth and action,
 and makes false combine or false deduplication hard failures.
 
+R4 v0.3B stopped after two Batch A attempts returned `{"cases": [...]}` rather
+than an accepted receipt envelope. Both unaccepted arrays classified all 12
+fresh cases exactly with zero false Runtime action. The next object is a
+shape-based, ambiguity-blocking receipt envelope canonicalizer validated with
+zero Provider calls.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -295,6 +301,7 @@ Require:
 | R4 v0.3A | zero-Provider synthetic validation authorized |
 | R4 v0.3A result | 14/14 construction pass; Provider semantics untested |
 | R4 v0.3B | fresh Provider semantic relation test authorized |
+| R4 v0.3B result | mechanical early stop; semantic content 12/12 twice post hoc |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

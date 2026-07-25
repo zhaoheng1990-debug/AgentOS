@@ -67,8 +67,9 @@ and blob identity, but its candidate code is not part of this branch.
 32. `R4_PROVIDER_SEMANTIC_RELATION_AUTHORIZATION_V0_3B.json`
 33. `R4_PROVIDER_SEMANTIC_RELATION_PREREGISTRATION_V0_3B.md`
 34. `R4_PROVIDER_SEMANTIC_RELATION_CORPUS_MANIFEST_V0_3B.json`
-35. `THEORY_PACKET_TEMPLATE.md`
-36. `ROLLBACK_POINTER.json`
+35. `R4_PROVIDER_SEMANTIC_RELATION_CLOSURE_V0_3B.md`
+36. `THEORY_PACKET_TEMPLATE.md`
+37. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -126,3 +127,8 @@ the value of relation-aware deduplication without validating Provider semantics.
 R4 v0.3B is preregistered on twelve new semantic micro-worlds. It compares two
 counterbalanced batch calls with twelve single-case calls and requires zero
 false combine or false deduplicate actions.
+
+R4 v0.3B stopped after two invalid Batch A envelopes. Both unaccepted responses
+used a `cases` array instead of `receipts`, but post-hoc item diagnostics were
+12/12 exact twice with zero harmful Runtime actions. The result is a mechanical
+construction failure, not a completed semantic adequacy result.

@@ -15,7 +15,7 @@ def _states(parsed: ParsedSemanticReceipts) -> dict[str, str]:
     return {receipt.case_id: receipt.relation_state for receipt in parsed.receipts}
 
 
-def _arm_metrics(predictions: dict[str, str]) -> dict[str, Any]:
+def score_relation_predictions(predictions: dict[str, str]) -> dict[str, Any]:
     truth = {case.case_id: case.private_relation_state for case in CASES}
     truth_actions = {case.case_id: case.private_action for case in CASES}
     predicted_actions = {
@@ -90,7 +90,8 @@ def score_panel(
         },
     }
     arm_metrics = {
-        arm: _arm_metrics(values) for arm, values in predictions.items()
+        arm: score_relation_predictions(values)
+        for arm, values in predictions.items()
     }
     batch_consensus = {
         case.case_id: (
