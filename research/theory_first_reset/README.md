@@ -94,8 +94,9 @@ and blob identity, but its candidate code is not part of this branch.
 59. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_THEORY_V0_3H.md`
 60. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_AUTHORIZATION_V0_3H.json`
 61. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_PREREGISTRATION_V0_3H.md`
-62. `THEORY_PACKET_TEMPLATE.md`
-63. `ROLLBACK_POINTER.json`
+62. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_CLOSURE_V0_3H.md`
+63. `THEORY_PACKET_TEMPLATE.md`
+64. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -215,3 +216,8 @@ R4 v0.3H freezes that factorization as a zero-Provider formal object. It must
 resolve the four v0.3G disagreement families, reject all invalid cross-axis
 combinations, preserve the existing action surface, and pass an explicit
 anti-additive complexity gate.
+
+R4 v0.3H stopped as an experiment-instrument construction failure. The first
+test run exposed constant audit booleans and did not actually compile all
+seventeen invalid status-effect pairs. The apparent pass is void; the theory
+remains unadjudicated and requires a newly preregistered validation version.
