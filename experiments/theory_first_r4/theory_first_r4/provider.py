@@ -21,10 +21,16 @@ class AttemptReceipt:
     error: str | None
     model: str
     usage: dict[str, int]
+    response_sha256: str | None
+    response_path: str | None
 
 
 class DeepSeekAdapter:
-    def __init__(self, checkpoint_path: Path | None = None) -> None:
+    def __init__(
+        self,
+        checkpoint_path: Path | None = None,
+        response_checkpoint_dir: Path | None = None,
+    ) -> None:
         api_key = os.environ.get("DEEPSEEK_API_KEY")
         if not api_key:
             raise RuntimeError("DEEPSEEK_API_KEY is not configured")
@@ -36,6 +42,7 @@ class DeepSeekAdapter:
         )
         self.model = "deepseek-v4-flash"
         self.checkpoint_path = checkpoint_path
+        self.response_checkpoint_dir = response_checkpoint_dir
         self.attempt_receipts: list[AttemptReceipt] = []
 
     @staticmethod
@@ -90,6 +97,8 @@ class DeepSeekAdapter:
                 "cache_hit_tokens": 0,
             }
             response_model = self.model
+            response_sha256 = None
+            response_path = None
             try:
                 response = self.client.chat.completions.create(
                     model=self.model,
@@ -105,6 +114,15 @@ class DeepSeekAdapter:
                 usage = self._usage(response)
                 response_model = str(response.model)
                 content = response.choices[0].message.content or ""
+                response_sha256 = hashlib.sha256(content.encode("utf-8")).hexdigest()
+                if self.response_checkpoint_dir is not None:
+                    self.response_checkpoint_dir.mkdir(parents=True, exist_ok=True)
+                    checkpoint = (
+                        self.response_checkpoint_dir
+                        / f"{logical_call_id}_attempt_{attempt}.json.txt"
+                    )
+                    checkpoint.write_text(content, encoding="utf-8")
+                    response_path = str(checkpoint)
                 parsed = validator(content)
                 self._record(
                     AttemptReceipt(
@@ -115,6 +133,8 @@ class DeepSeekAdapter:
                         error=None,
                         model=response_model,
                         usage=usage,
+                        response_sha256=response_sha256,
+                        response_path=response_path,
                     )
                 )
                 return content, parsed
@@ -129,6 +149,8 @@ class DeepSeekAdapter:
                         error=last_error,
                         model=response_model,
                         usage=usage,
+                        response_sha256=response_sha256,
+                        response_path=response_path,
                     )
                 )
         raise RuntimeError(f"{logical_call_id} failed after two attempts: {last_error}")

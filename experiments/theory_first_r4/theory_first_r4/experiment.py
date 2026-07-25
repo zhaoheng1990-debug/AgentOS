@@ -24,15 +24,29 @@ from .schemas import (
 from .scoring import SUBSETS, evaluate_predictions, subset_key
 
 
-def _role_dicts(receipts: list[RoleReceipt]) -> list[dict[str, object]]:
-    return [asdict(receipt) for receipt in receipts]
+def _role_dicts(
+    receipts: list[RoleReceipt], include_provider_direction: bool
+) -> list[dict[str, object]]:
+    packets = []
+    for receipt in receipts:
+        packet = asdict(receipt)
+        packet.pop("dropped_provider_fields", None)
+        if not include_provider_direction:
+            packet.pop("direction", None)
+        packets.append(packet)
+    return packets
 
 
 def _probabilities(receipts: list[RoleReceipt | CoordinatorReceipt]) -> dict[str, float]:
     return {receipt.case_id: receipt.probability_y1 for receipt in receipts}
 
 
-def run_live_experiment(adapter: DeepSeekAdapter | None = None) -> dict[str, Any]:
+def run_live_experiment(
+    adapter: DeepSeekAdapter | None = None, protocol_version: str = "v0_1"
+) -> dict[str, Any]:
+    if protocol_version not in {"v0_1", "v0_2"}:
+        raise ValueError("unknown protocol version")
+    include_provider_direction = protocol_version == "v0_1"
     provider = adapter or DeepSeekAdapter()
     raw_contents: dict[str, str] = {}
     role_runs: dict[str, dict[str, list[RoleReceipt]]] = {}
@@ -44,14 +58,19 @@ def run_live_experiment(adapter: DeepSeekAdapter | None = None) -> dict[str, Any
             content, receipts = provider.call_json(
                 logical_id,
                 ROLE_SYSTEM,
-                role_prompt(role_id, replicate),
-                lambda value, role=role_id: parse_role_receipts(value, role),
+                role_prompt(role_id, replicate, include_provider_direction),
+                lambda value, role=role_id: parse_role_receipts(
+                    value, role, include_provider_direction
+                ),
             )
             raw_contents[logical_id] = content
             role_runs[role_id][replicate] = receipts
 
     role_packets = {
-        role_id: _role_dicts(role_runs[role_id]["A"]) for role_id in ROLE_IDS
+        role_id: _role_dicts(
+            role_runs[role_id]["A"], include_provider_direction
+        )
+        for role_id in ROLE_IDS
     }
     coordinator_runs: dict[str, list[CoordinatorReceipt]] = {}
     coordinator_specs = (
@@ -66,8 +85,12 @@ def run_live_experiment(adapter: DeepSeekAdapter | None = None) -> dict[str, Any
         content, receipts = provider.call_json(
             logical_id,
             COORDINATOR_SYSTEM,
-            coordinator_prompt(roles, role_packets, replicate),
-            lambda value, included=roles: parse_coordinator_receipts(value, included),
+            coordinator_prompt(
+                roles, role_packets, replicate, include_provider_direction
+            ),
+            lambda value, included=roles: parse_coordinator_receipts(
+                value, included, include_provider_direction
+            ),
         )
         raw_contents[logical_id] = content
         coordinator_runs[logical_id] = receipts
@@ -153,9 +176,13 @@ def run_live_experiment(adapter: DeepSeekAdapter | None = None) -> dict[str, Any
     else:
         status = "FAIL"
     return {
-        "experiment_version": "agentos_r4_provider_adequacy_v0_1",
+        "experiment_version": f"agentos_r4_provider_adequacy_{protocol_version}",
         "status": status,
-        "claim_ceiling": "SAME_PROVIDER_CONTEXT_ISOLATION_ADEQUACY_ONLY",
+        "claim_ceiling": (
+            "SAME_PROVIDER_CONTEXT_ISOLATION_ADEQUACY_ONLY"
+            if protocol_version == "v0_1"
+            else "PAIRED_MINIMAL_RECEIPT_DIAGNOSTIC_ONLY"
+        ),
         "provider": {
             "provider_id": "deepseek",
             "model_id": "deepseek-v4-flash",

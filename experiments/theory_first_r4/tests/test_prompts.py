@@ -28,9 +28,23 @@ def test_role_prompt_contains_only_one_assigned_lr_per_case() -> None:
     assert "ROLE_C" not in prompt
 
 
+def test_v02_role_prompt_omits_provider_direction() -> None:
+    prompt = role_prompt("ROLE_A", "A", include_provider_direction=False)
+    assert '"direction"' not in prompt
+
+
 def test_coordinator_prompt_contains_packets_not_likelihood_ratios() -> None:
     prompt = coordinator_prompt(("ROLE_A", "ROLE_B"), _packets(), "A")
     assert "assigned_likelihood_ratio" not in prompt
     assert "role_packets" in prompt
     assert "private_reference_used" in prompt
 
+
+def test_v02_coordinator_prompt_omits_provider_direction() -> None:
+    prompt = coordinator_prompt(
+        ("ROLE_A", "ROLE_B"),
+        _packets(),
+        "A",
+        include_provider_direction=False,
+    )
+    assert '"direction"' not in prompt

@@ -13,7 +13,6 @@ from .provider import DeepSeekAdapter
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_OUTPUT_DIR = REPO_ROOT / "outputs/r4_provider_adequacy_v0_1"
 
 
 def _sha256(path: Path) -> str:
@@ -29,18 +28,25 @@ def _write(path: Path, value: Any) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument(
+        "--protocol-version", choices=("v0_1", "v0_2"), default="v0_1"
+    )
+    parser.add_argument("--output-dir", type=Path)
     args = parser.parse_args()
-    output_dir = args.output_dir.resolve()
+    output_dir = (
+        args.output_dir
+        or REPO_ROOT / f"outputs/r4_provider_adequacy_{args.protocol_version}"
+    ).resolve()
 
     adapter = DeepSeekAdapter(
-        checkpoint_path=output_dir / "attempt_ledger_checkpoint.json"
+        checkpoint_path=output_dir / "attempt_ledger_checkpoint.json",
+        response_checkpoint_dir=output_dir / "raw_attempts",
     )
-    result = run_live_experiment(adapter)
+    result = run_live_experiment(adapter, protocol_version=args.protocol_version)
     write_result(output_dir, result)
     result_path = output_dir / "result.json"
     inventory = {
-        "inventory_version": "agentos_r4_hash_inventory_v0_1",
+        "inventory_version": f"agentos_r4_hash_inventory_{args.protocol_version}",
         "files": [
             {
                 "path": str(result_path),
@@ -52,7 +58,7 @@ def main() -> int:
     inventory_path = output_dir / "hash_inventory.json"
     _write(inventory_path, inventory)
     closure = {
-        "closure_version": "agentos_r4_local_closure_v0_1",
+        "closure_version": f"agentos_r4_local_closure_{args.protocol_version}",
         "status": result["status"],
         "gate_pass_count": result["gate_pass_count"],
         "gate_count": result["gate_count"],

@@ -23,6 +23,7 @@ class RoleReceipt:
     direction: str
     calculation_basis: str
     assumptions: tuple[str, ...]
+    dropped_provider_fields: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -34,6 +35,7 @@ class CoordinatorReceipt:
     composition_basis: str
     raw_evidence_used: bool
     private_reference_used: bool
+    dropped_provider_fields: tuple[str, ...] = ()
 
 
 def expected_direction(probability_y1: float) -> str:
@@ -58,7 +60,9 @@ def _probability(value: Any) -> float:
     return probability
 
 
-def parse_role_receipts(content: str, role_id: str) -> list[RoleReceipt]:
+def parse_role_receipts(
+    content: str, role_id: str, require_provider_direction: bool = True
+) -> list[RoleReceipt]:
     if role_id not in ROLE_IDS:
         raise ValueError("unknown role")
     expected_cases = {case.case_id: case for case in CASES}
@@ -75,8 +79,8 @@ def parse_role_receipts(content: str, role_id: str) -> list[RoleReceipt]:
         if item.get("evidence_id") != expected_evidence:
             raise ValueError(f"evidence mismatch for {case_id}")
         probability = _probability(item.get("probability_y1"))
-        direction = str(item.get("direction", ""))
-        if direction != expected_direction(probability):
+        direction = expected_direction(probability)
+        if require_provider_direction and item.get("direction") != direction:
             raise ValueError(f"direction mismatch for {case_id}")
         if item.get("calculation_basis") != ROLE_BASIS:
             raise ValueError(f"basis mismatch for {case_id}")
@@ -92,6 +96,23 @@ def parse_role_receipts(content: str, role_id: str) -> list[RoleReceipt]:
                 direction=direction,
                 calculation_basis=ROLE_BASIS,
                 assumptions=tuple(str(value) for value in assumptions),
+                dropped_provider_fields=(
+                    tuple(
+                        sorted(
+                            set(item)
+                            - {
+                                "case_id",
+                                "role_id",
+                                "evidence_id",
+                                "probability_y1",
+                                "calculation_basis",
+                                "assumptions",
+                            }
+                        )
+                    )
+                    if not require_provider_direction
+                    else ()
+                ),
             )
         )
     if len(receipts) != len(CASES) or len({item.case_id for item in receipts}) != len(
@@ -102,7 +123,9 @@ def parse_role_receipts(content: str, role_id: str) -> list[RoleReceipt]:
 
 
 def parse_coordinator_receipts(
-    content: str, included_roles: tuple[str, ...]
+    content: str,
+    included_roles: tuple[str, ...],
+    require_provider_direction: bool = True,
 ) -> list[CoordinatorReceipt]:
     expected_cases = {case.case_id for case in CASES}
     expected_roles = set(included_roles)
@@ -117,8 +140,8 @@ def parse_coordinator_receipts(
         if not isinstance(roles, list) or set(roles) != expected_roles:
             raise ValueError(f"included_roles mismatch for {case_id}")
         probability = _probability(item.get("probability_y1"))
-        direction = str(item.get("direction", ""))
-        if direction != expected_direction(probability):
+        direction = expected_direction(probability)
+        if require_provider_direction and item.get("direction") != direction:
             raise ValueError(f"direction mismatch for {case_id}")
         if item.get("composition_basis") != COORDINATOR_BASIS:
             raise ValueError(f"composition basis mismatch for {case_id}")
@@ -135,6 +158,23 @@ def parse_coordinator_receipts(
                 composition_basis=COORDINATOR_BASIS,
                 raw_evidence_used=False,
                 private_reference_used=False,
+                dropped_provider_fields=(
+                    tuple(
+                        sorted(
+                            set(item)
+                            - {
+                                "case_id",
+                                "included_roles",
+                                "probability_y1",
+                                "composition_basis",
+                                "raw_evidence_used",
+                                "private_reference_used",
+                            }
+                        )
+                    )
+                    if not require_provider_direction
+                    else ()
+                ),
             )
         )
     if len(receipts) != len(CASES) or len({item.case_id for item in receipts}) != len(
@@ -142,4 +182,3 @@ def parse_coordinator_receipts(
     ):
         raise ValueError("coordinator case coverage must be exact")
     return sorted(receipts, key=lambda item: item.case_id)
-
