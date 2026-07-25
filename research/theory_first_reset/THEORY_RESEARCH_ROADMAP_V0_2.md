@@ -288,6 +288,13 @@ The v0.3G corpus and implementation passed 8/8 deterministic preflight gates.
 Public corpus, private reference, pair expectations, prompt, and six modules
 are hash-frozen before Provider exposure. One batch call is now authorized.
 
+R4 v0.3G closed `FAIL_SEMANTIC_WITH_ZERO_RUNTIME_ACTION_HARM`. Four attributes
+and all evidence-reference sets scored 12/12. `InformationRelation` scored
+8/12, exact tuples scored 8/12, and frozen gates scored 12/15. Runtime actions
+remained 12/12 with zero false deduplication. The failure localizes ontology
+overload in transform status versus information effect. Provider calls are
+paused pending v0.3H theory-first factorization.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -365,7 +372,8 @@ Require:
 | R4 v0.3E result | 13/13 pass; 17/18 relation; transform boundary discovered |
 | R4 v0.3F | transformation-equivalence theory required; Provider calls paused |
 | R4 v0.3F status | 14/14 formal pass; semantic inference remains untested |
-| R4 v0.3G | corpus and implementation frozen; one batch call authorized |
+| R4 v0.3G | closed semantic fail; 12/12 Runtime actions; information relation 8/12 |
+| R4 v0.3H | transform-status and information-effect factorization theory required |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

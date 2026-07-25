@@ -90,8 +90,9 @@ and blob identity, but its candidate code is not part of this branch.
 55. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_AUTHORIZATION_V0_3G.json`
 56. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_PREREGISTRATION_V0_3G.md`
 57. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_CORPUS_MANIFEST_V0_3G.json`
-58. `THEORY_PACKET_TEMPLATE.md`
-59. `ROLLBACK_POINTER.json`
+58. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_CLOSURE_V0_3G.md`
+59. `THEORY_PACKET_TEMPLATE.md`
+60. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -200,3 +201,9 @@ after corpus and implementation preflight.
 
 The v0.3G corpus and implementation passed all eight deterministic preflight
 gates and are frozen by manifest. One bounded Provider batch is authorized.
+
+R4 v0.3G closed as a preserved semantic failure with zero Runtime action harm.
+Four attributes and all evidence bindings scored 12/12, while the overloaded
+`InformationRelation` scored 8/12. Runtime actions remained 12/12 with no false
+deduplication. Provider calls are paused pending a theory-first factorization
+of transform status and information effect.
