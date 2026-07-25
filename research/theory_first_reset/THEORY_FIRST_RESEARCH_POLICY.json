@@ -51,11 +51,11 @@
     "GROWING_BASELINE_EXCEPTIONS"
   ],
   "current_authority": {
-    "stage": "R4_V0_3A_COMPLETE_PROVIDER_RELATION_PREREG_ALLOWED",
+    "stage": "R4_V0_3B_PROVIDER_RELATION_PREREGISTERED",
     "theory_research": true,
     "standalone_synthetic_experiment": false,
-    "standalone_provider_experiment": false,
-    "provider_calls": false,
+    "standalone_provider_experiment": true,
+    "provider_calls": true,
     "fresh_holdout_consumption": false,
     "new_runtime_modules": false,
     "core_writes": false,

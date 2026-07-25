@@ -1,0 +1,31 @@
+{
+  "receipt_version": "agentos_r4_provider_semantic_relation_authorization_v0_3b",
+  "status": "AUTHORIZED_WITH_BOUNDARY",
+  "authorized_by": "USER_HUMAN_GATE",
+  "authorization_date": "2026-07-25",
+  "authorization_basis": "User requested optimization of the engineering object and continuation of the next research step.",
+  "source_theory": "R4_SEMANTIC_RELATION_COMPOSITION_THEORY_V0_3.md",
+  "source_construction_closure": "R4_RELATION_BOUNDARY_SYNTHETIC_CLOSURE_V0_3A.md",
+  "authorized_operations": [
+    "STANDALONE_FRESH_PROVIDER_RELATION_EXPERIMENT",
+    "DEEPSEEK_PROVIDER_CALLS_WITHIN_FROZEN_BUDGET",
+    "LOCAL_IGNORED_ARTIFACT_WRITE",
+    "DETERMINISTIC_RUNTIME_ACTION_DERIVATION",
+    "THEORY_WRITEBACK"
+  ],
+  "call_budget": {
+    "logical_calls": 14,
+    "maximum_physical_attempts": 28,
+    "maximum_total_tokens": 120000
+  },
+  "claim_ceiling": "SAME_PROVIDER_FRESH_SEMANTIC_RELATION_INSTANTIATION_ONLY",
+  "forbidden_operations": [
+    "PROVIDER_COMPOSITION_ACTION",
+    "PROVIDER_COMPOSED_PROBABILITY",
+    "PROVIDER_FINAL_STATE_AUTHORITY",
+    "RUNTIME_OR_CORESLIM_WRITE",
+    "RETENTION_WRITE",
+    "BASELINE_PROMOTION",
+    "SAME_VERSION_SEMANTIC_REPAIR"
+  ]
+}

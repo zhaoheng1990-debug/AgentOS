@@ -225,6 +225,10 @@ Naive duplicate composition produced probability overconfidence of 0.141 to
 0.222. The object chain is ready for a fresh Provider semantic-relation
 preregistration, but not Core synchronization.
 
+R4 v0.3B is preregistered as a fresh same-Provider semantic relation test. It
+separates batch and single-case presentation, hides relation truth and action,
+and makes false combine or false deduplication hard failures.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -290,6 +294,7 @@ Require:
 | R4 v0.3 object map | frozen for standalone construction |
 | R4 v0.3A | zero-Provider synthetic validation authorized |
 | R4 v0.3A result | 14/14 construction pass; Provider semantics untested |
+| R4 v0.3B | fresh Provider semantic relation test authorized |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |
