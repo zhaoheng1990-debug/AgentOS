@@ -5,23 +5,25 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.72.0**
+Experiment pack version: **0.73.0**
 
-## Current v0.72 result
+## Current v0.73 result
 
-v0.72 replays v0.71 with a deterministic frame-to-basis coordinate projection.
-When a frame declares a coordinate `UNCONSTRAINED`, Runtime projects the basis
-binding to `ALLOWED_BY_UNCONSTRAINED`; other frame modes preserve the
-Provider-backed binding.
+v0.73 prospectively re-executed the complete frame, local surface catalog,
+Provider ID binding, coordinate projection, and deterministic compiler chain.
+It did not reuse the Provider outputs revealed by the v0.71/v0.72 calibration
+analysis.
 
-The zero-call replay changed 17 coordinate fields. All 12 labels were correct,
-evidence F1 remained `0.9556`, and effective Cbit rose to `0.9666`, with no
-harmful regressions.
+The chain corrected three baseline errors and raised label accuracy from
+`0.7500` to `0.9167` and effective Cbit from `0.8474` to `0.8833`. It was
+nevertheless rejected: one grouped intervention was split into valid member
+aliases that the frozen whole-string grounding contract did not accept. The
+missing receipt harmed one previously correct case and reduced evidence F1
+from `0.9000` to `0.8722`.
 
-This is positive replay evidence, not fresh transfer evidence. The combined
-surface-binding and coordinate-projection mechanism must be prospectively
-re-executed before the untouched holdout can be authorized. Fresh holdout calls
-remain zero; CoreSlim remains `0.4.0-alpha.21`.
+Fresh holdout calls remain zero. The next version must test a deterministic,
+catalog-bounded grouped-object alias normalizer on calibration before any
+holdout authorization. CoreSlim remains `0.4.0-alpha.21`.
 
 ## Components
 
