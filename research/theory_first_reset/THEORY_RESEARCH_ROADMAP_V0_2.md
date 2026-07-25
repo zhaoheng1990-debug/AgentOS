@@ -326,6 +326,11 @@ receive identical fresh evidence in two forward/reverse rounds with `L-F-F-L`
 call order. The experiment separates representational ceiling, semantic
 inference, Runtime action safety, revalidation resolution, and token cost.
 
+The v0.3J twelve-case public corpus, both private references, four prompts,
+call order, and implementation are hash-frozen after 71 passing preflight
+tests. Both private references compile to identical immediate outcomes. Four
+bounded Provider calls are authorized.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -406,7 +411,7 @@ Require:
 | R4 v0.3G | closed semantic fail; 12/12 Runtime actions; information relation 8/12 |
 | R4 v0.3H | closed construction fail; apparent pass void |
 | R4 v0.3I | 16/16 formal pass; factorization coherence supported |
-| R4 v0.3J | comparative theory frozen; fresh corpus and implementation required |
+| R4 v0.3J | corpus and instrument frozen; four L-F-F-L calls authorized |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

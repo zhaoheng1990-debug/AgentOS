@@ -102,8 +102,9 @@ and blob identity, but its candidate code is not part of this branch.
 67. `R4_FACTORIZATION_CAUSAL_BENEFIT_THEORY_V0_3J.md`
 68. `R4_FACTORIZATION_CAUSAL_BENEFIT_AUTHORIZATION_V0_3J.json`
 69. `R4_FACTORIZATION_CAUSAL_BENEFIT_PREREGISTRATION_V0_3J.md`
-70. `THEORY_PACKET_TEMPLATE.md`
-71. `ROLLBACK_POINTER.json`
+70. `R4_FACTORIZATION_CAUSAL_BENEFIT_CORPUS_MANIFEST_V0_3J.json`
+71. `THEORY_PACKET_TEMPLATE.md`
+72. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -247,3 +248,8 @@ R4 v0.3J freezes a matched fresh-corpus comparison between the legacy enum and
 factorized axes. Two forward/reverse rounds use `L-F-F-L` call order and
 separate representation ceiling, Provider inference, Runtime action safety,
 revalidation resolution, and token cost.
+
+The fresh twelve-case dual-reference corpus and comparative implementation
+passed 71 tests and are hash-frozen. Legacy and factorized private references
+compile to identical immediate relations and actions. Four bounded calls are
+authorized in `L-F-F-L` order.
