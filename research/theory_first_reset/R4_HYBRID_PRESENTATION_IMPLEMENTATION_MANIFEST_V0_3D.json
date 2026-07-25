@@ -1,0 +1,48 @@
+{
+  "manifest_version": "agentos_r4_hybrid_presentation_implementation_v0_3d",
+  "status": "FROZEN_BEFORE_PROVIDER_CALLS",
+  "historical_source_hashes": {
+    "batch_A_attempt_1.json.txt": "7f7e5c2beb2270577dfdcbfa6fc0ee04b5a0fa0ac9520dfcd6cff94d7f25cb94",
+    "batch_A_attempt_2.json.txt": "706fef18308dc37bfba3312824983566e748e271ae6ab23a42f8c333f4223236"
+  },
+  "source_hashes": {
+    "hybrid_anchor.py": "890c8c3451e0f6f7b242ca0900825993e3771faeccb231cf276c7fa00360a2b2",
+    "hybrid_scoring.py": "b30a17c1133e966ed03d34d5fd6e8f9d3f91082f5612d304de2a4ddf85248f42",
+    "hybrid_evaluation.py": "75bf6af6df3cb40592da3a1c914a8f97041a2e1c02ed0833190cca77a54637d5",
+    "hybrid_cli.py": "ae9e923c0cfadb90cd0ff5598e292de022dc7803a2d4ffd70d2aaa8d96305d42",
+    "receipt_envelope.py": "e38d2b090ea37ae6ccb7aed9818883a91069421b247de2ee7e00d0f2428a587a",
+    "semantic_schemas.py": "6ecbb03abf289326e69711d520bf8e37c9edf5adda81051ebb444f69a5854ae1"
+  },
+  "system_prompt_sha256": "6dcc3fed139de8cb2f90f2854e007bc7d0255d8b580069336770ec6d1b1d02c1",
+  "call_prompt_hashes": {
+    "batch_B": "20c25202c5c13867703736268cef8c1b601c4392abf8552e397f40db7afc51a3",
+    "single_R43B-01": "6208226ccf6ee82fb4ccfecd4dff86f6e6213c8984a4d3da598e546c3b74d8a2",
+    "single_R43B-02": "4fc48cac55f2775753233ab819eea2ff5ce90dc0e5ee64c0c8fdfd0553d6e8e1",
+    "single_R43B-03": "a093beb602eca49b606ebe3fab107bd6e12beb677e02ad182a14b110533d0fe0",
+    "single_R43B-04": "7bba4da1d9ad55c4210e0217c5e25d5c2f856b6cfb3c147e77e51999fd169977",
+    "single_R43B-05": "477b9901b35889d2ee8225bc3d32705ef1253410871f03ddda64722d4133c09f",
+    "single_R43B-06": "37a827753ef7f8631ce428129962edf119dd2c0d9a570fbcc29184e69d2da811",
+    "single_R43B-07": "de8284ffd5e9d9a5ef49c85ecd8b96ba33d92b3ed509d0df4e55d2681be64c79",
+    "single_R43B-08": "cdd85bf2a853d344444606e99166e3f0629da01a5f70ad826c571010592ca2c4",
+    "single_R43B-09": "21bd62a945a6273ab4dca32d9815484e34fa88236b9d6d9acec816bd77c604e9",
+    "single_R43B-10": "b366fdd40f6170352a007b417537a5dabaeb01539fdf161aaf45d6d75c2f2cf1",
+    "single_R43B-11": "5ce0738b47f340bbd83d1a6ce23b28d96d2965f9cede93e886aa82b7005d61df",
+    "single_R43B-12": "b220665fcd4f136005a8eaf5950e28dbbdad92c8a5fe579f4f90e930f002bfe7"
+  },
+  "prompt_surface_sha256": "167b9e611d950f76a5db9128a375060590101f1f028a3bbc4f67a53d48745add",
+  "public_corpus_sha256": "9268dd4dcd4570eff4129062e1fde27f60c40243214fad30002b953d297c32e5",
+  "private_reference_sha256": "aa9faef2fb8d77f6f04d44497cb3788432ab7da539361511d860878a5218f6bc",
+  "private_reference_representation": "sorted compact JSON of case_id, state, and action",
+  "private_reference_in_provider_prompt": false,
+  "runtime_action_in_provider_case_payload": false,
+  "historical_response_in_provider_prompt": false,
+  "new_logical_call_count": 13,
+  "maximum_new_physical_attempts": 26,
+  "maximum_incremental_total_tokens": 80000,
+  "repeated_batch_a_calls": 0,
+  "provider_calls_at_freeze": 0,
+  "output_directory_existed_at_freeze": false,
+  "core_write_allowed": false,
+  "retention_write_allowed": false,
+  "baseline_write_allowed": false
+}
