@@ -5,26 +5,25 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.68.0**
+Experiment pack version: **0.69.0**
 
-## Current v0.68 result
+## Current v0.69 result
 
-v0.68 keeps deterministic local label authority but replaces the ambiguous
-orientation enum with stable local arm IDs and explicit
-`subject_group_id/reference_group_id` evidence relations. Evidence relevance,
-statistical significance, and evidence role are separate coordinates.
+v0.69 adds span-anchored subject and relation witnesses to v0.68's stable arm
+IDs and deterministic compiler. Exact substrings and alias membership are
+checked locally; Provider prose cannot override the compiled label.
 
-The 12-case calibration produced complete frame, basis, and compiled receipts
-with zero structural failures. Accuracy improved from v0.67's `6/12` to
-`10/12`; effective Cbit reached `0.9111`, above the direct baseline's `0.8474`.
-The candidate corrected two baseline errors and improved evidence binding, but
-it still failed the frozen `11/12` and zero-harm gates.
+The calibration was rejected. All 12 frames passed, but only seven bases
+survived the stricter grounding contract. Five failures came from requiring
+every span to repeat a complete subject alias or relation phrase. Several
+Evidence Inference spans are sentence continuations whose witness lives in a
+neighboring admitted span.
 
-The remaining errors are narrower: one Provider receipt contradicted its own
-relation rationale, and one absolute no-adverse-event statement lacked an
-explicit comparative/significance coordinate. The untouched 36-case holdout
-again received zero Provider calls. CoreSlim remains `0.4.0-alpha.21`; v0.68
-has no production memory, retention, baseline, or pointer authority.
+The main result is architectural: witness grounding should be retained, but
+must support hash-bound cross-span anchors rather than assume each span is a
+self-contained sentence. The untouched 36-case holdout again received zero
+Provider calls. CoreSlim remains `0.4.0-alpha.21`; v0.69 has no production
+memory, retention, baseline, or pointer authority.
 
 ## Components
 
