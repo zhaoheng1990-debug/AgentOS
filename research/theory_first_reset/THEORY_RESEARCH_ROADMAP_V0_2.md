@@ -235,6 +235,12 @@ fresh cases exactly with zero false Runtime action. The next object is a
 shape-based, ambiguity-blocking receipt envelope canonicalizer validated with
 zero Provider calls.
 
+R4 v0.3C freezes `ReceiptEnvelopeIdentity` as a representation-level object.
+The leading model predicts that one unique, non-empty, homogeneous
+receipt-shaped collection is sufficient regardless of its key. The zero-call
+test must recover both preserved responses while blocking ambiguous,
+heterogeneous, empty, nested, and authority-bearing inputs.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -302,6 +308,7 @@ Require:
 | R4 v0.3A result | 14/14 construction pass; Provider semantics untested |
 | R4 v0.3B | fresh Provider semantic relation test authorized |
 | R4 v0.3B result | mechanical early stop; semantic content 12/12 twice post hoc |
+| R4 v0.3C | zero-Provider envelope construction authorized |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

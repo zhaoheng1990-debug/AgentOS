@@ -1,0 +1,27 @@
+{
+  "receipt_version": "agentos_r4_receipt_envelope_authorization_v0_3c",
+  "status": "AUTHORIZED_WITH_BOUNDARY",
+  "authorized_by": "USER_HUMAN_GATE",
+  "authorization_date": "2026-07-25",
+  "authorization_basis": "User requested continuation of the next research step after the v0.3B envelope closure.",
+  "theory_packet": "R4_RECEIPT_ENVELOPE_CANONICALIZATION_THEORY_V0_3C.md",
+  "preregistration": "R4_RECEIPT_ENVELOPE_CANONICALIZATION_PREREGISTRATION_V0_3C.md",
+  "authorized_operations": [
+    "STANDALONE_ZERO_PROVIDER_SYNTHETIC_EXPERIMENT",
+    "READ_ONLY_REPLAY_OF_PRESERVED_V0_3B_RESPONSES",
+    "LOCAL_IGNORED_ARTIFACT_WRITE",
+    "DETERMINISTIC_REPLAY",
+    "THEORY_WRITEBACK"
+  ],
+  "forbidden_operations": [
+    "PROVIDER_CALLS",
+    "FRESH_HOLDOUT_CONSUMPTION",
+    "RUNTIME_OR_CORESLIM_WRITE",
+    "RETENTION_WRITE",
+    "BASELINE_PROMOTION",
+    "KEY_SPECIFIC_ALIAS_PATCH",
+    "PRESERVED_RESPONSE_MUTATION",
+    "SAME_VERSION_SEMANTIC_REPAIR"
+  ],
+  "claim_ceiling": "BOUNDED_RECEIPT_ENVELOPE_CONSTRUCTION_ONLY"
+}

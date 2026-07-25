@@ -51,9 +51,9 @@
     "GROWING_BASELINE_EXCEPTIONS"
   ],
   "current_authority": {
-    "stage": "R4_V0_3B_CLOSED_ENVELOPE_CANONICALIZATION_REQUIRED",
+    "stage": "R4_V0_3C_ENVELOPE_CANONICALIZATION_PREREGISTERED",
     "theory_research": true,
-    "standalone_synthetic_experiment": false,
+    "standalone_synthetic_experiment": true,
     "standalone_provider_experiment": false,
     "provider_calls": false,
     "fresh_holdout_consumption": false,

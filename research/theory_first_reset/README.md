@@ -68,8 +68,11 @@ and blob identity, but its candidate code is not part of this branch.
 33. `R4_PROVIDER_SEMANTIC_RELATION_PREREGISTRATION_V0_3B.md`
 34. `R4_PROVIDER_SEMANTIC_RELATION_CORPUS_MANIFEST_V0_3B.json`
 35. `R4_PROVIDER_SEMANTIC_RELATION_CLOSURE_V0_3B.md`
-36. `THEORY_PACKET_TEMPLATE.md`
-37. `ROLLBACK_POINTER.json`
+36. `R4_RECEIPT_ENVELOPE_CANONICALIZATION_THEORY_V0_3C.md`
+37. `R4_RECEIPT_ENVELOPE_CANONICALIZATION_AUTHORIZATION_V0_3C.json`
+38. `R4_RECEIPT_ENVELOPE_CANONICALIZATION_PREREGISTRATION_V0_3C.md`
+39. `THEORY_PACKET_TEMPLATE.md`
+40. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -132,3 +135,8 @@ R4 v0.3B stopped after two invalid Batch A envelopes. Both unaccepted responses
 used a `cases` array instead of `receipts`, but post-hoc item diagnostics were
 12/12 exact twice with zero harmful Runtime actions. The result is a mechanical
 construction failure, not a completed semantic adequacy result.
+
+R4 v0.3C freezes the representation-level object as a unique homogeneous
+receipt collection rather than a list of accepted key aliases. It authorizes
+only zero-Provider adversarial shape validation and read-only replay of the two
+preserved v0.3B responses.
