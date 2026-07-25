@@ -1,0 +1,35 @@
+{
+  "receipt_version": "agentos_r4_fresh_hard_relation_authorization_v0_3e",
+  "status": "AUTHORIZED_WITH_BOUNDARY",
+  "authorized_by": "USER_HUMAN_GATE",
+  "authorization_date": "2026-07-25",
+  "authorization_basis": "User requested continuation of the next research step after the v0.3D closure.",
+  "theory_packet": "R4_FRESH_HARD_RELATION_GENERALIZATION_THEORY_V0_3E.md",
+  "preregistration": "R4_FRESH_HARD_RELATION_GENERALIZATION_PREREGISTRATION_V0_3E.md",
+  "authorized_operations": [
+    "GENERATE_AND_FREEZE_SECOND_SYNTHETIC_CORPUS",
+    "RUN_DETERMINISTIC_CORPUS_PREFLIGHT",
+    "ONE_DEEPSEEK_BATCH_LOGICAL_CALL",
+    "LOCAL_IGNORED_ARTIFACT_WRITE",
+    "DETERMINISTIC_RUNTIME_ACTION_DERIVATION",
+    "THEORY_WRITEBACK"
+  ],
+  "call_budget": {
+    "logical_calls": 1,
+    "maximum_physical_attempts": 2,
+    "maximum_total_tokens": 20000
+  },
+  "forbidden_operations": [
+    "EXTERNAL_HOLDOUT_CONSUMPTION",
+    "SINGLE_CASE_PROVIDER_CALLS",
+    "REPEATED_BATCH_PROVIDER_CALL",
+    "NEW_RELATION_STATE",
+    "PROVIDER_RUNTIME_ACTION",
+    "PROVIDER_FINAL_STATE_AUTHORITY",
+    "RUNTIME_OR_CORESLIM_WRITE",
+    "RETENTION_WRITE",
+    "BASELINE_PROMOTION",
+    "SAME_VERSION_CORPUS_OR_SEMANTIC_REPAIR"
+  ],
+  "claim_ceiling": "SAME_PROVIDER_FRESH_HARD_SYNTHETIC_RELATION_GENERALIZATION_ONLY"
+}

@@ -257,6 +257,11 @@ did not improve labels, while unresolved-assumption decomposition varied. The
 next object is fresh hard-corpus semantic transfer, not additional repetition
 on the saturated corpus.
 
+R4 v0.3E freezes a fresh hard relation transfer test. Eighteen new cases must
+be balanced across the existing six states, remove direct lexical cues, and
+remain privately adjudicable. One Batch call is authorized only after corpus,
+prompt, and private-reference hashes are frozen.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -330,6 +335,7 @@ Require:
 | R4 v0.3D status | preregistered; 13 new logical calls authorized |
 | R4 v0.3D result | 15/15 pass; exact three-arm agreement; 2.447x Single cost |
 | R4 v0.3E | fresh hard relation theory required; Provider calls paused |
+| R4 v0.3E status | theory and corpus construction rules frozen |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

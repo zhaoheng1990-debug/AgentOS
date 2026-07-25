@@ -51,9 +51,9 @@
     "GROWING_BASELINE_EXCEPTIONS"
   ],
   "current_authority": {
-    "stage": "R4_V0_3D_CLOSED_V0_3E_THEORY_REQUIRED",
+    "stage": "R4_V0_3E_FRESH_HARD_CORPUS_CONSTRUCTION_AUTHORIZED",
     "theory_research": true,
-    "standalone_synthetic_experiment": false,
+    "standalone_synthetic_experiment": true,
     "standalone_provider_experiment": false,
     "provider_calls": false,
     "fresh_holdout_consumption": false,

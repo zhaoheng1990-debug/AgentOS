@@ -77,8 +77,11 @@ and blob identity, but its candidate code is not part of this branch.
 42. `R4_HYBRID_PRESENTATION_ROBUSTNESS_PREREGISTRATION_V0_3D.md`
 43. `R4_HYBRID_PRESENTATION_IMPLEMENTATION_MANIFEST_V0_3D.json`
 44. `R4_HYBRID_PRESENTATION_ROBUSTNESS_CLOSURE_V0_3D.md`
-45. `THEORY_PACKET_TEMPLATE.md`
-46. `ROLLBACK_POINTER.json`
+45. `R4_FRESH_HARD_RELATION_GENERALIZATION_THEORY_V0_3E.md`
+46. `R4_FRESH_HARD_RELATION_GENERALIZATION_AUTHORIZATION_V0_3E.json`
+47. `R4_FRESH_HARD_RELATION_GENERALIZATION_PREREGISTRATION_V0_3E.md`
+48. `THEORY_PACKET_TEMPLATE.md`
+49. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -160,3 +163,7 @@ R4 v0.3D passed all 15 gates. Historical Batch A, reversed Batch B, and twelve
 isolated Single judgments agreed 12/12 with zero harmful action. Single calls
 cost 2.447 times more tokens per receipt without improving relation labels;
 fresh hard-corpus generalization remains untested.
+
+R4 v0.3E freezes a second unseen 18-case corpus construction. It removes direct
+relation wording, preserves the six-state ontology, and authorizes only one
+cost-efficient Batch call after deterministic adjudication and leakage audits.
