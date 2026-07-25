@@ -2,8 +2,8 @@
 
 ## Status
 
-**FRESH_HOLDOUT_DIAGNOSTIC_COMPLETE -
-AWAITING_EXTERNAL_TYPED_REFERENCE.**
+**EXTERNAL_LANE_ANALYSIS_COMPLETE -
+REJECT_A18_ALL_MUTATIONS_EXTERNALLY_HARMFUL.**
 
 v0.84 replaces the rejected v0.83 binary boundary facts with a ternary
 ontology:
@@ -86,14 +86,42 @@ Neither lane receives benchmark gold, peer labels, DeepSeek outputs, or any
 arm disposition. Lane disagreements will require anonymous Kimi-K3
 adjudication.
 
-Current decision:
+Both responses passed the frozen contract without repair. The lanes produced
+38 complete typed-label agreements and 10 disagreements, for a semantic
+agreement rate of 0.7917.
 
-`DEFER_TERNARY_BOUNDARY_ACCEPTANCE_PENDING_EXTERNAL_TYPED_REFERENCE`
+Crucially, all four A18 mutations are among the 38 agreements. Both lanes label
+all four spans `ADMIT_EVIDENCE`:
 
-No mechanism tuning is authorized on this holdout. The next implementation
-decision must be based on the frozen external reference:
+- the two "not significantly different between the two groups" spans are
+  direct null-effect evidence, not pooled outcomes;
+- the two ketorolac-versus-lidocaine spans are treated as exact target-effect
+  evidence under the study-arm binding, not explicit target contradictions.
 
-- accept A18 only if the four demotions are supported without harming valid
-  unchanged evidence;
-- otherwise preserve A14+A16 and freeze A18 as a bounded negative result;
-- use any newly observed failure only to design a new fresh-holdout version.
+The paired mutation result is therefore:
+
+- corrected: 0;
+- harmed: 4;
+- pending adjudication: 0.
+
+A18 and A16 are identical on the remaining 44 spans. Consequently, no Kimi
+decision on the 10 unchanged-span disagreements can reverse the relative
+finding that A18 is worse than A16.
+
+Current mechanism decision:
+
+`REJECT_A18_ALL_MUTATIONS_EXTERNALLY_HARMFUL`
+
+Kimi-K3 adjudication remains required to complete the 48-span archival typed
+reference, but no longer gates the A18 mechanism decision. No mechanism tuning
+is authorized on this holdout.
+
+The next fresh-holdout design should preserve A14+A16 and replace component
+literalism with explicit study-relation modeling:
+
+- distinguish direct arm comparison from non-separable pooling;
+- resolve intervention/comparator aliases at the study-object level before
+  judging a span;
+- require a relational contradiction witness, not merely lexical arm-name
+  divergence;
+- keep exact quote grounding and fail-closed upstream preservation.
