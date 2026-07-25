@@ -251,6 +251,12 @@ bound by source hash and cannot be repeated. One reversed Batch B and twelve
 isolated Single calls test order and context-packing robustness while preserving
 time drift as an explicit rival explanation.
 
+R4 v0.3D passed all 15 gates. All three arms agreed 12/12 with zero harmful
+Runtime action. Single isolation cost 2.447 times more tokens per receipt and
+did not improve labels, while unresolved-assumption decomposition varied. The
+next object is fresh hard-corpus semantic transfer, not additional repetition
+on the saturated corpus.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -322,6 +328,8 @@ Require:
 | R4 v0.3C result | 15/15 pass; mechanical envelope anomaly closed |
 | R4 v0.3D | theory and preregistration required; Provider calls paused |
 | R4 v0.3D status | preregistered; 13 new logical calls authorized |
+| R4 v0.3D result | 15/15 pass; exact three-arm agreement; 2.447x Single cost |
+| R4 v0.3E | fresh hard relation theory required; Provider calls paused |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

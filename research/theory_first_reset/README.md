@@ -76,8 +76,9 @@ and blob identity, but its candidate code is not part of this branch.
 41. `R4_HYBRID_PRESENTATION_ROBUSTNESS_AUTHORIZATION_V0_3D.json`
 42. `R4_HYBRID_PRESENTATION_ROBUSTNESS_PREREGISTRATION_V0_3D.md`
 43. `R4_HYBRID_PRESENTATION_IMPLEMENTATION_MANIFEST_V0_3D.json`
-44. `THEORY_PACKET_TEMPLATE.md`
-45. `ROLLBACK_POINTER.json`
+44. `R4_HYBRID_PRESENTATION_ROBUSTNESS_CLOSURE_V0_3D.md`
+45. `THEORY_PACKET_TEMPLATE.md`
+46. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -154,3 +155,8 @@ envelope anomaly only; Provider presentation robustness remains pending.
 R4 v0.3D is preregistered as a hybrid-time presentation diagnostic. It reuses
 the immutable Batch A responses, forbids a repeated Batch A call, and authorizes
 only one reversed Batch B plus twelve isolated Single calls.
+
+R4 v0.3D passed all 15 gates. Historical Batch A, reversed Batch B, and twelve
+isolated Single judgments agreed 12/12 with zero harmful action. Single calls
+cost 2.447 times more tokens per receipt without improving relation labels;
+fresh hard-corpus generalization remains untested.
