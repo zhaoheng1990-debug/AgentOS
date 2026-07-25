@@ -26,7 +26,9 @@ class AttemptReceipt:
 
 
 class DeepSeekSemanticAdapter:
-    def __init__(self, output_dir: Path) -> None:
+    def __init__(
+        self, output_dir: Path, max_completion_tokens: int = 5000
+    ) -> None:
         api_key = os.environ.get("DEEPSEEK_API_KEY")
         if not api_key:
             raise RuntimeError("DEEPSEEK_API_KEY is not configured")
@@ -37,6 +39,7 @@ class DeepSeekSemanticAdapter:
             max_retries=0,
         )
         self.model = "deepseek-v4-flash"
+        self.max_completion_tokens = max_completion_tokens
         self.output_dir = output_dir
         self.attempts: list[AttemptReceipt] = []
 
@@ -100,7 +103,7 @@ class DeepSeekSemanticAdapter:
                     ],
                     response_format={"type": "json_object"},
                     temperature=0.0,
-                    max_tokens=5000,
+                    max_tokens=self.max_completion_tokens,
                     extra_body={"thinking": {"type": "disabled"}},
                 )
                 usage = self._usage(response)

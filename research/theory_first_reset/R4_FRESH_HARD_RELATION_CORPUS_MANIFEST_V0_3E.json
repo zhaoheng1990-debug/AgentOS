@@ -1,0 +1,49 @@
+{
+  "manifest_version": "agentos_r4_fresh_hard_relation_corpus_v0_3e",
+  "status": "FROZEN_BEFORE_PROVIDER_CALLS",
+  "case_count": 18,
+  "domain_count": 18,
+  "state_balance": {
+    "INDEPENDENT_DISTINCT": 3,
+    "EXACT_DUPLICATE": 3,
+    "DEPENDENT_DISTINCT": 3,
+    "PARTIAL_OVERLAP": 3,
+    "SCOPE_INCOMPATIBLE": 3,
+    "UNRESOLVED": 3
+  },
+  "source_hashes": {
+    "hard_cases.py": "ade4e7746cd8bdb4679ae1c9fc6806967945f456efe9793b9e72d9b52a454a1b",
+    "hard_corpus_audit.py": "c37aa6159aa4bbbe4085168cc5a6e0eb6e48d852c6314148e06fe3a5ddb5ea49",
+    "hard_prompts.py": "a4d3428ffd2e03e4cf92bad9050d759688fa3cf41a1a038891d77679ecaf83f4",
+    "hard_scoring.py": "d90646fa4ca831c82f580842adc685836b8cc2036edd7a75e066687de55e8eed",
+    "hard_evaluation.py": "f9e6e722f3b5cf2e79984a1e8c705306c545af68215471ccd687b62fe93b9e9b",
+    "hard_cli.py": "205d7fa88c9555214060c32bcf43789dbe5084096302668ce12f0f8cbc4b3546",
+    "semantic_provider.py": "10bafdb5821314fb4874e33b99a99250f44a64c92986fb6f5bf890ec1fa2b96d",
+    "receipt_envelope.py": "e38d2b090ea37ae6ccb7aed9818883a91069421b247de2ee7e00d0f2428a587a",
+    "semantic_schemas.py": "6ecbb03abf289326e69711d520bf8e37c9edf5adda81051ebb444f69a5854ae1"
+  },
+  "public_corpus_sha256": "874ded9ffe99fd6b266bf73326db9ed80139bebb72297fd2d621d36c7a572581",
+  "private_reference_sha256": "f23cdb98afa1ff2e6d8661a593513f2e826368a7244c6b4bcc18588803cdfe57",
+  "system_prompt_sha256": "6dcc3fed139de8cb2f90f2854e007bc7d0255d8b580069336770ec6d1b1d02c1",
+  "user_prompt_sha256": "2cd4a44813321cd707d8637c36054dd962180ce6d67f883fc5f286c4e3677f6c",
+  "call_prompt_sha256": "7bb3f195080ad1841135f82e2c7f5b58b3d655749bd363fc52400b6551c5f1f7",
+  "case_order_sha256": "a31de332b67723bfa7d0ed59be846d77c9bc09c2b9ad7adb98b42e2cb26ddd69",
+  "user_prompt_characters": 11486,
+  "corpus_preflight": {
+    "status": "PASS",
+    "gate_pass_count": 9,
+    "gate_count": 9
+  },
+  "private_reference_in_provider_prompt": false,
+  "runtime_action_in_provider_prompt": false,
+  "old_case_ids_in_provider_prompt": false,
+  "logical_call_count": 1,
+  "maximum_physical_attempts": 2,
+  "maximum_total_tokens": 20000,
+  "provider_calls_at_freeze": 0,
+  "output_directory_existed_at_freeze": false,
+  "external_holdout_consumption": false,
+  "core_write_allowed": false,
+  "retention_write_allowed": false,
+  "baseline_write_allowed": false
+}
