@@ -51,11 +51,11 @@
     "GROWING_BASELINE_EXCEPTIONS"
   ],
   "current_authority": {
-    "stage": "R4_V0_3E_FRESH_HARD_BATCH_FROZEN",
+    "stage": "R4_V0_3E_CLOSED_V0_3F_TRANSFORM_EQUIVALENCE_THEORY_REQUIRED",
     "theory_research": true,
     "standalone_synthetic_experiment": false,
-    "standalone_provider_experiment": true,
-    "provider_calls": true,
+    "standalone_provider_experiment": false,
+    "provider_calls": false,
     "fresh_holdout_consumption": false,
     "new_runtime_modules": false,
     "core_writes": false,

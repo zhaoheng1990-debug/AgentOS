@@ -262,6 +262,11 @@ be balanced across the existing six states, remove direct lexical cues, and
 remain privately adjudicable. One Batch call is authorized only after corpus,
 prompt, and private-reference hashes are frozen.
 
+R4 v0.3E passed all 13 gates with 17/18 relation accuracy, 0.944 macro recall,
+and zero harmful action. The only false block placed a calibrated transform of
+one telemetry observation under dependent distinct rather than exact duplicate.
+The next object is transformation equivalence, not a case-specific patch.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -336,6 +341,8 @@ Require:
 | R4 v0.3D result | 15/15 pass; exact three-arm agreement; 2.447x Single cost |
 | R4 v0.3E | fresh hard relation theory required; Provider calls paused |
 | R4 v0.3E status | theory and corpus construction rules frozen |
+| R4 v0.3E result | 13/13 pass; 17/18 relation; transform boundary discovered |
+| R4 v0.3F | transformation-equivalence theory required; Provider calls paused |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

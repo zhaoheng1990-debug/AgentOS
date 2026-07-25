@@ -81,8 +81,9 @@ and blob identity, but its candidate code is not part of this branch.
 46. `R4_FRESH_HARD_RELATION_GENERALIZATION_AUTHORIZATION_V0_3E.json`
 47. `R4_FRESH_HARD_RELATION_GENERALIZATION_PREREGISTRATION_V0_3E.md`
 48. `R4_FRESH_HARD_RELATION_CORPUS_MANIFEST_V0_3E.json`
-49. `THEORY_PACKET_TEMPLATE.md`
-50. `ROLLBACK_POINTER.json`
+49. `R4_FRESH_HARD_RELATION_GENERALIZATION_CLOSURE_V0_3E.md`
+50. `THEORY_PACKET_TEMPLATE.md`
+51. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -168,3 +169,7 @@ fresh hard-corpus generalization remains untested.
 R4 v0.3E freezes a second unseen 18-case corpus construction. It removes direct
 relation wording, preserves the six-state ontology, and authorizes only one
 cost-efficient Batch call after deterministic adjudication and leakage audits.
+
+R4 v0.3E passed all 13 gates with 17/18 relation accuracy and zero harmful
+action. The only error conservatively blocked a raw-telemetry versus calibrated
+value pair, exposing transformation equivalence as the next ontology object.
