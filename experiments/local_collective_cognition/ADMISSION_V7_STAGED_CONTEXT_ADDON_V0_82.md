@@ -2,8 +2,8 @@
 
 ## Status
 
-**FRESH_HOLDOUT_OPERATIONAL_PASS -
-AWAITING_EXTERNAL_TYPED_ANNOTATIONS.**
+**EXTERNAL_LANES_VALIDATED -
+AWAITING_KIMI_K3_TYPED_ADJUDICATION.**
 
 v0.82 removes the effect-rejudgment confound observed in v0.81. The workflow
 is explicitly staged:
@@ -90,3 +90,23 @@ The complete lane validation, anonymous-disagreement adjudication, typed
 reference finalization, and three-arm scoring path passed a 48-span synthetic
 protocol smoke test. Synthetic labels are test fixtures only and are not
 retained as experimental evidence.
+
+## External Lane Result
+
+Both real annotation responses passed expected model, lane, pack hash,
+48-span coverage, cross-field semantics, and blinding validation.
+
+- complete typed-label agreement: 21/48;
+- anonymous Kimi-K3 adjudication required: 27/48;
+- agreed dispositions: 19 evidence and 2 reject;
+- disagreement pairs: 18 context/reject, 2 evidence/context, and 7
+  evidence/evidence disagreements in the remaining typed fields.
+
+GPT-5.6 assigned 26 evidence, 20 context, and 2 reject labels. Gemini-3.1
+assigned 28 evidence, 0 context, and 20 reject labels. This large difference
+shows that the unresolved semantic boundary is whether target-relevant
+non-effect material deserves an independent context state, rather than only
+the candidate compiler's rejection threshold.
+
+The Kimi pack contains anonymous positions only. Annotator identity, benchmark
+gold, and baseline, atomic, and candidate outputs remain withheld.
