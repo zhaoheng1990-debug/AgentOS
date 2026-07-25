@@ -20,12 +20,14 @@ def test_root_object_and_array_are_canonicalized() -> None:
     array_result = parse_semantic_receipts(
         json.dumps([_item(case) for case in CASES]), CASES
     )
-    assert object_result.root_type == "object_receipts"
-    assert array_result.root_type == "array"
+    assert object_result.root_type == "object_collection"
+    assert object_result.source_key == "receipts"
+    assert array_result.root_type == "root_array"
+    assert array_result.source_key is None
     assert object_result.receipts == array_result.receipts
 
 
 def test_single_receipt_object_is_canonicalized() -> None:
     result = parse_semantic_receipts(json.dumps(_item(CASES[0])), (CASES[0],))
-    assert result.root_type == "object_single"
+    assert result.root_type == "direct_item"
     assert len(result.receipts) == 1

@@ -241,6 +241,11 @@ receipt-shaped collection is sufficient regardless of its key. The zero-call
 test must recover both preserved responses while blocking ambiguous,
 heterogeneous, empty, nested, and authority-bearing inputs.
 
+R4 v0.3C passed all 15 frozen gates. The generic 75-line canonicalizer accepted
+five admissible shapes, blocked nine unsafe or ambiguous shapes, and replayed
+both preserved v0.3B responses without changing their hashes. The next
+unresolved object is presentation robustness, not another envelope patch.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -309,6 +314,8 @@ Require:
 | R4 v0.3B | fresh Provider semantic relation test authorized |
 | R4 v0.3B result | mechanical early stop; semantic content 12/12 twice post hoc |
 | R4 v0.3C | zero-Provider envelope construction authorized |
+| R4 v0.3C result | 15/15 pass; mechanical envelope anomaly closed |
+| R4 v0.3D | theory and preregistration required; Provider calls paused |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

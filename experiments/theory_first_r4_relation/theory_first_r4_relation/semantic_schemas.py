@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass
-from typing import Any
 
 from .contracts import RELATION_STATES
+from .receipt_envelope import canonicalize_receipt_envelope
 from .semantic_cases import SemanticCase
 
 
@@ -44,23 +43,15 @@ class SemanticRelationReceipt:
 class ParsedSemanticReceipts:
     receipts: tuple[SemanticRelationReceipt, ...]
     root_type: str
-
-
-def _items(content: str) -> tuple[list[Any], str]:
-    root = json.loads(content)
-    if isinstance(root, list):
-        return root, "array"
-    if isinstance(root, dict) and isinstance(root.get("receipts"), list):
-        return root["receipts"], "object_receipts"
-    if isinstance(root, dict) and "case_id" in root:
-        return [root], "object_single"
-    raise ValueError("root must be a receipt object, receipts object, or array")
+    source_key: str | None
+    root_metadata_fields: tuple[str, ...]
 
 
 def parse_semantic_receipts(
     content: str, expected_cases: tuple[SemanticCase, ...]
 ) -> ParsedSemanticReceipts:
-    items, root_type = _items(content)
+    envelope = canonicalize_receipt_envelope(content, REQUIRED_KEYS)
+    items = envelope.items
     expected = {case.case_id: case for case in expected_cases}
     receipts = []
     for item in items:
@@ -105,5 +96,7 @@ def parse_semantic_receipts(
         raise ValueError("semantic case coverage must be exact")
     return ParsedSemanticReceipts(
         receipts=tuple(sorted(receipts, key=lambda item: item.case_id)),
-        root_type=root_type,
+        root_type=envelope.root_type,
+        source_key=envelope.source_key,
+        root_metadata_fields=envelope.root_metadata_fields,
     )

@@ -71,8 +71,9 @@ and blob identity, but its candidate code is not part of this branch.
 36. `R4_RECEIPT_ENVELOPE_CANONICALIZATION_THEORY_V0_3C.md`
 37. `R4_RECEIPT_ENVELOPE_CANONICALIZATION_AUTHORIZATION_V0_3C.json`
 38. `R4_RECEIPT_ENVELOPE_CANONICALIZATION_PREREGISTRATION_V0_3C.md`
-39. `THEORY_PACKET_TEMPLATE.md`
-40. `ROLLBACK_POINTER.json`
+39. `R4_RECEIPT_ENVELOPE_CANONICALIZATION_CLOSURE_V0_3C.md`
+40. `THEORY_PACKET_TEMPLATE.md`
+41. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -140,3 +141,8 @@ R4 v0.3C freezes the representation-level object as a unique homogeneous
 receipt collection rather than a list of accepted key aliases. It authorizes
 only zero-Provider adversarial shape validation and read-only replay of the two
 preserved v0.3B responses.
+
+R4 v0.3C passed all 15 frozen gates. Five admissible shapes canonicalized, nine
+ambiguous or malformed shapes blocked, and both preserved v0.3B responses
+replayed unchanged at 12/12 relation accuracy. This closes the mechanical
+envelope anomaly only; Provider presentation robustness remains pending.
