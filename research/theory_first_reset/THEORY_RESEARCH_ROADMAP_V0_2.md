@@ -198,6 +198,18 @@ should not be duplicated as independent Provider outputs.
 R4 v0.2 is preregistered as a paired protocol diagnostic. It changes only
 receipt minimality and cannot be reported as fresh validation.
 
+R4 v0.2 completed six valid role calls, then stopped after two invalid pair
+coordinator attempts. The role layer passed its frozen calibration and
+stability thresholds. The coordinator returned top-level arrays and showed
+prior-copying or 0.5 collapse. Post-hoc deterministic composition recovered all
+pair and full subsets with mean error below 0.000073, demonstrating that the
+accepted role packets contained sufficient numeric information.
+
+The next R4 theory revision must separate:
+
+- Provider-backed semantic relation judgment;
+- Runtime-owned deterministic packet composition.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -258,6 +270,8 @@ Require:
 | R4 v0.2 theory | minimal sufficient receipt frozen |
 | R4 v0.2 calls | authorized within a new 11 logical / 22 physical budget |
 | R4 v0.2 claim ceiling | paired protocol diagnostic only |
+| R4 v0.2 result | role layer supported; coordinator experiment failed |
+| next Provider calls | paused pending semantic relation theory |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |
