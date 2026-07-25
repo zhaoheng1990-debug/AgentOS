@@ -5,23 +5,26 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.75.0**
+Experiment pack version: **0.76.0**
 
-## Current v0.75 result
+## Current v0.76 result
 
-v0.75 froze and began the one-shot 36-case fresh holdout authorized by v0.74.
-The symmetric staged baseline was required to produce complete shared
-admission receipts before the unchanged candidate mechanism could run.
+v0.76 introduced a typed evidence-admission ontology on a separate, previously
+revealed 12-case development panel. It separates object relation, evidence
+utility, and disposition, then locally compiles complete evidence, context,
+and rejected partitions. It does not reuse the v0.75 holdout.
 
-Execution stopped at that boundary. The baseline produced `34/36` valid
-admission receipts and `32/36` binding receipts, with four contract failures.
-The failures exposed missing representations for no applicable evidence,
-contextual rejection, and admitted non-decisive context.
+The engineering contract worked: all 12 Provider receipts and compiled
+partitions were valid, and 17 context spans were retained. Semantic
+calibration failed. Evidence F1 fell from `1.0000` to `0.8472`, three cases
+were harmed, and one no-difference case was incorrectly classified as having
+no applicable evidence.
 
-The candidate made zero calls and private gold was not scored, so fresh
-generalization remains unassessed. The holdout is consumed at the admission
-stage and cannot be rerun for a formal claim. CoreSlim remains
-`0.4.0-alpha.21`.
+The result shows both a definition gap and an evaluation gap: zero-effect and
+corroborating evidence must remain effect-bearing, while existing rationale
+gold does not distinguish effect evidence from useful context. A typed
+external annotation panel is required before further runtime changes.
+CoreSlim remains `0.4.0-alpha.21`.
 
 ## Components
 

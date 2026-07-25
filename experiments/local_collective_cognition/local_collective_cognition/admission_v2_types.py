@@ -1,0 +1,21 @@
+"""Closed vocabularies for typed evidence admission v0.76."""
+
+OBJECT_RELATIONS = (
+    "EXACT_OBJECT",
+    "CONTEXTUAL_OBJECT",
+    "IRRELEVANT_OBJECT",
+)
+EVIDENCE_UTILITIES = (
+    "EFFECT_BEARING",
+    "CONTEXT_ONLY",
+    "NONE",
+)
+DISPOSITIONS = (
+    "ADMIT_EVIDENCE",
+    "RETAIN_CONTEXT",
+    "REJECT",
+)
+ADMISSION_STATES = (
+    "EVIDENCE_AVAILABLE",
+    "NO_APPLICABLE_EVIDENCE",
+)
