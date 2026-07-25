@@ -5,25 +5,24 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.73.0**
+Experiment pack version: **0.74.0**
 
-## Current v0.73 result
+## Current v0.74 result
 
-v0.73 prospectively re-executed the complete frame, local surface catalog,
-Provider ID binding, coordinate projection, and deterministic compiler chain.
-It did not reuse the Provider outputs revealed by the v0.71/v0.72 calibration
-analysis.
+v0.74 added a deterministic, catalog-bounded grouped-object alias normalizer
+to the prospective frame, local surface catalog, Provider ID binding,
+coordinate projection, and deterministic compiler chain. The normalizer can
+only split immutable canonical arm text on frozen delimiters; it cannot invent
+synonyms or accept Provider-proposed catalog additions.
 
-The chain corrected three baseline errors and raised label accuracy from
-`0.7500` to `0.9167` and effective Cbit from `0.8474` to `0.8833`. It was
-nevertheless rejected: one grouped intervention was split into valid member
-aliases that the frozen whole-string grounding contract did not accept. The
-missing receipt harmed one previously correct case and reduced evidence F1
-from `0.9000` to `0.8722`.
+The complete new 24-task Provider run produced `12/12` valid receipts with no
+contract or compiler failures. Label accuracy reached `1.0000`, evidence F1
+reached `0.9556`, and effective Cbit reached `0.9666`; three baseline errors
+were corrected and no baseline-correct case was harmed.
 
-Fresh holdout calls remain zero. The next version must test a deterministic,
-catalog-bounded grouped-object alias normalizer on calibration before any
-holdout authorization. CoreSlim remains `0.4.0-alpha.21`.
+All frozen calibration gates passed. The untouched 36-case holdout is now
+authorized but has not been executed; its calls remain zero. CoreSlim remains
+`0.4.0-alpha.21`.
 
 ## Components
 
