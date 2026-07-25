@@ -183,3 +183,8 @@ def _validate_run(run):
     }
     if run.get("run_hash") != hash_payload(commitment):
         raise ValueError("admission_v3_run_hash_invalid")
+
+
+# Stable read-only scoring entry points shared by later admission experiments.
+score_run = _score_run
+validate_run = _validate_run
