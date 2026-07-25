@@ -82,8 +82,11 @@ and blob identity, but its candidate code is not part of this branch.
 47. `R4_FRESH_HARD_RELATION_GENERALIZATION_PREREGISTRATION_V0_3E.md`
 48. `R4_FRESH_HARD_RELATION_CORPUS_MANIFEST_V0_3E.json`
 49. `R4_FRESH_HARD_RELATION_GENERALIZATION_CLOSURE_V0_3E.md`
-50. `THEORY_PACKET_TEMPLATE.md`
-51. `ROLLBACK_POINTER.json`
+50. `R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_THEORY_V0_3F.md`
+51. `R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_AUTHORIZATION_V0_3F.json`
+52. `R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_PREREGISTRATION_V0_3F.md`
+53. `THEORY_PACKET_TEMPLATE.md`
+54. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -173,3 +176,7 @@ cost-efficient Batch call after deterministic adjudication and leakage audits.
 R4 v0.3E passed all 13 gates with 17/18 relation accuracy and zero harmful
 action. The only error conservatively blocked a raw-telemetry versus calibrated
 value pair, exposing transformation equivalence as the next ontology object.
+
+R4 v0.3F freezes transformation equivalence as five typed attributes with
+required witnesses. It authorizes only a zero-Provider 18-case formal grid and
+removal tests to determine whether the attributes compile into existing states.

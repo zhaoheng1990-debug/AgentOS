@@ -1,0 +1,28 @@
+{
+  "receipt_version": "agentos_r4_transform_equivalence_authorization_v0_3f",
+  "status": "AUTHORIZED_WITH_BOUNDARY",
+  "authorized_by": "USER_HUMAN_GATE",
+  "authorization_date": "2026-07-25",
+  "authorization_basis": "User requested continuation of the next research step after the v0.3E closure.",
+  "theory_packet": "R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_THEORY_V0_3F.md",
+  "preregistration": "R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_PREREGISTRATION_V0_3F.md",
+  "authorized_operations": [
+    "STANDALONE_ZERO_PROVIDER_FORMAL_GRID",
+    "DETERMINISTIC_TRANSFORMATION_RELATION_COMPILATION",
+    "REMOVAL_AND_ADVERSARIAL_TESTS",
+    "LOCAL_IGNORED_ARTIFACT_WRITE",
+    "DETERMINISTIC_REPLAY",
+    "THEORY_WRITEBACK"
+  ],
+  "forbidden_operations": [
+    "PROVIDER_CALLS",
+    "FRESH_CORPUS_OR_HOLDOUT_CONSUMPTION",
+    "NEW_RELATION_STATE",
+    "RUNTIME_OR_CORESLIM_WRITE",
+    "RETENTION_WRITE",
+    "BASELINE_PROMOTION",
+    "CASE_SPECIFIC_TRANSFORM_BRANCH",
+    "SAME_VERSION_SEMANTIC_REPAIR"
+  ],
+  "claim_ceiling": "SYNTHETIC_FORMAL_TRANSFORMATION_EQUIVALENCE_ONLY"
+}
