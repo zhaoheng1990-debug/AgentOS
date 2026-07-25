@@ -307,6 +307,10 @@ invalid Cartesian pairs and emitted the no-case-shortcut gate as a constant.
 The apparent result is void. v0.3I must preserve theory and expectations while
 replacing only the invalid validation instrument.
 
+R4 v0.3I inherits the unchanged v0.3H theory, cases, removals, and thresholds.
+It may correct only executable invalid-pair compilation and source-derived
+shortcut audits, then freeze implementation hashes before one formal run.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -386,7 +390,7 @@ Require:
 | R4 v0.3F status | 14/14 formal pass; semantic inference remains untested |
 | R4 v0.3G | closed semantic fail; 12/12 Runtime actions; information relation 8/12 |
 | R4 v0.3H | closed construction fail; apparent pass void |
-| R4 v0.3I | corrected factorization validation preregistration required |
+| R4 v0.3I | corrected validation preregistered; implementation freeze required |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

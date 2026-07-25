@@ -95,8 +95,10 @@ and blob identity, but its candidate code is not part of this branch.
 60. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_AUTHORIZATION_V0_3H.json`
 61. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_PREREGISTRATION_V0_3H.md`
 62. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_CLOSURE_V0_3H.md`
-63. `THEORY_PACKET_TEMPLATE.md`
-64. `ROLLBACK_POINTER.json`
+63. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_AUTHORIZATION_V0_3I.json`
+64. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_PREREGISTRATION_V0_3I.md`
+65. `THEORY_PACKET_TEMPLATE.md`
+66. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -221,3 +223,8 @@ R4 v0.3H stopped as an experiment-instrument construction failure. The first
 test run exposed constant audit booleans and did not actually compile all
 seventeen invalid status-effect pairs. The apparent pass is void; the theory
 remains unadjudicated and requires a newly preregistered validation version.
+
+R4 v0.3I inherits the unchanged factorization theory and frozen cases. It
+authorizes only a corrected executable invalid-pair audit, source-derived
+shortcut audit, implementation hash freeze, one formal execution, and one
+replay.
