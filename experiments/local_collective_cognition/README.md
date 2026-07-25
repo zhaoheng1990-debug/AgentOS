@@ -5,7 +5,31 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.77.0**
+Experiment pack version: **0.88.0**
+
+## v0.88: evidence-set and claim-scope paired rejection
+
+v0.88 freezes 18 new balanced SciFact development claims with no overlap with
+v0.87. It compares the direct semantic-warrant path with a modular two-stage
+path: `EvidenceSetReceipt` first separates minimal evidence groups, context,
+and irrelevant units; `ClaimScopeReceipt` then evaluates aggregate,
+subgroup, conditional, and exception scope; a deterministic Kernel compiler
+alone opens candidate state.
+
+The direct arm achieved 0.6667 official-style sentence F1 with one harmful
+strong candidate in 36,967 tokens. The two-stage arm recovered two additional
+gold sentences but overselected nine additional sentences, reducing precision
+from 0.8000 to 0.5385 and F1 to 0.5957. It produced three harmful strong
+candidates, one contract-invalid scope receipt, and cost 96,051 tokens. The
+paired delta was -0.0709 F1, so v0.88 is rejected and immutable.
+
+The observed bottleneck is earlier than aggregate-versus-subgroup scope:
+plausible associations were promoted into evidence groups without binding
+every claim entity, direction, quantifier, and causal edge. ClaimScope then
+mostly confirmed that framing rather than independently correcting it. The
+next fresh experiment should test claim-atom binding and entailment directness,
+with an isolated challenger that may veto but never promote a group. See
+`SCIFACT_EVIDENCE_SCOPE_CLOSURE_V0_88.md`.
 
 ## v0.87: SciFact semantic-warrant development rejection
 
