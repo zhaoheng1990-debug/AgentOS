@@ -5,23 +5,23 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.71.0**
+Experiment pack version: **0.72.0**
 
-## Current v0.71 result
+## Current v0.72 result
 
-v0.71 locally enumerates and hashes source-surface candidates. The Provider
-can bind semantic roles only to candidate IDs; it cannot copy or paraphrase a
-witness. Stable frame and arm receipts are reused.
+v0.72 replays v0.71 with a deterministic frame-to-basis coordinate projection.
+When a frame declares a coordinate `UNCONSTRAINED`, Runtime projects the basis
+binding to `ALLOWED_BY_UNCONSTRAINED`; other frame modes preserve the
+Provider-backed binding.
 
-All 12 receipts passed structural contracts. Accuracy was `10/12`, evidence F1
-`0.9556`, and effective Cbit `0.9111`, above the direct baseline. The mechanism
-corrected `11179`, `13793`, and the persistent comparator case `5842`, but
-harmed `6743` and `8861`.
+The zero-call replay changed 17 coordinate fields. All 12 labels were correct,
+evidence F1 remained `0.9556`, and effective Cbit rose to `0.9666`, with no
+harmful regressions.
 
-Both harms came from basis `timepoint_binding=UNRESOLVED` despite a frame-level
-`UNCONSTRAINED` requirement. The next step is a zero-call deterministic
-frame-to-basis coordinate projection. Fresh holdout calls remain zero;
-CoreSlim remains `0.4.0-alpha.21`.
+This is positive replay evidence, not fresh transfer evidence. The combined
+surface-binding and coordinate-projection mechanism must be prospectively
+re-executed before the untouched holdout can be authorized. Fresh holdout calls
+remain zero; CoreSlim remains `0.4.0-alpha.21`.
 
 ## Components
 
