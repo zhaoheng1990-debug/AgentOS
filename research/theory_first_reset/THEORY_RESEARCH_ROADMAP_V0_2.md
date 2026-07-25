@@ -68,7 +68,7 @@ Main result:
 
 ## R1: Archived Organizational Identifiability Audit
 
-Status: `NEXT`
+Status: `COMPLETE_BOUNDED`
 
 No Provider calls. No fresh holdout. No runtime changes.
 
@@ -103,7 +103,18 @@ Retrospective analysis may describe and compare frozen outputs. It cannot:
 
 ## R2: Organization Theory Packet
 
-Freeze after R1:
+Status: `DRAFT_CANDIDATE_PENDING_HUMAN_FREEZE`
+
+R1 establishes:
+
+- one positive local representation-stage effect in v0.82;
+- output complementarity without a coordinator in v0.88;
+- composition loss in v0.84 and v0.89;
+- safety by correct-action suppression in v0.89;
+- continued non-identifiability of unique role information, best-member
+  superiority, independent role errors, and coordinator synergy.
+
+Freeze after review:
 
 - role distinctness criteria;
 - matched information, access, and cost conditions;
@@ -194,8 +205,9 @@ Require:
 
 | Operation | Authorized |
 | --- | --- |
-| R1 zero-call archive audit | yes |
-| theory packet drafting | yes, not freezing before R1 |
+| R1 zero-call archive audit | complete |
+| R2 theory packet drafting and review | yes |
+| R2 HumanGate freeze | pending |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

@@ -43,8 +43,11 @@ and blob identity, but its candidate code is not part of this branch.
 8. `THEORY_RESEARCH_ROADMAP_V0_2.md`
 9. `R1_IDENTIFIABILITY_PREFLIGHT.md`
 10. `R1_ARCHIVE_INPUT_MANIFEST.json`
-11. `THEORY_PACKET_TEMPLATE.md`
-12. `ROLLBACK_POINTER.json`
+11. `R1_ORGANIZATIONAL_IDENTIFIABILITY_AUDIT.md`
+12. `R1_VERIFICATION_REPORT.md`
+13. `R2_ORGANIZATION_THEORY_PACKET_V0_1.md`
+14. `THEORY_PACKET_TEMPLATE.md`
+15. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -57,6 +60,11 @@ Until a theory packet passes review:
 - no fail-closed action may be counted as a cognitive correction;
 - all v0.66-v0.89 runtime objects remain historical candidates only.
 
-The next authorized operation is the zero-Provider archived organizational
-identifiability audit defined as R1 in the v0.2 roadmap. It must complete
-before a new synthetic or Provider-backed experiment is frozen.
+R1 is complete with bounded internal-project evidence. It identifies one
+positive local representation stage, one output-complementarity signal, and
+multiple composition or suppression failures. It does not identify positive
+collective cognition.
+
+The next authorized operation is review and refinement of the R2 organization
+theory packet. R3 synthetic engineering remains blocked until the packet is
+explicitly frozen by HumanGate.
