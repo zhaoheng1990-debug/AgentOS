@@ -139,6 +139,8 @@ candidates.
 
 ## R3: Minimal Synthetic Phase Diagram
 
+Status: `COMPLETE_SYNTHETIC_FORMAL_PASS`
+
 Vary only:
 
 - role information overlap;
@@ -156,7 +158,25 @@ anti-additive collaboration <-> positive organizational Cbit
 Do not add domain semantics until the boundary is identifiable in the
 controlled system.
 
+R3 result:
+
+- 12/12 frozen gates passed;
+- `J_set`, Shapley allocation, and `k_star` were recovered exactly;
+- dependence reduced available packet information and raised required
+  composition fidelity;
+- the first nonpositive marginal round correctly marked the stopping boundary;
+- positive task compression did not guarantee correct-action retention.
+
+Theory writeback:
+
+```text
+compression-positive phase
+  != action-admissible phase
+```
+
 ## R4: Provider Adequacy
+
+Status: `NEXT_THEORY_AND_PREREGISTRATION_ONLY`
 
 Test whether local and remote Providers can instantiate:
 
@@ -221,6 +241,9 @@ Require:
 | R2 HumanGate freeze | approved with boundary |
 | R3 finite synthetic validation | authorized |
 | R3 standalone experiment code | authorized |
+| R3 result | complete, synthetic-formal only |
+| R4 theory and preregistration | authorized |
+| R4 Provider calls | no, requires new HumanGate freeze |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

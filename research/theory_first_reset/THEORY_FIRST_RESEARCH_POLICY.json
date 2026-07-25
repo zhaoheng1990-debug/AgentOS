@@ -51,9 +51,9 @@
     "GROWING_BASELINE_EXCEPTIONS"
   ],
   "current_authority": {
-    "stage": "R3_MINIMAL_SYNTHETIC_VALIDATION",
+    "stage": "R4_PROVIDER_ADEQUACY_PREREGISTRATION_DRAFTING",
     "theory_research": true,
-    "standalone_synthetic_experiment": true,
+    "standalone_synthetic_experiment": false,
     "provider_calls": false,
     "fresh_holdout_consumption": false,
     "new_runtime_modules": false,

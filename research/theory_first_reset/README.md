@@ -51,8 +51,9 @@ and blob identity, but its candidate code is not part of this branch.
 16. `R2_FORMAL_VERIFICATION_REPORT.md`
 17. `R2_HUMAN_GATE_FREEZE_RECEIPT.json`
 18. `R3_MINIMAL_SYNTHETIC_PREREGISTRATION_V0_1.md`
-19. `THEORY_PACKET_TEMPLATE.md`
-20. `ROLLBACK_POINTER.json`
+19. `R3_MINIMAL_SYNTHETIC_CLOSURE_V0_1.md`
+20. `THEORY_PACKET_TEMPLATE.md`
+21. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -76,3 +77,10 @@ experiment instrument.
 
 Provider calls, fresh holdouts, Runtime/CoreSlim changes, retention writes, and
 baseline writes remain blocked.
+
+R3 is complete with a bounded synthetic-formal pass. It validates the exact
+measurement and phase construction, while adding a necessary dual gate:
+positive task compression does not by itself imply action admissibility.
+
+The next authorized work is R4 Provider-adequacy theory and preregistration
+only. Provider execution remains blocked pending a new HumanGate freeze.

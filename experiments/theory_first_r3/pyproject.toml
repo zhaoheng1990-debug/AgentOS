@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentos-theory-first-r3"
+version = "0.1.0"
+description = "Standalone exact synthetic validation for AgentOS R2 theory"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.scripts]
+agentos-r3-synthetic = "theory_first_r3.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["theory_first_r3*"]
