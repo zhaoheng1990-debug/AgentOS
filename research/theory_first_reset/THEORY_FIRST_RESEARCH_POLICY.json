@@ -51,7 +51,7 @@
     "GROWING_BASELINE_EXCEPTIONS"
   ],
   "current_authority": {
-    "stage": "R4_V0_3F_CLOSED_V0_3G_ATTRIBUTE_INFERENCE_THEORY_REQUIRED",
+    "stage": "R4_V0_3G_ATTRIBUTE_INFERENCE_PREREGISTERED_CORPUS_FREEZE_REQUIRED",
     "theory_research": true,
     "standalone_synthetic_experiment": false,
     "standalone_provider_experiment": false,

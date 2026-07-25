@@ -279,6 +279,11 @@ sufficient rules. It does not validate semantic attribute inference or
 future-claim reuse safety. R4 v0.3G requires a new theory packet before any
 Provider call.
 
+R4 v0.3G freezes Provider-supported inference of the five transformation
+attributes. It uses twelve fresh cases in six hidden counterfactual pairs and
+one bounded batch call. Runtime alone validates evidence bindings and compiles
+relations and actions. False deduplication is a hard failure.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -356,7 +361,7 @@ Require:
 | R4 v0.3E result | 13/13 pass; 17/18 relation; transform boundary discovered |
 | R4 v0.3F | transformation-equivalence theory required; Provider calls paused |
 | R4 v0.3F status | 14/14 formal pass; semantic inference remains untested |
-| R4 v0.3G | attribute-inference theory required; Provider calls paused |
+| R4 v0.3G | theory and preregistration frozen; corpus freeze required before one batch call |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

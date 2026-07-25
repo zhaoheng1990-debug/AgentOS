@@ -1,0 +1,35 @@
+{
+  "receipt_version": "agentos_r4_provider_transform_attribute_authorization_v0_3g",
+  "status": "AUTHORIZED_WITH_BOUNDARY",
+  "authorized_by": "USER_HUMAN_GATE",
+  "authorization_date": "2026-07-25",
+  "authorization_basis": "User requested continuation of the next research step after the v0.3F closure and previously authorized bounded Provider-supported research.",
+  "theory_packet": "R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_THEORY_V0_3G.md",
+  "preregistration": "R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_PREREGISTRATION_V0_3G.md",
+  "authorized_operations": [
+    "GENERATE_AND_FREEZE_FRESH_SYNTHETIC_CORPUS",
+    "RUN_DETERMINISTIC_PREFLIGHT",
+    "ONE_DEEPSEEK_BATCH_LOGICAL_CALL",
+    "LOCAL_IGNORED_ARTIFACT_WRITE",
+    "DETERMINISTIC_RUNTIME_RELATION_AND_ACTION_COMPILATION",
+    "THEORY_WRITEBACK"
+  ],
+  "call_budget": {
+    "logical_calls": 1,
+    "maximum_physical_attempts": 2,
+    "maximum_total_tokens": 20000
+  },
+  "forbidden_operations": [
+    "EXTERNAL_HOLDOUT_CONSUMPTION",
+    "REPEATED_BATCH_PROVIDER_CALL",
+    "PRIVATE_REFERENCE_EXPOSURE",
+    "PROVIDER_RELATION_OR_ACTION_AUTHORITY",
+    "NEW_RELATION_STATE",
+    "RUNTIME_OR_CORESLIM_WRITE",
+    "RETENTION_WRITE",
+    "BASELINE_PROMOTION",
+    "SAME_VERSION_SEMANTIC_REPAIR"
+  ],
+  "claim_ceiling": "SAME_PROVIDER_FRESH_SYNTHETIC_TRANSFORMATION_ATTRIBUTE_INFERENCE_ONLY"
+}
+

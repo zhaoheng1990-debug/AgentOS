@@ -86,8 +86,11 @@ and blob identity, but its candidate code is not part of this branch.
 51. `R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_AUTHORIZATION_V0_3F.json`
 52. `R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_PREREGISTRATION_V0_3F.md`
 53. `R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_CLOSURE_V0_3F.md`
-54. `THEORY_PACKET_TEMPLATE.md`
-55. `ROLLBACK_POINTER.json`
+54. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_THEORY_V0_3G.md`
+55. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_AUTHORIZATION_V0_3G.json`
+56. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_PREREGISTRATION_V0_3G.md`
+57. `THEORY_PACKET_TEMPLATE.md`
+58. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -187,3 +190,9 @@ exactly, all six witness-removal or attribute-perturbation tests revoked or
 redirected authority, and two runs were byte-identical. The construction
 supports claim-relative, witness-bound equivalence on a formal grid only.
 Provider attribute inference and future-claim reuse safety remain untested.
+
+R4 v0.3G freezes the next semantic object: Provider-supported inference of the
+five transformation attributes with case-local evidence references. Provider
+may propose attributes only; Runtime retains validation, relation compilation,
+action, and state authority. One fresh twelve-case batch is authorized only
+after corpus and implementation preflight.
