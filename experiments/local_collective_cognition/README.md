@@ -5,25 +5,23 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.76.0**
+Experiment pack version: **0.77.0**
 
-## Current v0.76 result
+## Current v0.77 result
 
-v0.76 introduced a typed evidence-admission ontology on a separate, previously
-revealed 12-case development panel. It separates object relation, evidence
-utility, and disposition, then locally compiles complete evidence, context,
-and rejected partitions. It does not reuse the v0.75 holdout.
+v0.77 freezes an external typed-evidence reference workflow for the rejected
+v0.76 admission ontology. Independent GPT-5.6 and Gemini-3.1 packs cover all
+50 spans in the 12-case development panel, with disjoint anonymous IDs and
+ordering.
 
-The engineering contract worked: all 12 Provider receipts and compiled
-partitions were valid, and 17 context spans were retained. Semantic
-calibration failed. Evidence F1 fell from `1.0000` to `0.8472`, three cases
-were harmed, and one no-difference case was incorrectly classified as having
-no applicable evidence.
+Annotators see one target span and its target object at a time. They do not see
+benchmark gold, v0.76 outputs, prior scores, source IDs, or peer annotations.
+The rubric explicitly treats zero effects, significance, uncertainty, and
+quantitative corroboration as possible effect-bearing evidence.
 
-The result shows both a definition gap and an evaluation gap: zero-effect and
-corroborating evidence must remain effect-bearing, while existing rationale
-gold does not distinguish effect evidence from useful context. A typed
-external annotation panel is required before further runtime changes.
+Validators and builders are ready to preserve lane agreements, anonymize
+disagreements for Kimi-K3, and emit a candidate-only typed reference. No
+external response has been ingested and no runtime change is authorized.
 CoreSlim remains `0.4.0-alpha.21`.
 
 ## Components
