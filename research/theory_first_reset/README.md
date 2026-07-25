@@ -85,8 +85,9 @@ and blob identity, but its candidate code is not part of this branch.
 50. `R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_THEORY_V0_3F.md`
 51. `R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_AUTHORIZATION_V0_3F.json`
 52. `R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_PREREGISTRATION_V0_3F.md`
-53. `THEORY_PACKET_TEMPLATE.md`
-54. `ROLLBACK_POINTER.json`
+53. `R4_EVIDENCE_TRANSFORMATION_EQUIVALENCE_CLOSURE_V0_3F.md`
+54. `THEORY_PACKET_TEMPLATE.md`
+55. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -180,3 +181,9 @@ value pair, exposing transformation equivalence as the next ontology object.
 R4 v0.3F freezes transformation equivalence as five typed attributes with
 required witnesses. It authorizes only a zero-Provider 18-case formal grid and
 removal tests to determine whether the attributes compile into existing states.
+
+R4 v0.3F passed all 14 frozen gates. All 18 relations and actions compiled
+exactly, all six witness-removal or attribute-perturbation tests revoked or
+redirected authority, and two runs were byte-identical. The construction
+supports claim-relative, witness-bound equivalence on a formal grid only.
+Provider attribute inference and future-claim reuse safety remain untested.

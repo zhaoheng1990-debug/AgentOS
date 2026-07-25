@@ -272,6 +272,13 @@ compiler into the existing relation states. An 18-case zero-Provider grid and
 six witness-removal tests must pass before any semantic attribute-inference
 experiment is considered.
 
+R4 v0.3F passed all 14 gates with 18/18 exact relation and action compilation,
+six of six successful removal or perturbation tests, and byte-identical replay.
+The formal grid rejects source identity and representation identity as
+sufficient rules. It does not validate semantic attribute inference or
+future-claim reuse safety. R4 v0.3G requires a new theory packet before any
+Provider call.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -348,7 +355,8 @@ Require:
 | R4 v0.3E status | theory and corpus construction rules frozen |
 | R4 v0.3E result | 13/13 pass; 17/18 relation; transform boundary discovered |
 | R4 v0.3F | transformation-equivalence theory required; Provider calls paused |
-| R4 v0.3F status | zero-Provider formal grid authorized |
+| R4 v0.3F status | 14/14 formal pass; semantic inference remains untested |
+| R4 v0.3G | attribute-inference theory required; Provider calls paused |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |
