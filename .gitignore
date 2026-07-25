@@ -5,6 +5,8 @@ __pycache__/
 .pytest-tmp*/
 .pytest_tmp*/
 .pytest_tmp_provider_cognition/
+.test-runs*/
+.test-runs-*/
 .pt-*/
 .pt*/
 
