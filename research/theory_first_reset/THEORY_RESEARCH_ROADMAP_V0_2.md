@@ -195,6 +195,9 @@ calibration or coordination. It adds one protocol-level requirement:
 deterministic projections of a semantic estimate belong to the Runtime and
 should not be duplicated as independent Provider outputs.
 
+R4 v0.2 is preregistered as a paired protocol diagnostic. It changes only
+receipt minimality and cannot be reported as fresh validation.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -252,6 +255,9 @@ Require:
 | R4 v0.1 Provider calls | stopped after 2/22 physical attempts |
 | R4 v0.1 result | failed mechanical receipt validity; semantic gates unscorable |
 | R4 claim ceiling | no adequacy conclusion |
+| R4 v0.2 theory | minimal sufficient receipt frozen |
+| R4 v0.2 calls | authorized within a new 11 logical / 22 physical budget |
+| R4 v0.2 claim ceiling | paired protocol diagnostic only |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

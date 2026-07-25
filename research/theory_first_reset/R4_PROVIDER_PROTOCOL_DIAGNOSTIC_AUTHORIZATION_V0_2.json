@@ -1,0 +1,29 @@
+{
+  "receipt_version": "agentos_r4_provider_protocol_diagnostic_authorization_v0_2",
+  "status": "AUTHORIZED_WITH_BOUNDARY",
+  "authorized_by": "USER_HUMAN_GATE",
+  "authorization_date": "2026-07-25",
+  "authorization_basis": "User authorized the next research step and Provider calls.",
+  "theory_packet": "R4_MINIMAL_SUFFICIENT_RECEIPT_THEORY_V0_2.md",
+  "authorized_operations": [
+    "STANDALONE_PROTOCOL_DIAGNOSTIC",
+    "DEEPSEEK_PROVIDER_CALLS_WITHIN_FROZEN_BUDGET",
+    "LOCAL_IGNORED_ARTIFACT_WRITE",
+    "DETERMINISTIC_PRIVATE_SCORING",
+    "THEORY_WRITEBACK"
+  ],
+  "call_budget": {
+    "logical_calls": 11,
+    "maximum_physical_attempts": 22,
+    "maximum_total_tokens": 200000
+  },
+  "claim_ceiling": "PAIRED_MINIMAL_RECEIPT_DIAGNOSTIC_ONLY",
+  "forbidden_operations": [
+    "FRESH_HOLDOUT_CONSUMPTION",
+    "RUNTIME_OR_CORESLIM_WRITE",
+    "RETENTION_WRITE",
+    "BASELINE_PROMOTION",
+    "PROVIDER_DECISION_AUTHORITY",
+    "SAME_VERSION_SEMANTIC_REPAIR"
+  ]
+}
