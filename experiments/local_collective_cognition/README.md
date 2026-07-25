@@ -5,25 +5,23 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.69.0**
+Experiment pack version: **0.70.0**
 
-## Current v0.69 result
+## Current v0.70 result
 
-v0.69 adds span-anchored subject and relation witnesses to v0.68's stable arm
-IDs and deterministic compiler. Exact substrings and alias membership are
-checked locally; Provider prose cannot override the compiled label.
+v0.70 is a zero-Provider replay over v0.69. It tests whether grounding subject
+and relation witnesses anywhere in the same admitted discourse unit is enough
+to recover continuation spans without weakening alias or substring checks.
 
-The calibration was rejected. All 12 frames passed, but only seven bases
-survived the stricter grounding contract. Five failures came from requiring
-every span to repeat a complete subject alias or relation phrase. Several
-Evidence Inference spans are sentence continuations whose witness lives in a
-neighboring admitted span.
+The replay recovered one additional case, moving valid receipts from `7/12`
+to `8/12`, but effective Cbit remained only `0.6111`. Four cases still failed
+because Provider-generated witness strings were paraphrases rather than exact
+source substrings, or frame aliases omitted the source surface.
 
-The main result is architectural: witness grounding should be retained, but
-must support hash-bound cross-span anchors rather than assume each span is a
-self-contained sentence. The untouched 36-case holdout again received zero
-Provider calls. CoreSlim remains `0.4.0-alpha.21`; v0.69 has no production
-memory, retention, baseline, or pointer authority.
+Cross-span anchoring is necessary but insufficient. The next mechanism should
+locally enumerate source-bound candidate surfaces and let the Provider select
+candidate IDs instead of freely copying text. Fresh holdout calls remain zero;
+CoreSlim remains `0.4.0-alpha.21`.
 
 ## Components
 
