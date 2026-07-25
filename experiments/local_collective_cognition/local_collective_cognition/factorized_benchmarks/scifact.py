@@ -47,20 +47,26 @@ def build_case(
         source_revision=source.revision,
     )
     supporting_ids = []
+    rationale_sets = []
     labels = set()
     for doc_id, rationales in claim.get("evidence", {}).items():
         for rationale in rationales:
             labels.add(rationale["label"])
-            supporting_ids.extend(
+            rationale_set = [
                 f"{doc_id}:{index}" for index in rationale["sentences"]
-            )
+            ]
+            rationale_sets.append(rationale_set)
+            supporting_ids.extend(rationale_set)
     expected_state = _expected_state(labels)
     private = PrivateReference(
         benchmark_id="SCIFACT",
         case_id=str(claim["id"]),
         expected_state=expected_state,
         supporting_unit_ids=tuple(sorted(set(supporting_ids))),
-        metadata={"gold_labels": sorted(labels)},
+        metadata={
+            "gold_labels": sorted(labels),
+            "gold_rationale_sets": rationale_sets,
+        },
     )
     return public, private
 

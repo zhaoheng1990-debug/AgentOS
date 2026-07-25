@@ -7,6 +7,26 @@ adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
 Experiment pack version: **0.77.0**
 
+## v0.87: SciFact semantic-warrant development rejection
+
+v0.87 freezes 18 balanced SciFact dev claims and tests a Provider-backed
+`SemanticWarrantReceipt` followed by a deterministic, candidate-only
+`KernelUtilityCompiler`. All 18 receipts were valid. Label accuracy reached
+17/18, the preregistered internal rationale F1 was 0.8407, and total cost was
+35,725 tokens.
+
+The version was rejected because one supported aggregate claim was compiled as
+a refutation candidate. The failure arose from treating subgroup exceptions
+as sufficient to overturn a study-level conclusion. No CoreSlim, retention,
+baseline, or production write occurred.
+
+A non-gating posthoc audit also found that the preregistered rationale proxy
+was not equivalent to SciFact's official sentence metric. Official-style
+sentence F1 was 0.5652, with 11 overselected and nine unrecovered gold
+sentences. v0.88 must freeze the official metric before calls and separate
+minimal evidence-set construction from aggregate/exception scope judgment.
+See `SCIFACT_SEMANTIC_WARRANT_CLOSURE_V0_87.md`.
+
 ## v0.86: factorized external benchmark entry
 
 v0.86 responds to the externally harmful v0.85 study-relation mutations by
