@@ -364,6 +364,15 @@ roles to see global fields. Split calls used 23.92 percent fewer tokens. The
 next theory object is sequential semantic-witness binding with a Runtime-derived
 witness-obligation contract.
 
+R4 v0.3L is `REVIEW_READY_HUMAN_FREEZE_REQUIRED`. It defines
+`EvidenceSufficiencyObligation` as a deterministic projection from supplied
+typed semantic premises. Runtime determines what evidence roles are required;
+Provider binds admitted evidence to those obligations without changing labels
+or state; Runtime validates and compiles. The matched design compares generic
+per-field binding with obligation-guided binding using eight symmetrically
+counterbalanced calls and two separated replicates per arm and order. It adds
+no Provider coordinator, claim-scope reviewer, consensus, or Core module.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -446,6 +455,7 @@ Require:
 | R4 v0.3I | 16/16 formal pass; factorization coherence supported |
 | R4 v0.3J | closed 13/18 fail; revalidation gain plus wide-receipt interference |
 | R4 v0.3K | closed 13/18 fail; no role gain; reverse witness-binding drift |
+| R4 v0.3L | sequential witness-obligation theory ready; HumanGate required |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

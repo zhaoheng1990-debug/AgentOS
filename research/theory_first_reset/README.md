@@ -109,8 +109,9 @@ and blob identity, but its candidate code is not part of this branch.
 74. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_PREREGISTRATION_V0_3K.md`
 75. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_CORPUS_MANIFEST_V0_3K.json`
 76. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_CLOSURE_V0_3K.md`
-77. `THEORY_PACKET_TEMPLATE.md`
-78. `ROLLBACK_POINTER.json`
+77. `R4_SEQUENTIAL_SEMANTIC_WITNESS_BINDING_THEORY_V0_3L.md`
+78. `THEORY_PACKET_TEMPLATE.md`
+79. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -283,3 +284,10 @@ in reverse. The main differential was four omitted tolerance witnesses in the
 reverse split effect call. Role decomposition saved 23.92 percent tokens but
 did not produce cognitive benefit. Provider calls are paused pending theory
 for sequential semantic and witness binding.
+
+R4 v0.3L is review-ready theory only. It replaces further role splitting with
+an ephemeral Runtime evidence-obligation projection followed by one narrow
+Provider binding operation. It inherits the v0.88-v0.89 anti-additive boundary,
+uses supplied semantic premises to isolate witness sufficiency, and requires
+two separated replicates per arm and order. Provider calls and engineering
+remain unauthorized pending HumanGate freeze.
