@@ -1,0 +1,27 @@
+{
+  "manifest_version": "agentos_r4_transform_semantics_factorization_validation_v0_3i",
+  "status": "FROZEN_BEFORE_FIRST_V0_3I_EXECUTION",
+  "inherited_case_count": 20,
+  "inherited_removal_count": 6,
+  "cartesian_pair_count": 24,
+  "expected_admissible_pair_count": 7,
+  "expected_invalid_pair_count": 17,
+  "implementation_files": {
+    "factor_contracts.py": "e30ffb6b2dac67b642ebb814f9e28221fd7d2e45cf1d01cb141eb53eaeb6c5d8",
+    "factor_compiler.py": "b4d28d373c47390cc5344942a49a69c157f152a5f17c349b0ba3d3096c840fe7",
+    "factor_cases.py": "8da0be62306f85f8e0a0caf8f7f0ac4702e25260fe39b7e3ab8db684283ab518",
+    "factor_evaluation.py": "47481351e64e6ee4892810b5cd871555327eeb595bf93cd7b9fddaa12536f539",
+    "factor_cli.py": "e76ca5cd336a8a172c249afd5db162c1afbe4e8a2dbb2b1b16b8ba0b7c9afa97",
+    "test_factor_compiler.py": "eece30316514e20c8caa7c13ded50ad5b454e0663020ab942dd50ed3939d144e",
+    "test_factor_evaluation.py": "bc3cc2351de81f7a3861e1cd7e670d16e6814657bfd2011196313ddc9bfeb3b3"
+  },
+  "static_source_audit": {
+    "status": "PASS",
+    "case_or_transform_family_shortcut_match_count": 0,
+    "provider_or_network_dependency_match_count": 0,
+    "protected_write_dependency_match_count": 0
+  },
+  "semantic_changes_from_v0_3h": 0,
+  "provider_calls_before_freeze": 0,
+  "protected_writes_authorized": false
+}

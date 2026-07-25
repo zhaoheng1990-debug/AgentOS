@@ -11,6 +11,17 @@ def test_factorization_grid_passes_all_frozen_gates() -> None:
     assert result["case_count"] == 20
     assert result["admissible_pair_count"] == 7
     assert result["invalid_pair_count"] == 17
+    invalid = [
+        item
+        for item in result["cartesian_pair_results"]
+        if not item["expected_valid"]
+    ]
+    assert len(invalid) == 17
+    assert all(item["observed_relation_state"] == "UNRESOLVED" for item in invalid)
+    assert all(item["observed_action"] == "BLOCK" for item in invalid)
+    assert all("STATUS_EFFECT_INCONSISTENT" in item["errors"] for item in invalid)
+    assert result["gates"]["compiler_has_no_case_surface"]
+    assert result["gates"]["forbidden_calls_and_writes_zero"]
     assert result["provider_calls"] == 0
 
 

@@ -1,4 +1,4 @@
-"""Artifact writer for the deterministic R4 v0.3H grid."""
+"""Artifact writer for the corrected deterministic R4 v0.3I grid."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from .factor_evaluation import evaluate_factorization
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_OUTPUT = REPO_ROOT / "outputs/r4_transform_semantics_factorization_v0_3h"
+DEFAULT_OUTPUT = REPO_ROOT / "outputs/r4_transform_semantics_factorization_v0_3i"
 
 
 def _write(path: Path, value: Any) -> None:
@@ -32,7 +32,7 @@ def run(output_dir: Path) -> dict[str, Any]:
     result_path = output_dir / "result.json"
     _write(result_path, result)
     inventory = {
-        "inventory_version": "agentos_r4_transform_semantics_factorization_inventory_v0_3h",
+        "inventory_version": "agentos_r4_transform_semantics_factorization_inventory_v0_3i",
         "files": [
             {
                 "path": "result.json",
@@ -46,7 +46,7 @@ def run(output_dir: Path) -> dict[str, Any]:
     _write(
         output_dir / "closure.json",
         {
-            "closure_version": "agentos_r4_transform_semantics_factorization_closure_v0_3h",
+            "closure_version": "agentos_r4_transform_semantics_factorization_closure_v0_3i",
             "status": result["status"],
             "gate_pass_count": result["gate_pass_count"],
             "gate_count": result["gate_count"],

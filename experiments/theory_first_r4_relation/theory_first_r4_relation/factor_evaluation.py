@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
 from itertools import product
+from pathlib import Path
 from typing import Any
 
 from .factor_cases import FACTORIZED_CASES, REMOVAL_CASES
@@ -35,11 +37,22 @@ def evaluate_factorization() -> dict[str, Any]:
     pair_results = []
     for status, effect in product(TRANSFORM_STATUSES, INFORMATION_EFFECTS):
         valid = (status, effect) in VALID_STATUS_EFFECT_PAIRS
+        candidate = replace(
+            FACTORIZED_CASES[0],
+            case_id=f"PAIR-{status}-{effect}",
+            case_family="cartesian_status_effect_audit",
+            transform_status=status,
+            information_effect=effect,
+        )
+        receipt = compile_factorized_transformation(candidate)
         pair_results.append(
             {
                 "transform_status": status,
                 "information_effect": effect,
                 "expected_valid": valid,
+                "observed_relation_state": receipt.relation_state,
+                "observed_action": receipt.action,
+                "errors": receipt.errors,
             }
         )
     removal_results = []
@@ -113,6 +126,29 @@ def evaluate_factorization() -> dict[str, Any]:
         item["observed_relation_state"] for item in case_results
     }
     actions = {item["observed_action"] for item in case_results}
+    compiler_source = (
+        Path(__file__).with_name("factor_compiler.py").read_text(encoding="utf-8")
+    )
+    case_surface_tokens = (
+        "R43H-",
+        "calibration",
+        "subset",
+        "redaction",
+        "compression",
+        "speed conversion",
+    )
+    forbidden_dependency_tokens = (
+        "openai",
+        "anthropic",
+        "deepseek",
+        "requests",
+        "httpx",
+        "urllib",
+        "socket",
+        "CoreSlim",
+        "retention",
+        "baseline",
+    )
     gates = {
         "new_enums_validate": len(TRANSFORM_STATUSES) == 4
         and len(INFORMATION_EFFECTS) == 6,
@@ -121,13 +157,11 @@ def evaluate_factorization() -> dict[str, Any]:
         - len(VALID_STATUS_EFFECT_PAIRS)
         == 17,
         "invalid_pairs_fail_closed": all(
-            not item["expected_valid"]
+            item["observed_relation_state"] == "UNRESOLVED"
+            and item["observed_action"] == "BLOCK"
+            and "STATUS_EFFECT_INCONSISTENT" in item["errors"]
             for item in pair_results
-            if (
-                item["transform_status"],
-                item["information_effect"],
-            )
-            not in VALID_STATUS_EFFECT_PAIRS
+            if not item["expected_valid"]
         ),
         "twenty_relations_exact": all(
             item["observed_relation_state"] == item["expected_relation_state"]
@@ -162,18 +196,23 @@ def evaluate_factorization() -> dict[str, Any]:
             }
         )
         and actions.issubset({"COMBINE", "DEDUPE_AND_COMBINE", "BLOCK"}),
-        "compiler_has_no_case_surface": True,
+        "compiler_has_no_case_surface": not any(
+            token in compiler_source for token in case_surface_tokens
+        ),
         "deterministic_evaluation_surface": True,
-        "forbidden_calls_and_writes_zero": True,
+        "forbidden_calls_and_writes_zero": not any(
+            token in compiler_source for token in forbidden_dependency_tokens
+        ),
     }
     return {
-        "experiment_version": "agentos_r4_transform_semantics_factorization_v0_3h",
+        "experiment_version": "agentos_r4_transform_semantics_factorization_v0_3i",
         "status": "PASS" if all(gates.values()) else "FAIL",
         "claim_ceiling": "FACTORIZED_TRANSFORMATION_SEMANTICS_FORMAL_COHERENCE_ONLY",
         "case_count": len(case_results),
         "cartesian_pair_count": len(pair_results),
         "admissible_pair_count": len(VALID_STATUS_EFFECT_PAIRS),
         "invalid_pair_count": len(pair_results) - len(VALID_STATUS_EFFECT_PAIRS),
+        "cartesian_pair_results": pair_results,
         "case_results": case_results,
         "removal_results": removal_results,
         "disagreement_resolution": disagreement_resolution,

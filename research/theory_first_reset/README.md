@@ -97,8 +97,9 @@ and blob identity, but its candidate code is not part of this branch.
 62. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_CLOSURE_V0_3H.md`
 63. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_AUTHORIZATION_V0_3I.json`
 64. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_PREREGISTRATION_V0_3I.md`
-65. `THEORY_PACKET_TEMPLATE.md`
-66. `ROLLBACK_POINTER.json`
+65. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_MANIFEST_V0_3I.json`
+66. `THEORY_PACKET_TEMPLATE.md`
+67. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -228,3 +229,7 @@ R4 v0.3I inherits the unchanged factorization theory and frozen cases. It
 authorizes only a corrected executable invalid-pair audit, source-derived
 shortcut audit, implementation hash freeze, one formal execution, and one
 replay.
+
+The corrected v0.3I evaluator and tests are hash-frozen. Static inspection found
+no case shortcut, Provider dependency, network dependency, or protected-write
+reference in the compiler. One zero-Provider formal execution is authorized.
