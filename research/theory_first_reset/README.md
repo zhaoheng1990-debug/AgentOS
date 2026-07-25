@@ -89,8 +89,9 @@ and blob identity, but its candidate code is not part of this branch.
 54. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_THEORY_V0_3G.md`
 55. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_AUTHORIZATION_V0_3G.json`
 56. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_PREREGISTRATION_V0_3G.md`
-57. `THEORY_PACKET_TEMPLATE.md`
-58. `ROLLBACK_POINTER.json`
+57. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_CORPUS_MANIFEST_V0_3G.json`
+58. `THEORY_PACKET_TEMPLATE.md`
+59. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -196,3 +197,6 @@ five transformation attributes with case-local evidence references. Provider
 may propose attributes only; Runtime retains validation, relation compilation,
 action, and state authority. One fresh twelve-case batch is authorized only
 after corpus and implementation preflight.
+
+The v0.3G corpus and implementation passed all eight deterministic preflight
+gates and are frozen by manifest. One bounded Provider batch is authorized.
