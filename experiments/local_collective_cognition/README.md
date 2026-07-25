@@ -5,22 +5,22 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.70.0**
+Experiment pack version: **0.71.0**
 
-## Current v0.70 result
+## Current v0.71 result
 
-v0.70 is a zero-Provider replay over v0.69. It tests whether grounding subject
-and relation witnesses anywhere in the same admitted discourse unit is enough
-to recover continuation spans without weakening alias or substring checks.
+v0.71 locally enumerates and hashes source-surface candidates. The Provider
+can bind semantic roles only to candidate IDs; it cannot copy or paraphrase a
+witness. Stable frame and arm receipts are reused.
 
-The replay recovered one additional case, moving valid receipts from `7/12`
-to `8/12`, but effective Cbit remained only `0.6111`. Four cases still failed
-because Provider-generated witness strings were paraphrases rather than exact
-source substrings, or frame aliases omitted the source surface.
+All 12 receipts passed structural contracts. Accuracy was `10/12`, evidence F1
+`0.9556`, and effective Cbit `0.9111`, above the direct baseline. The mechanism
+corrected `11179`, `13793`, and the persistent comparator case `5842`, but
+harmed `6743` and `8861`.
 
-Cross-span anchoring is necessary but insufficient. The next mechanism should
-locally enumerate source-bound candidate surfaces and let the Provider select
-candidate IDs instead of freely copying text. Fresh holdout calls remain zero;
+Both harms came from basis `timepoint_binding=UNRESOLVED` despite a frame-level
+`UNCONSTRAINED` requirement. The next step is a zero-call deterministic
+frame-to-basis coordinate projection. Fresh holdout calls remain zero;
 CoreSlim remains `0.4.0-alpha.21`.
 
 ## Components
