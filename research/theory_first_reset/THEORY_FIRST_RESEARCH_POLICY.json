@@ -51,10 +51,11 @@
     "GROWING_BASELINE_EXCEPTIONS"
   ],
   "current_authority": {
-    "stage": "R4_PROVIDER_ADEQUACY_PREREGISTRATION_DRAFTING",
+    "stage": "R4_PROVIDER_ADEQUACY_PREREGISTERED",
     "theory_research": true,
     "standalone_synthetic_experiment": false,
-    "provider_calls": false,
+    "standalone_provider_experiment": true,
+    "provider_calls": true,
     "fresh_holdout_consumption": false,
     "new_runtime_modules": false,
     "core_writes": false,

@@ -52,8 +52,10 @@ and blob identity, but its candidate code is not part of this branch.
 17. `R2_HUMAN_GATE_FREEZE_RECEIPT.json`
 18. `R3_MINIMAL_SYNTHETIC_PREREGISTRATION_V0_1.md`
 19. `R3_MINIMAL_SYNTHETIC_CLOSURE_V0_1.md`
-20. `THEORY_PACKET_TEMPLATE.md`
-21. `ROLLBACK_POINTER.json`
+20. `R4_PROVIDER_AUTHORIZATION_RECEIPT.json`
+21. `R4_PROVIDER_ADEQUACY_PREREGISTRATION_V0_1.md`
+22. `THEORY_PACKET_TEMPLATE.md`
+23. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -82,5 +84,7 @@ R3 is complete with a bounded synthetic-formal pass. It validates the exact
 measurement and phase construction, while adding a necessary dual gate:
 positive task compression does not by itself imply action admissibility.
 
-The next authorized work is R4 Provider-adequacy theory and preregistration
-only. Provider execution remains blocked pending a new HumanGate freeze.
+R4 Provider-adequacy calibration is authorized under a fixed 11-call logical
+budget and a 200,000-token ceiling. It tests one DeepSeek model under isolated
+contexts and packet-only composition. The claim ceiling remains
+same-Provider context-isolation adequacy.

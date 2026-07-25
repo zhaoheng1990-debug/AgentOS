@@ -176,7 +176,7 @@ compression-positive phase
 
 ## R4: Provider Adequacy
 
-Status: `NEXT_THEORY_AND_PREREGISTRATION_ONLY`
+Status: `PREREGISTERED_PROVIDER_CALLS_AUTHORIZED`
 
 Test whether local and remote Providers can instantiate:
 
@@ -243,7 +243,8 @@ Require:
 | R3 standalone experiment code | authorized |
 | R3 result | complete, synthetic-formal only |
 | R4 theory and preregistration | authorized |
-| R4 Provider calls | no, requires new HumanGate freeze |
+| R4 Provider calls | authorized within v0.1 budget |
+| R4 claim ceiling | same-Provider context-isolation adequacy |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |
