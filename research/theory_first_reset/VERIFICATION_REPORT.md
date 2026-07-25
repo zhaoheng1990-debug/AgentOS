@@ -59,3 +59,24 @@ It does not establish:
 - that v0.65 is a successful collective-cognition capability;
 - that v0.86-v0.89 candidate modules should be restored;
 - that any fresh benchmark or Provider experiment is authorized.
+
+## Per-Round Theory Modeling Addendum
+
+Verification date: `2026-07-25`
+
+- modeled versions: v0.64 through v0.89;
+- expected model cards: 26;
+- observed model cards: 26;
+- missing or duplicate version cards: 0;
+- R1 archived input files: 27;
+- files present: 27/27;
+- size matches: 27/27;
+- SHA-256 matches: 27/27;
+- `ROLLBACK_POINTER.json` next authorized operation:
+  `R1_ARCHIVED_ORGANIZATIONAL_IDENTIFIABILITY_AUDIT`;
+- Provider calls made for the modeling and preflight: 0;
+- source output files modified: 0;
+- runtime, CoreSlim, retention, and baseline changes: 0.
+
+The addendum verifies evidence coverage, input integrity, and route consistency.
+It does not validate the retrospective theory model as external truth.

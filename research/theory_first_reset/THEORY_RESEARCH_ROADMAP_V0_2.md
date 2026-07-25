@@ -1,0 +1,194 @@
+# Theory-First Research Roadmap v0.2
+
+## Status
+
+`REVISED_AFTER_PER_ROUND_THEORY_MODELING`
+
+v0.1 moved the project from patch-driven engineering to theory-first research.
+v0.2 adds a missing step: retrospective organizational identifiability before
+formal or synthetic construction.
+
+## Governing Object
+
+```text
+CognitiveOrganization
+  -> unique conditional role contribution
+  -> composition fidelity
+  -> net effective Cbit beyond the best member
+```
+
+Representation quality remains a prerequisite, not the target claim.
+
+## Route
+
+```mermaid
+flowchart TD
+    A["R0: Per-round theory models"] --> B["R1: Archived organizational identifiability audit"]
+    B --> C{"Can U, K, and error correlation be identified?"}
+    C -- "Partly" --> D["R2: Freeze theory packet with known and missing variables"]
+    C -- "No" --> D
+    D --> E["R3: Minimal synthetic phase diagram"]
+    E --> F{"Distinct rival signatures observed?"}
+    F -- "No" --> G["ObjectUpgradingAudit"]
+    G --> D
+    F -- "Yes" --> H["R4: Provider adequacy calibration"]
+    H --> I{"Provider instantiates frozen variables?"}
+    I -- "No" --> D
+    I -- "Yes" --> J["R5: Matched-budget fresh benchmark"]
+    J --> K{"Positive net organizational Cbit?"}
+    K -- "No" --> G
+    K -- "Yes" --> L["R6: Minimal modular AgentOS candidate"]
+    L --> M["R7: Transfer, replication, retention review"]
+```
+
+## R0: Per-Round Theory Models
+
+Status: `COMPLETE_CANDIDATE_PENDING_REVIEW`
+
+Evidence:
+
+- v0.64-v0.89 modeled under one card;
+- theory levels separated into governance, representation, composition, and
+  organization;
+- local submechanism support separated from composite rejection.
+
+Main result:
+
+> The series contains repeated representation experiments, several
+> composition failures, and no identified positive organization effect.
+
+## R1: Archived Organizational Identifiability Audit
+
+Status: `NEXT`
+
+No Provider calls. No fresh holdout. No runtime changes.
+
+### Inputs
+
+- immutable local output artifacts for v0.65, v0.82, v0.84, v0.88, and v0.89;
+- their preregistrations, private references, runs, evaluations, and posthoc
+  files;
+- exact hashes preserved before analysis.
+
+### Required outputs
+
+1. case-aligned role/stage transition ledger;
+2. unique correction and introduced-error counts;
+3. retained-correct and action-suppression counts;
+4. marginal token cost by stage;
+5. oracle-union ceiling where computable;
+6. composition loss relative to that ceiling;
+7. error overlap/correlation where identifiable;
+8. explicit `NOT_IDENTIFIABLE` fields;
+9. theory update for `R`, `U`, `K`, correlated error, and `F`.
+
+### Hard boundary
+
+Retrospective analysis may describe and compare frozen outputs. It cannot:
+
+- rescore a rejected version as accepted;
+- change any preregistered gate;
+- repair a receipt;
+- select a threshold using revealed labels;
+- authorize a Provider or Runtime experiment.
+
+## R2: Organization Theory Packet
+
+Freeze after R1:
+
+- role distinctness criteria;
+- matched information, access, and cost conditions;
+- conditional role contribution;
+- coordinator conservation;
+- correction, suppression, and harm accounting;
+- stopping rule;
+- rival models and discriminating predictions.
+
+The packet must state which quantities came from R1 and which remain theory
+candidates.
+
+## R3: Minimal Synthetic Phase Diagram
+
+Vary only:
+
+- role information overlap;
+- error correlation;
+- coordinator fidelity;
+- communication cost;
+- number of rounds.
+
+Measure the boundary:
+
+```text
+anti-additive collaboration <-> positive organizational Cbit
+```
+
+Do not add domain semantics until the boundary is identifiable in the
+controlled system.
+
+## R4: Provider Adequacy
+
+Test whether local and remote Providers can instantiate:
+
+- independent evidence-conditioned roles;
+- bounded semantic packets;
+- preserved disagreement;
+- relation-aware correction;
+- calibrated uncertainty.
+
+Provider quality failure revises the instantiation plan, not the organization
+theory automatically.
+
+## R5: Fresh Benchmark
+
+Required arms:
+
+1. best single member;
+2. matched-token single-agent iteration;
+3. independent uncoordinated roles;
+4. coordinated roles;
+5. suppression-only control.
+
+Required outcomes:
+
+- correction surplus;
+- retained-correct rate;
+- harmful strong decisions;
+- calibration;
+- conditional contribution;
+- composition loss;
+- token/latency cost.
+
+## R6: Minimal Modular Candidate
+
+Only empirically necessary modules are eligible:
+
+- role evidence packet;
+- conditional contribution ledger;
+- coordinator composition receipt;
+- marginal-Cbit stopping gate.
+
+Every module must be removable, separately testable, and candidate-only.
+
+## R7: Transfer and Retention
+
+Require:
+
+- fresh-task replication;
+- changed Provider or model family;
+- matched-compute and matched-information controls;
+- positive net contribution;
+- absence of benchmark-specific dependence;
+- transfer, drift, and negative-transfer review.
+
+## Current Authorization
+
+| Operation | Authorized |
+| --- | --- |
+| R1 zero-call archive audit | yes |
+| theory packet drafting | yes, not freezing before R1 |
+| v0.90 replay | no |
+| new Provider calls | no |
+| fresh holdout consumption | no |
+| Runtime or CoreSlim changes | no |
+| retention or baseline writes | no |

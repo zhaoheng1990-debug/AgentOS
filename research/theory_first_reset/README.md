@@ -34,10 +34,14 @@ and blob identity, but its candidate code is not part of this branch.
 ## Read Order
 
 1. `EXPERIMENT_RETROSPECTIVE_V0_65_TO_V0_89.md`
-2. `COLLECTIVE_COGNITION_THEORY_BASELINE_V0_1.md`
-3. `THEORY_RESEARCH_ROADMAP_V0_1.md`
-4. `THEORY_PACKET_TEMPLATE.md`
-5. `ROLLBACK_POINTER.json`
+2. `PER_ROUND_THEORY_MODELS_V0_1.md`
+3. `SERIES_THEORY_REANALYSIS_V0_1.md`
+4. `COLLECTIVE_COGNITION_THEORY_BASELINE_V0_1.md`
+5. `THEORY_RESEARCH_ROADMAP_V0_2.md`
+6. `R1_IDENTIFIABILITY_PREFLIGHT.md`
+7. `R1_ARCHIVE_INPUT_MANIFEST.json`
+8. `THEORY_PACKET_TEMPLATE.md`
+9. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -50,4 +54,6 @@ Until a theory packet passes review:
 - no fail-closed action may be counted as a cognitive correction;
 - all v0.66-v0.89 runtime objects remain historical candidates only.
 
-The next authorized operation is theory discrimination, not engineering.
+The next authorized operation is the zero-Provider archived organizational
+identifiability audit defined as R1 in the v0.2 roadmap. It must complete
+before a new synthetic or Provider-backed experiment is frozen.

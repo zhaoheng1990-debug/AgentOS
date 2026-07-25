@@ -1,5 +1,11 @@
 # Theory-First Research Roadmap v0.1
 
+Status: `SUPERSEDED_BY_THEORY_RESEARCH_ROADMAP_V0_2`
+
+The v0.1 route is retained as history. Per-round theory modeling subsequently
+showed that an archived organizational identifiability audit must precede the
+synthetic stage.
+
 ## Governing Rule
 
 No engineering object is created until a theory packet identifies:
