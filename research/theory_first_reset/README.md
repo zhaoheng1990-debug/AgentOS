@@ -99,8 +99,11 @@ and blob identity, but its candidate code is not part of this branch.
 64. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_PREREGISTRATION_V0_3I.md`
 65. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_MANIFEST_V0_3I.json`
 66. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_CLOSURE_V0_3I.md`
-67. `THEORY_PACKET_TEMPLATE.md`
-68. `ROLLBACK_POINTER.json`
+67. `R4_FACTORIZATION_CAUSAL_BENEFIT_THEORY_V0_3J.md`
+68. `R4_FACTORIZATION_CAUSAL_BENEFIT_AUTHORIZATION_V0_3J.json`
+69. `R4_FACTORIZATION_CAUSAL_BENEFIT_PREREGISTRATION_V0_3J.md`
+70. `THEORY_PACKET_TEMPLATE.md`
+71. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -239,3 +242,8 @@ R4 v0.3I passed all sixteen corrected gates. All twenty cases, six removals,
 and seventeen executable invalid-pair audits passed; replay was byte-identical.
 The factorization is formally coherent but has not yet shown causal benefit
 over the legacy single enum in Provider inference.
+
+R4 v0.3J freezes a matched fresh-corpus comparison between the legacy enum and
+factorized axes. Two forward/reverse rounds use `L-F-F-L` call order and
+separate representation ceiling, Provider inference, Runtime action safety,
+revalidation resolution, and token cost.

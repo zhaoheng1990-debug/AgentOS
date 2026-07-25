@@ -51,7 +51,7 @@
     "GROWING_BASELINE_EXCEPTIONS"
   ],
   "current_authority": {
-    "stage": "R4_V0_3I_CLOSED_V0_3J_COMPARATIVE_THEORY_REQUIRED",
+    "stage": "R4_V0_3J_COMPARATIVE_THEORY_FROZEN_CORPUS_REQUIRED",
     "theory_research": true,
     "standalone_synthetic_experiment": false,
     "standalone_provider_experiment": false,

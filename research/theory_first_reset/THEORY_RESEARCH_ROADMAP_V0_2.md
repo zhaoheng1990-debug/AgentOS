@@ -321,6 +321,11 @@ The factorization resolves all four v0.3G disagreement families without a new
 relation state or action. Its causal benefit over the legacy single enum
 remains untested and becomes the v0.3J object.
 
+R4 v0.3J freezes a matched same-Provider comparison. Legacy and factorized arms
+receive identical fresh evidence in two forward/reverse rounds with `L-F-F-L`
+call order. The experiment separates representational ceiling, semantic
+inference, Runtime action safety, revalidation resolution, and token cost.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -401,7 +406,7 @@ Require:
 | R4 v0.3G | closed semantic fail; 12/12 Runtime actions; information relation 8/12 |
 | R4 v0.3H | closed construction fail; apparent pass void |
 | R4 v0.3I | 16/16 formal pass; factorization coherence supported |
-| R4 v0.3J | matched legacy-versus-factorized Provider theory required |
+| R4 v0.3J | comparative theory frozen; fresh corpus and implementation required |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |
