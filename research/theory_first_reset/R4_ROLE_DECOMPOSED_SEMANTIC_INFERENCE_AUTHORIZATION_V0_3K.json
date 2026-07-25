@@ -1,0 +1,46 @@
+{
+  "receipt_version": "agentos_r4_role_decomposed_semantic_inference_authorization_v0_3k",
+  "status": "AUTHORIZED_WITH_FROZEN_BOUNDARY",
+  "authorized_by": "USER_HUMAN_GATE",
+  "authorization_date": "2026-07-26",
+  "authorization_basis": "User explicitly approved the v0.3K experiment.",
+  "theory_packet": "R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_THEORY_V0_3K.md",
+  "preregistration": "R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_PREREGISTRATION_V0_3K.md",
+  "authorized_operations": [
+    "BUILD_AND_FREEZE_SIXTEEN_CASE_FRESH_CORPUS",
+    "BUILD_STANDALONE_MATCHED_ROLE_DECOMPOSITION_INSTRUMENT",
+    "RUN_DETERMINISTIC_PREFLIGHT",
+    "FREEZE_CORPUS_PROMPT_SCHEMA_COMPILER_SCORER_HASHES",
+    "EIGHT_DEEPSEEK_BATCH_LOGICAL_CALLS_AFTER_HASH_FREEZE",
+    "LOCAL_IGNORED_ARTIFACT_WRITE",
+    "DETERMINISTIC_RUNTIME_COMPILATION",
+    "DETERMINISTIC_REPLAY",
+    "THEORY_WRITEBACK"
+  ],
+  "call_budget": {
+    "logical_calls": 8,
+    "maximum_physical_attempts": 16,
+    "maximum_completion_tokens_per_call": 8000,
+    "maximum_total_tokens": 100000
+  },
+  "provider_call_preconditions": [
+    "THEORY_AND_PREREGISTRATION_COMMITTED",
+    "CORPUS_AND_IMPLEMENTATION_MANIFEST_COMMITTED",
+    "ALL_DETERMINISTIC_PREFLIGHT_GATES_PASS",
+    "NO_PRIVATE_REFERENCE_IN_PUBLIC_PROMPT"
+  ],
+  "forbidden_operations": [
+    "REUSE_V0_3J_CASE_TEXT_LABEL_OR_CASE_ID",
+    "PRIVATE_REFERENCE_EXPOSURE",
+    "WIDE_ARM_EXTRACTION_ROLE_DISCLOSURE",
+    "PROVIDER_RELATION_REVALIDATION_OR_ACTION_AUTHORITY",
+    "PROVIDER_SEMANTIC_COORDINATOR",
+    "CHANGE_EXISTING_FACTOR_COMPILER",
+    "RUNTIME_OR_CORESLIM_WRITE",
+    "RETENTION_WRITE",
+    "BASELINE_PROMOTION",
+    "SAME_VERSION_SEMANTIC_REPAIR"
+  ],
+  "claim_ceiling": "SAME_PROVIDER_MATCHED_FRESH_SYNTHETIC_RESPONSIBILITY_DECOMPOSITION_ONLY",
+  "promotion_authority": false
+}

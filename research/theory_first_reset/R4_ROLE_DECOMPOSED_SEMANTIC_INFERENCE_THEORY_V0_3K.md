@@ -8,14 +8,19 @@
 - research object: `RESPONSIBILITY_BOUNDED_SEMANTIC_INFERENCE`;
 - evidence coordinate:
   `MODEL_INFERENCE_FROM_INTERNAL_PROJECT_PROVIDER_EVIDENCE`;
-- status: `REVIEW_READY_HUMAN_FREEZE_REQUIRED`.
+- status: `FROZEN_FOR_ENGINEERING_VALIDATION`.
 
 This window inherits MethodologyKernel v1.1.
 If any experimental conclusion conflicts with this kernel, the conflict must be
 explicitly stated and converted into a theory revision, downgrade, or caveat.
 
-No Provider call, fresh holdout, experiment implementation, Runtime module, or
-baseline write is authorized by this document.
+HumanGate approval:
+
+- decision: `APPROVED_WITH_FROZEN_BOUNDARY`;
+- approved by: `USER_HUMAN_GATE`;
+- approval date: `2026-07-26`;
+- engineering and Provider authority: only through the separate v0.3K
+  authorization and preregistration.
 
 ## Inherited Evidence
 
@@ -509,11 +514,11 @@ Promotion authority:
 | anti-additive removal test present | yes |
 | stop and rollback condition present | yes |
 | expected theoretical Cbit margin positive | yes |
-| PM/HumanGate freeze | pending |
+| PM/HumanGate freeze | approved 2026-07-26 |
 
 Freeze decision:
 
-`REVIEW_READY_NOT_AUTHORIZED`
+`FROZEN_FOR_ENGINEERING_VALIDATION`
 
 ## Closure Contract
 

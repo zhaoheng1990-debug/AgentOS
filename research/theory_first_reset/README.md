@@ -105,8 +105,10 @@ and blob identity, but its candidate code is not part of this branch.
 70. `R4_FACTORIZATION_CAUSAL_BENEFIT_CORPUS_MANIFEST_V0_3J.json`
 71. `R4_FACTORIZATION_CAUSAL_BENEFIT_CLOSURE_V0_3J.md`
 72. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_THEORY_V0_3K.md`
-73. `THEORY_PACKET_TEMPLATE.md`
-74. `ROLLBACK_POINTER.json`
+73. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_AUTHORIZATION_V0_3K.json`
+74. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_PREREGISTRATION_V0_3K.md`
+75. `THEORY_PACKET_TEMPLATE.md`
+76. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -262,7 +264,8 @@ provenance inference and witness binding. Factorized action agreement was 9/12
 versus legacy 12/12, including one false combine. Provider calls are paused
 pending theory-first role decomposition.
 
-R4 v0.3K is review-ready theory only. It defines roles as bounded semantic
-responsibilities rather than personas and proposes a matched two-context
-wide-versus-split comparison. Provider coordination, fresh data, experiment
-code, and Runtime changes remain unauthorized pending HumanGate freeze.
+R4 v0.3K is HumanGate-approved and theory-frozen. It defines roles as bounded
+semantic responsibilities rather than personas and preregisters a matched
+two-context wide-versus-split comparison. Provider calls remain conditional on
+a committed corpus and implementation hash freeze with passing deterministic
+preflight.
