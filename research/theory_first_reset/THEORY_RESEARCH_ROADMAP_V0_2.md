@@ -315,6 +315,12 @@ The corrected v0.3I evaluator, compiler, cases, CLI, and tests are hash-frozen.
 Static source audit found no case shortcut or forbidden dependency. One
 zero-Provider formal execution and one replay are authorized.
 
+R4 v0.3I passed all 16 corrected gates. Twenty cases, six removals, and all
+seventeen executable invalid-pair audits passed; replay was byte-identical.
+The factorization resolves all four v0.3G disagreement families without a new
+relation state or action. Its causal benefit over the legacy single enum
+remains untested and becomes the v0.3J object.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -394,7 +400,8 @@ Require:
 | R4 v0.3F status | 14/14 formal pass; semantic inference remains untested |
 | R4 v0.3G | closed semantic fail; 12/12 Runtime actions; information relation 8/12 |
 | R4 v0.3H | closed construction fail; apparent pass void |
-| R4 v0.3I | corrected instrument hash-frozen; one formal execution authorized |
+| R4 v0.3I | 16/16 formal pass; factorization coherence supported |
+| R4 v0.3J | matched legacy-versus-factorized Provider theory required |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

@@ -98,8 +98,9 @@ and blob identity, but its candidate code is not part of this branch.
 63. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_AUTHORIZATION_V0_3I.json`
 64. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_PREREGISTRATION_V0_3I.md`
 65. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_MANIFEST_V0_3I.json`
-66. `THEORY_PACKET_TEMPLATE.md`
-67. `ROLLBACK_POINTER.json`
+66. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_VALIDATION_CLOSURE_V0_3I.md`
+67. `THEORY_PACKET_TEMPLATE.md`
+68. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -233,3 +234,8 @@ replay.
 The corrected v0.3I evaluator and tests are hash-frozen. Static inspection found
 no case shortcut, Provider dependency, network dependency, or protected-write
 reference in the compiler. One zero-Provider formal execution is authorized.
+
+R4 v0.3I passed all sixteen corrected gates. All twenty cases, six removals,
+and seventeen executable invalid-pair audits passed; replay was byte-identical.
+The factorization is formally coherent but has not yet shown causal benefit
+over the legacy single enum in Provider inference.
