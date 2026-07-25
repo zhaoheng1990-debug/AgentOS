@@ -103,7 +103,7 @@ Retrospective analysis may describe and compare frozen outputs. It cannot:
 
 ## R2: Organization Theory Packet
 
-Status: `DRAFT_CANDIDATE_PENDING_HUMAN_FREEZE`
+Status: `V0_2_READY_FOR_HUMAN_FREEZE_REVIEW`
 
 R1 establishes:
 
@@ -123,6 +123,16 @@ Freeze after review:
 - correction, suppression, and harm accounting;
 - stopping rule;
 - rival models and discriminating predictions.
+
+The v0.2 review candidate additionally freezes for review:
+
+- `J^uniq` as the non-colliding symbol for conditional role information;
+- task log-loss reduction as a Cbit proxy rather than ontological identity;
+- the packet-only coordinator information ceiling;
+- `g_t = k_t * J_t - (1 - k_t) * H_t`;
+- the phase boundary `k_star = H / (J + H)`;
+- cognitive equivalence and organizational surplus as separate claims;
+- exact finite-system gates for R3.
 
 The packet must state which quantities came from R1 and which remain theory
 candidates.
@@ -206,7 +216,8 @@ Require:
 | Operation | Authorized |
 | --- | --- |
 | R1 zero-call archive audit | complete |
-| R2 theory packet drafting and review | yes |
+| R2 theory packet drafting | complete |
+| R2 v0.2 HumanGate review | yes |
 | R2 HumanGate freeze | pending |
 | v0.90 replay | no |
 | new Provider calls | no |

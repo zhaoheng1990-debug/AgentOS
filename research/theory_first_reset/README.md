@@ -46,8 +46,11 @@ and blob identity, but its candidate code is not part of this branch.
 11. `R1_ORGANIZATIONAL_IDENTIFIABILITY_AUDIT.md`
 12. `R1_VERIFICATION_REPORT.md`
 13. `R2_ORGANIZATION_THEORY_PACKET_V0_1.md`
-14. `THEORY_PACKET_TEMPLATE.md`
-15. `ROLLBACK_POINTER.json`
+14. `R2_SYMBOL_AND_PROXY_AUDIT.md`
+15. `R2_ORGANIZATION_THEORY_PACKET_V0_2.md`
+16. `R2_FORMAL_VERIFICATION_REPORT.md`
+17. `THEORY_PACKET_TEMPLATE.md`
+18. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -65,6 +68,10 @@ positive local representation stage, one output-complementarity signal, and
 multiple composition or suppression failures. It does not identify positive
 collective cognition.
 
-The next authorized operation is review and refinement of the R2 organization
-theory packet. R3 synthetic engineering remains blocked until the packet is
-explicitly frozen by HumanGate.
+R2 v0.2 is ready for HumanGate freeze review. It separates ontological Cbit
+from the task-bit proxy, renames unique role information to `J^uniq`, derives a
+minimal composition phase boundary, and separates small-model cognitive
+equivalence from true organizational surplus.
+
+R3 synthetic engineering remains blocked until the v0.2 packet and its exact
+gates are explicitly frozen by HumanGate.
