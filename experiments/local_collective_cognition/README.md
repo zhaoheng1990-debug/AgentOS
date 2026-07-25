@@ -5,23 +5,22 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.74.0**
+Experiment pack version: **0.75.0**
 
-## Current v0.74 result
+## Current v0.75 result
 
-v0.74 added a deterministic, catalog-bounded grouped-object alias normalizer
-to the prospective frame, local surface catalog, Provider ID binding,
-coordinate projection, and deterministic compiler chain. The normalizer can
-only split immutable canonical arm text on frozen delimiters; it cannot invent
-synonyms or accept Provider-proposed catalog additions.
+v0.75 froze and began the one-shot 36-case fresh holdout authorized by v0.74.
+The symmetric staged baseline was required to produce complete shared
+admission receipts before the unchanged candidate mechanism could run.
 
-The complete new 24-task Provider run produced `12/12` valid receipts with no
-contract or compiler failures. Label accuracy reached `1.0000`, evidence F1
-reached `0.9556`, and effective Cbit reached `0.9666`; three baseline errors
-were corrected and no baseline-correct case was harmed.
+Execution stopped at that boundary. The baseline produced `34/36` valid
+admission receipts and `32/36` binding receipts, with four contract failures.
+The failures exposed missing representations for no applicable evidence,
+contextual rejection, and admitted non-decisive context.
 
-All frozen calibration gates passed. The untouched 36-case holdout is now
-authorized but has not been executed; its calls remain zero. CoreSlim remains
+The candidate made zero calls and private gold was not scored, so fresh
+generalization remains unassessed. The holdout is consumed at the admission
+stage and cannot be rerun for a formal claim. CoreSlim remains
 `0.4.0-alpha.21`.
 
 ## Components
