@@ -1,0 +1,27 @@
+{
+  "receipt_version": "agentos_r4_transform_semantics_factorization_authorization_v0_3h",
+  "status": "AUTHORIZED_WITH_BOUNDARY",
+  "authorized_by": "USER_HUMAN_GATE",
+  "authorization_date": "2026-07-25",
+  "authorization_basis": "User requested continuation after reviewing the Runtime and Provider cognitive-subject boundary.",
+  "theory_packet": "R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_THEORY_V0_3H.md",
+  "preregistration": "R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_PREREGISTRATION_V0_3H.md",
+  "authorized_operations": [
+    "BUILD_STANDALONE_FACTORIZED_CONTRACT",
+    "BUILD_ZERO_PROVIDER_FORMAL_GRID",
+    "RUN_INVALID_PAIR_AND_REMOVAL_AUDITS",
+    "WRITE_LOCAL_IGNORED_ARTIFACTS",
+    "THEORY_WRITEBACK"
+  ],
+  "forbidden_operations": [
+    "PROVIDER_CALL",
+    "MODIFY_V0_3F_COMPILER",
+    "NEW_RELATION_STATE",
+    "NEW_RUNTIME_ACTION",
+    "RUNTIME_OR_CORESLIM_WRITE",
+    "RETENTION_WRITE",
+    "BASELINE_PROMOTION",
+    "SAME_VERSION_SEMANTIC_REPAIR"
+  ],
+  "claim_ceiling": "FACTORIZED_TRANSFORMATION_SEMANTICS_FORMAL_COHERENCE_ONLY"
+}

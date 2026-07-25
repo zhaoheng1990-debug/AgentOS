@@ -91,8 +91,11 @@ and blob identity, but its candidate code is not part of this branch.
 56. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_PREREGISTRATION_V0_3G.md`
 57. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_CORPUS_MANIFEST_V0_3G.json`
 58. `R4_PROVIDER_TRANSFORMATION_ATTRIBUTE_INFERENCE_CLOSURE_V0_3G.md`
-59. `THEORY_PACKET_TEMPLATE.md`
-60. `ROLLBACK_POINTER.json`
+59. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_THEORY_V0_3H.md`
+60. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_AUTHORIZATION_V0_3H.json`
+61. `R4_TRANSFORMATION_SEMANTICS_FACTORIZATION_PREREGISTRATION_V0_3H.md`
+62. `THEORY_PACKET_TEMPLATE.md`
+63. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -207,3 +210,8 @@ Four attributes and all evidence bindings scored 12/12, while the overloaded
 `InformationRelation` scored 8/12. Runtime actions remained 12/12 with no false
 deduplication. Provider calls are paused pending a theory-first factorization
 of transform status and information effect.
+
+R4 v0.3H freezes that factorization as a zero-Provider formal object. It must
+resolve the four v0.3G disagreement families, reject all invalid cross-axis
+combinations, preserve the existing action surface, and pass an explicit
+anti-additive complexity gate.

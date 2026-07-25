@@ -295,6 +295,12 @@ remained 12/12 with zero false deduplication. The failure localizes ontology
 overload in transform status versus information effect. Provider calls are
 paused pending v0.3H theory-first factorization.
 
+R4 v0.3H freezes `TransformStatus + InformationEffect` as a candidate
+factorization of the overloaded `InformationRelation`. A twenty-case,
+zero-Provider formal grid must resolve all four v0.3G disagreement families,
+reject seventeen invalid Cartesian combinations, and preserve the existing
+relation and action surface.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -373,7 +379,7 @@ Require:
 | R4 v0.3F | transformation-equivalence theory required; Provider calls paused |
 | R4 v0.3F status | 14/14 formal pass; semantic inference remains untested |
 | R4 v0.3G | closed semantic fail; 12/12 Runtime actions; information relation 8/12 |
-| R4 v0.3H | transform-status and information-effect factorization theory required |
+| R4 v0.3H | factorization theory frozen; zero-Provider formal grid authorized |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |
