@@ -347,6 +347,13 @@ fixed. Eight calls are preregistered but remain conditional on corpus and
 implementation hash freeze. A Provider semantic coordinator is deliberately
 excluded until role-local and composition-level failure can be separated.
 
+The fresh sixteen-case corpus and modular experiment instrument passed 17/17
+corpus gates and all 86 R4 experiment tests. Ten exact v0.3J sentence overlaps
+were removed before Provider exposure, and the shared-enum boundary was
+clarified without changing the model or thresholds. Corpus, references,
+prompts, compiler dependencies, scorer, and tests are hash-frozen. Eight
+bounded calls are authorized.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -428,7 +435,7 @@ Require:
 | R4 v0.3H | closed construction fail; apparent pass void |
 | R4 v0.3I | 16/16 formal pass; factorization coherence supported |
 | R4 v0.3J | closed 13/18 fail; revalidation gain plus wide-receipt interference |
-| R4 v0.3K | HumanGate-approved; theory/prereg frozen; corpus preflight required |
+| R4 v0.3K | corpus/instrument hash-frozen; 86 tests; eight calls authorized |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

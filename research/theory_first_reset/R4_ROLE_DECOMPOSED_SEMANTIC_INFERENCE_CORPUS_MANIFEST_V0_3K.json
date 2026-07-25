@@ -1,0 +1,62 @@
+{
+  "manifest_version": "agentos_r4_role_decomposed_semantic_inference_corpus_v0_3k",
+  "status": "FROZEN_BEFORE_PROVIDER_EXPOSURE",
+  "case_count": 16,
+  "case_categories": {
+    "provenance_edge": 4,
+    "effect_scope_edge": 4,
+    "cross_role_interaction": 4,
+    "null_unknown": 4
+  },
+  "logical_call_order": [
+    "wide_source_p_forward",
+    "split_provenance_forward",
+    "split_effect_forward",
+    "wide_source_e_forward",
+    "wide_source_e_reverse",
+    "split_effect_reverse",
+    "split_provenance_reverse",
+    "wide_source_p_reverse"
+  ],
+  "public_corpus_sha256": "9ec714fc224e7eb61436be60327bffde27aead25f9858c39035ce64a4fc3744d",
+  "private_reference_sha256": "37e34ba53e9d0d1bb7f023cb8d2fd47e2042789ad684325ca5984cbbc4b3ec94",
+  "eight_prompt_bundle_sha256": "5806e8242b693a24e7dbb5bebc8cf9c3f5e22e988be02ca8313cd39a26d97d2d",
+  "implementation_files": {
+    "factor_compiler.py": "b4d28d373c47390cc5344942a49a69c157f152a5f17c349b0ba3d3096c840fe7",
+    "factor_contracts.py": "e30ffb6b2dac67b642ebb814f9e28221fd7d2e45cf1d01cb141eb53eaeb6c5d8",
+    "role_audit.py": "a042b43d9a465cdd06f86b21923cbe0f5b4f21d712f9ea00554304cecd22d073",
+    "role_cases.py": "66301203a28cdb5ef3a98fc9c318095db193e4a01ab7f72b931a43c5a5e14aa5",
+    "role_cli.py": "aefff79f4425f7fc62fde5fca03e66b00493e889d643c25f4e4deb90fb244587",
+    "role_composer.py": "33ad9bd584b767fdfba9b18138ea1073ea7f69b8b9424441c140e782e806a071",
+    "role_prompts.py": "c587004dc52846ca7b1d598cff3275450caf01224f0222c5b66fba6b4887ad7b",
+    "role_schemas.py": "83a12013fca67ab7b0228043bea4180a431e87015e869ec86843a298e6020d65",
+    "role_scoring.py": "90114053b02a9a8840c644103f44f857af932d18ea2a26da2888607610b3c76e",
+    "test_role_decomposition.py": "abbff0b53960bcbe1398e5c6778f7494998cbd1fd1dc9d0ed67b2cd0ae4537eb"
+  },
+  "preflight": {
+    "status": "PASS",
+    "corpus_audit_gates": 17,
+    "experiment_tests": 86,
+    "targeted_tests": 15,
+    "python_compileall": "PASS",
+    "private_surface_exposed": false,
+    "extraction_position_exposed": false,
+    "private_compiler_error_count": 0,
+    "fail_closed_mutation_count": 3,
+    "provider_calls_before_freeze": 0
+  },
+  "pre_freeze_corrections": {
+    "v0_3j_exact_sentence_overlaps_removed": 10,
+    "ontology_label_boundary_clarified": true,
+    "provider_exposure_before_correction": false,
+    "threshold_or_model_change": false
+  },
+  "call_budget": {
+    "logical_calls": 8,
+    "maximum_physical_attempts": 16,
+    "maximum_completion_tokens_per_call": 8000,
+    "maximum_total_tokens": 100000
+  },
+  "provider_semantic_coordinator": false,
+  "protected_writes_authorized": false
+}

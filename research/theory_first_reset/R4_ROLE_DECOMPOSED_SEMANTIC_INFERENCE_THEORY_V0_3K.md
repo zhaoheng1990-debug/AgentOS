@@ -369,7 +369,9 @@ The smallest admissible Provider experiment uses:
 - no retries except a preregistered mechanical retry;
 - no Provider semantic coordinator.
 
-The corpus must not reuse v0.3J case text, labels, or case identifiers.
+The corpus must not reuse a v0.3J labeled case record, case text, or case
+identifier. The frozen ontology enum values necessarily remain shared across
+versions.
 
 A formal zero-Provider test is insufficient because v0.3I already established
 compiler coherence. The unresolved object is Provider inference under matched

@@ -38,7 +38,8 @@
 - four null or unknown-applicability cases;
 - identical public evidence in every arm and round;
 - exact private attribute labels and attribute-level evidence references;
-- no v0.3J case text, labels, or case identifiers;
+- no v0.3J labeled case record, case text, or case identifier;
+- ontology enum values remain unchanged and necessarily recur;
 - no relation, Runtime action, revalidation label, private tuple, or extraction
   position in public prompts.
 
@@ -156,3 +157,11 @@ After the first Provider exposure, no corpus, reference, role grouping, prompt,
 schema, extraction rule, threshold, compiler adapter, scorer, or call order may
 change. Mechanical or semantic repair closes v0.3K and requires a new
 preregistered version.
+
+## Pre-Exposure Boundary Clarification
+
+Before corpus hash freeze and with zero Provider calls, “no reused labels” was
+clarified to mean no reused labeled case record. Requiring new ontology enum
+values would change the tested object and make a matched comparison impossible.
+No model, role boundary, threshold, call order, corpus result, or PASS gate
+changed.

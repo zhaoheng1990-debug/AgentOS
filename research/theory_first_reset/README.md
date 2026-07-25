@@ -107,8 +107,9 @@ and blob identity, but its candidate code is not part of this branch.
 72. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_THEORY_V0_3K.md`
 73. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_AUTHORIZATION_V0_3K.json`
 74. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_PREREGISTRATION_V0_3K.md`
-75. `THEORY_PACKET_TEMPLATE.md`
-76. `ROLLBACK_POINTER.json`
+75. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_CORPUS_MANIFEST_V0_3K.json`
+76. `THEORY_PACKET_TEMPLATE.md`
+77. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -269,3 +270,8 @@ semantic responsibilities rather than personas and preregisters a matched
 two-context wide-versus-split comparison. Provider calls remain conditional on
 a committed corpus and implementation hash freeze with passing deterministic
 preflight.
+
+The v0.3K sixteen-case corpus and seven-module standalone instrument passed
+17/17 corpus gates, 15 targeted tests, and all 86 R4 experiment tests. Public
+corpus, private reference, eight prompts, compiler dependencies, scorer, and
+tests are hash-frozen. Eight bounded Provider calls are authorized.
