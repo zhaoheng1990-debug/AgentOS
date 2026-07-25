@@ -2,8 +2,8 @@
 
 ## Status
 
-**EXTERNAL_LANES_VALIDATED -
-AWAITING_KIMI_K3_TYPED_ADJUDICATION.**
+**TYPED_REFERENCE_COMPLETE -
+REJECT_STAGED_CONTEXT_TYPED_GATE.**
 
 v0.82 removes the effect-rejudgment confound observed in v0.81. The workflow
 is explicitly staged:
@@ -110,3 +110,44 @@ the candidate compiler's rejection threshold.
 
 The Kimi pack contains anonymous positions only. Annotator identity, benchmark
 gold, and baseline, atomic, and candidate outputs remain withheld.
+
+## Typed Reference Result
+
+Kimi-K3 returned all 27 requested decisions. The response passed panel,
+adjudication-pack hash, coverage, position consistency, typed-label semantics,
+and blinding validation. The frozen 48-span reference contains 26 evidence,
+2 context, and 20 reject labels.
+
+| Measure | v0.76 baseline | A14 atomic | A14 + A16 staged |
+|---|---:|---:|---:|
+| Typed accuracy | 0.6458 | 0.4792 | 0.8750 |
+| Typed macro F1 | 0.4911 | 0.3007 | 0.6254 |
+| `ADMIT_EVIDENCE` F1 | 0.9020 | 0.9020 | 0.9020 |
+| `RETAIN_CONTEXT` F1 | 0.0000 | 0.0000 | 0.0000 |
+| `REJECT` F1 | 0.5714 | 0.0000 | 0.9744 |
+
+Relative to A14, A16 corrected 19 spans and harmed none. Accuracy improved by
+0.3958 and macro F1 by 0.3248. Five of the six preregistered semantic
+conditions passed.
+
+The candidate failed the context-recall floor. Both valid context spans were
+already admitted as evidence by A14, and A16 was prohibited from mutating the
+frozen evidence partition. The remaining four errors were three reference
+evidence spans retained as context and one reference reject span retained as
+context.
+
+## Final Decision
+
+The preregistered decision is:
+
+`REJECT_STAGED_CONTEXT_TYPED_GATE`
+
+This rejects promotion of the combined candidate, not the A16 mechanism.
+Every context-to-reject change made by A16 was correct under the frozen typed
+reference. The bottleneck has moved upstream to the A14 evidence/context
+boundary.
+
+The next candidate should add a selective boundary-review stage with explicit
+authority to propose evidence/context promotion or demotion only for witnessed
+ambiguous spans. It must preserve ordinary A14 evidence, require independent
+Provider support for any boundary mutation, and validate on a new holdout.
