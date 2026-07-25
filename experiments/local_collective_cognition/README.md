@@ -5,7 +5,34 @@ a larger local baseline. It depends on AgentOS CoreSlim's public cognitive-work
 contracts; AgentOS CoreSlim does not import or publish these machine-specific
 adapters, benchmark fixtures, model paths, or smoke workflows as core features.
 
-Experiment pack version: **0.88.0**
+Experiment pack version: **0.89.0**
+
+## v0.89: claim-atom binding veto rejection
+
+v0.89 uses 18 new balanced SciFact development claims with zero overlap with
+v0.87 and v0.88. Both arms share EvidenceSet and ClaimScope receipts. The
+candidate arm adds a fine-grained `ClaimAtomBindingReceipt`, a context-isolated
+veto-only challenger, and a deterministic Kernel gate that cannot promote a
+non-strong baseline.
+
+The frozen v0.88 path was strong on this slice: 17/18 labels correct, sentence
+F1 0.6316, and one harmful strong candidate. The binding-veto path removed
+that harmful candidate but retained only one of twelve correct strong
+candidates. Label accuracy fell to 0.3333, sentence F1 to 0.0606, and
+abstention rose to 0.6667. ClaimAtomBinding produced only 15/18 valid receipts;
+the other three stages completed 18/18. Total cost was 224,736 tokens.
+
+A descriptive posthoc audit found that the harmful candidate disappeared
+through an invalid binding receipt and fail-closed behavior, not a valid
+semantic veto. All nine valid-receipt semantic vetoes were false vetoes. Six
+arose because the Kernel treated `CONTRADICTED` atoms as defects even for a
+refutation candidate, where contradiction is the required witness. The atom
+ontology also turned absent conditions into required positive evidence.
+
+v0.89 is rejected and immutable. The next stage should first perform a
+zero-Provider, non-gating replay with relation-aware atom semantics before
+authorizing another fresh holdout. See
+`SCIFACT_CLAIM_ATOM_BINDING_CLOSURE_V0_89.md`.
 
 ## v0.88: evidence-set and claim-scope paired rejection
 
