@@ -7,10 +7,14 @@ from local_collective_cognition.admission_v5_external_panel import (
 from local_collective_cognition.admission_v5_external_adjudication import (
     validate_adjudication,
 )
+from local_collective_cognition.admission_v5_typed_scoring import (
+    score_typed_reference,
+)
 
 
 ROOT = Path(__file__).parents[3]
 OUTPUT = ROOT / "outputs" / "admission_v5_external_panel_v0_80"
+SOURCE = ROOT / "outputs" / "admission_v5_fresh_holdout_v0_80"
 
 
 def read(path):
@@ -51,3 +55,21 @@ def test_v080_adjudication_pack_is_anonymous_and_complete():
     assert pack["benchmark_gold"] == "WITHHELD"
     assert pack["baseline_system_outputs"] == "WITHHELD"
     assert pack["candidate_system_outputs"] == "WITHHELD"
+
+
+def test_v080_typed_reference_exposes_context_reject_collapse():
+    score = score_typed_reference(
+        reference=read(
+            OUTPUT / "typed_admission_reference_candidate_v0_80.json"
+        ),
+        baseline_run=read(SOURCE / "baseline_run.json"),
+        candidate_run=read(SOURCE / "candidate_run.json"),
+    )
+
+    assert score["candidate"]["per_class"]["ADMIT_EVIDENCE"]["f1"] == 1.0
+    assert score["candidate"]["predicted_distribution"]["REJECT"] == 0
+    assert score["candidate"]["accuracy"] > score["baseline"]["accuracy"]
+    assert score["candidate"]["macro_f1"] < score["baseline"]["macro_f1"]
+    assert score["automatic_promotion_decision"] == (
+        "REJECT_AUTOMATIC_PROMOTION_CONTEXT_COLLAPSE"
+    )

@@ -2,7 +2,8 @@
 
 ## Status
 
-**AWAITING_KIMI_K3_TYPED_ADJUDICATION.**
+**TYPED_REFERENCE_DIAGNOSTIC_COMPLETE -
+REJECT_AUTOMATIC_PROMOTION_CONTEXT_COLLAPSE.**
 
 v0.80 replaces categorical outcome scope with atomic Provider facts and gives
 the Runtime an explicit semantic conflict ledger.
@@ -106,8 +107,43 @@ The two benchmark-improved cases show a stronger preliminary signal:
   `ADMIT_EVIDENCE` by both annotators, with disagreement only in their
   effect-basis codes.
 
-These observations remain blinded diagnostics. They do not authorize semantic
-acceptance before Kimi-K3 adjudication and frozen-reference scoring.
+Kimi-K3 returned all 11 requested decisions. The response passed panel
+identity, pack hash, option-position, schema, and coverage validation. The
+resulting frozen typed reference contains:
+
+- 24 `ADMIT_EVIDENCE` spans;
+- 13 `RETAIN_CONTEXT` spans;
+- 11 `REJECT` spans.
+
+The reference artifact semantic hash is
+`3a30e208fc4cdc3ffe4dd2266c25b3c53f1e1cf97d7e01e58ae95460084a7e7e`.
+
+## Typed Reference Result
+
+| Measure | v0.76 baseline | v0.80 candidate |
+|---|---:|---:|
+| Typed accuracy | 0.7292 | 0.7708 |
+| Typed macro F1 | 0.6892 | 0.5676 |
+| `ADMIT_EVIDENCE` F1 | 0.9091 | 1.0000 |
+| `RETAIN_CONTEXT` F1 | 0.5185 | 0.7027 |
+| `REJECT` F1 | 0.6400 | 0.0000 |
+| Predicted evidence/context/reject | 20 / 14 / 14 | 24 / 24 / 0 |
+
+Relative to the baseline, the candidate corrected 10 spans and harmed 8.
+Accuracy rose by 0.0417, while macro F1 fell by 0.1216.
+
+This is a real but partial semantic gain. Atomic target/effect witnesses
+recovered all 24 effect-bearing evidence spans, including all four spans missed
+by the baseline in the two benchmark-improved cases. However, the candidate
+marked every non-effect span as contextually relevant. It therefore collapsed
+the `RETAIN_CONTEXT` versus `REJECT` boundary and made no rejection at all.
+
+The v0.80 candidate is not promoted. No post-hoc scalar threshold may convert
+the accuracy increase into acceptance, and the zero-reject typed failure is
+independently disqualifying. The next bounded target is a
+`ContextUtilityWitness`: Provider-supported semantic facts about how a
+non-effect span changes interpretation or a downstream decision, compiled by
+the Runtime under explicit utility, conflict, and abstention rules.
 
 ## Authority Boundary
 
