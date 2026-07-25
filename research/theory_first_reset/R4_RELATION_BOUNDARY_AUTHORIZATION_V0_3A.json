@@ -1,0 +1,25 @@
+{
+  "receipt_version": "agentos_r4_relation_boundary_authorization_v0_3a",
+  "status": "AUTHORIZED_WITH_BOUNDARY",
+  "authorized_by": "USER_HUMAN_GATE",
+  "authorization_date": "2026-07-25",
+  "authorization_basis": "User requested optimization of the engineering object and continuation of the next research step.",
+  "theory_packet": "R4_SEMANTIC_RELATION_COMPOSITION_THEORY_V0_3.md",
+  "object_map": "R4_ENGINEERING_OBJECT_MAP_V0_3.md",
+  "authorized_operations": [
+    "STANDALONE_ZERO_PROVIDER_SYNTHETIC_EXPERIMENT",
+    "LOCAL_IGNORED_ARTIFACT_WRITE",
+    "DETERMINISTIC_REPLAY",
+    "THEORY_WRITEBACK"
+  ],
+  "forbidden_operations": [
+    "PROVIDER_CALLS",
+    "FRESH_HOLDOUT_CONSUMPTION",
+    "RUNTIME_OR_CORESLIM_WRITE",
+    "RETENTION_WRITE",
+    "BASELINE_PROMOTION",
+    "SECOND_COORDINATION_RUNTIME",
+    "SAME_VERSION_SEMANTIC_REPAIR"
+  ],
+  "claim_ceiling": "SYNTHETIC_RELATION_GRAPH_CONSTRUCTION_ONLY"
+}

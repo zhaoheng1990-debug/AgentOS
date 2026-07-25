@@ -210,6 +210,15 @@ The next R4 theory revision must separate:
 - Provider-backed semantic relation judgment;
 - Runtime-owned deterministic packet composition.
 
+R4 v0.3 performs this object upgrade. It preserves the existing
+`CognitiveCoordinationRuntime` as sole upper orchestration owner and introduces
+only candidate contracts for semantic relation assessment, graph compilation,
+composition plans, and deterministic receipts.
+
+R4 v0.3A is preregistered as a zero-Provider construction test. A fresh
+Provider relation experiment is not authorized until the finite object chain
+passes.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -272,6 +281,8 @@ Require:
 | R4 v0.2 claim ceiling | paired protocol diagnostic only |
 | R4 v0.2 result | role layer supported; coordinator experiment failed |
 | next Provider calls | paused pending semantic relation theory |
+| R4 v0.3 object map | frozen for standalone construction |
+| R4 v0.3A | zero-Provider synthetic validation authorized |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

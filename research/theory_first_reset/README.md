@@ -59,8 +59,12 @@ and blob identity, but its candidate code is not part of this branch.
 24. `R4_PROVIDER_PROTOCOL_DIAGNOSTIC_AUTHORIZATION_V0_2.json`
 25. `R4_PROVIDER_ADEQUACY_PREREGISTRATION_V0_2.md`
 26. `R4_PROVIDER_ADEQUACY_CLOSURE_V0_2.md`
-27. `THEORY_PACKET_TEMPLATE.md`
-28. `ROLLBACK_POINTER.json`
+27. `R4_SEMANTIC_RELATION_COMPOSITION_THEORY_V0_3.md`
+28. `R4_ENGINEERING_OBJECT_MAP_V0_3.md`
+29. `R4_RELATION_BOUNDARY_AUTHORIZATION_V0_3A.json`
+30. `R4_RELATION_BOUNDARY_SYNTHETIC_PREREGISTRATION_V0_3A.md`
+31. `THEORY_PACKET_TEMPLATE.md`
+32. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -104,3 +108,8 @@ probabilities were accurate and stable; the Provider coordinator returned
 invalid roots and poor numeric composition. Zero-call deterministic composition
 recovered the packet information. The next theory object separates semantic
 relation judgment from deterministic packet composition.
+
+R4 v0.3 optimizes that boundary without creating a second coordinator Runtime.
+It freezes `SemanticPacketRelation` as the Provider-supported object, while
+Runtime alone compiles relation graphs, derives plans, composes probabilities,
+and emits replayable receipts. v0.3A is a zero-Provider construction test.
