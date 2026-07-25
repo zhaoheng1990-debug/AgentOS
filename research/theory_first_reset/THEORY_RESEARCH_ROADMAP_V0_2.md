@@ -246,6 +246,11 @@ five admissible shapes, blocked nine unsafe or ambiguous shapes, and replayed
 both preserved v0.3B responses without changing their hashes. The next
 unresolved object is presentation robustness, not another envelope patch.
 
+R4 v0.3D freezes a hybrid-time presentation diagnostic. Historical Batch A is
+bound by source hash and cannot be repeated. One reversed Batch B and twelve
+isolated Single calls test order and context-packing robustness while preserving
+time drift as an explicit rival explanation.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -316,6 +321,7 @@ Require:
 | R4 v0.3C | zero-Provider envelope construction authorized |
 | R4 v0.3C result | 15/15 pass; mechanical envelope anomaly closed |
 | R4 v0.3D | theory and preregistration required; Provider calls paused |
+| R4 v0.3D status | preregistered; 13 new logical calls authorized |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

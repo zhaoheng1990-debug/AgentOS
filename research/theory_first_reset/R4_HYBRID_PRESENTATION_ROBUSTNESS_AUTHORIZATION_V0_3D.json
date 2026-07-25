@@ -1,0 +1,34 @@
+{
+  "receipt_version": "agentos_r4_hybrid_presentation_authorization_v0_3d",
+  "status": "AUTHORIZED_WITH_BOUNDARY",
+  "authorized_by": "USER_HUMAN_GATE",
+  "authorization_date": "2026-07-25",
+  "authorization_basis": "User requested continuation of the next research step after the v0.3C closure.",
+  "theory_packet": "R4_HYBRID_PRESENTATION_ROBUSTNESS_THEORY_V0_3D.md",
+  "preregistration": "R4_HYBRID_PRESENTATION_ROBUSTNESS_PREREGISTRATION_V0_3D.md",
+  "authorized_operations": [
+    "READ_ONLY_USE_OF_PRESERVED_V0_3B_BATCH_A",
+    "ONE_DEEPSEEK_BATCH_B_LOGICAL_CALL",
+    "TWELVE_DEEPSEEK_SINGLE_LOGICAL_CALLS",
+    "LOCAL_IGNORED_ARTIFACT_WRITE",
+    "DETERMINISTIC_RUNTIME_ACTION_DERIVATION",
+    "THEORY_WRITEBACK"
+  ],
+  "call_budget": {
+    "new_logical_calls": 13,
+    "maximum_new_physical_attempts": 26,
+    "maximum_incremental_total_tokens": 80000,
+    "repeated_batch_a_calls": 0
+  },
+  "forbidden_operations": [
+    "FRESH_HOLDOUT_CONSUMPTION",
+    "REPEATED_BATCH_A_PROVIDER_CALL",
+    "PROVIDER_COMPOSITION_ACTION",
+    "PROVIDER_FINAL_STATE_AUTHORITY",
+    "RUNTIME_OR_CORESLIM_WRITE",
+    "RETENTION_WRITE",
+    "BASELINE_PROMOTION",
+    "SAME_VERSION_SEMANTIC_REPAIR"
+  ],
+  "claim_ceiling": "SAME_PROVIDER_PRESENTATION_ROBUSTNESS_WITH_HYBRID_TIME_LIMIT"
+}
