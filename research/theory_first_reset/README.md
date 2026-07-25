@@ -108,8 +108,9 @@ and blob identity, but its candidate code is not part of this branch.
 73. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_AUTHORIZATION_V0_3K.json`
 74. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_PREREGISTRATION_V0_3K.md`
 75. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_CORPUS_MANIFEST_V0_3K.json`
-76. `THEORY_PACKET_TEMPLATE.md`
-77. `ROLLBACK_POINTER.json`
+76. `R4_ROLE_DECOMPOSED_SEMANTIC_INFERENCE_CLOSURE_V0_3K.md`
+77. `THEORY_PACKET_TEMPLATE.md`
+78. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -275,3 +276,10 @@ The v0.3K sixteen-case corpus and seven-module standalone instrument passed
 17/17 corpus gates, 15 targeted tests, and all 86 R4 experiment tests. Public
 corpus, private reference, eight prompts, compiler dependencies, scorer, and
 tests are hash-frozen. Eight bounded Provider calls are authorized.
+
+R4 v0.3K closed 13/18 as `FAIL_GLOBAL_CONTEXT_REQUIREMENT`. Split and wide
+arms tied at 30/32 role bundles forward; split fell to 25/32 versus wide 30/32
+in reverse. The main differential was four omitted tolerance witnesses in the
+reverse split effect call. Role decomposition saved 23.92 percent tokens but
+did not produce cognitive benefit. Provider calls are paused pending theory
+for sequential semantic and witness binding.

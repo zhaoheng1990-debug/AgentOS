@@ -354,6 +354,16 @@ clarified without changing the model or thresholds. Corpus, references,
 prompts, compiler dependencies, scorer, and tests are hash-frozen. Eight
 bounded calls are authorized.
 
+R4 v0.3K closed 13/18. Forward wide and split role bundles tied at 30/32;
+reverse split fell to 25/32 versus wide 30/32. Four missing tolerance witnesses
+in the reverse split effect call caused two conservative false blocks, while
+semantic labels and revalidation remained strong. The formal status is
+`FAIL_GLOBAL_CONTEXT_REQUIREMENT`, but the stronger mechanism evidence is
+presentation-sensitive multi-witness binding, not a demonstrated need for all
+roles to see global fields. Split calls used 23.92 percent fewer tokens. The
+next theory object is sequential semantic-witness binding with a Runtime-derived
+witness-obligation contract.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -435,7 +445,7 @@ Require:
 | R4 v0.3H | closed construction fail; apparent pass void |
 | R4 v0.3I | 16/16 formal pass; factorization coherence supported |
 | R4 v0.3J | closed 13/18 fail; revalidation gain plus wide-receipt interference |
-| R4 v0.3K | corpus/instrument hash-frozen; 86 tests; eight calls authorized |
+| R4 v0.3K | closed 13/18 fail; no role gain; reverse witness-binding drift |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

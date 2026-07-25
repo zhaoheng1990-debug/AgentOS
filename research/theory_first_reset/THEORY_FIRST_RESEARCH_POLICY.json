@@ -51,11 +51,11 @@
     "GROWING_BASELINE_EXCEPTIONS"
   ],
   "current_authority": {
-    "stage": "R4_V0_3K_CORPUS_AND_INSTRUMENT_FROZEN_EIGHT_CALLS_AUTHORIZED",
+    "stage": "R4_V0_3K_CLOSED_FAIL_SEQUENTIAL_WITNESS_BINDING_THEORY_REQUIRED",
     "theory_research": true,
-    "standalone_synthetic_experiment": true,
-    "standalone_provider_experiment": true,
-    "provider_calls": true,
+    "standalone_synthetic_experiment": false,
+    "standalone_provider_experiment": false,
+    "provider_calls": false,
     "fresh_holdout_consumption": false,
     "new_runtime_modules": false,
     "core_writes": false,
