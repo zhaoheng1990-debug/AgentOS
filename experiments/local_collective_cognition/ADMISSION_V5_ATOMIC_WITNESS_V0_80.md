@@ -2,7 +2,7 @@
 
 ## Status
 
-**AWAITING_GPT_GEMINI_TYPED_ANNOTATIONS.**
+**AWAITING_KIMI_K3_TYPED_ADJUDICATION.**
 
 v0.80 replaces categorical outcome scope with atomic Provider facts and gives
 the Runtime an explicit semantic conflict ledger.
@@ -84,6 +84,30 @@ The frozen panel contains 48 independently assessed spans:
 Each lane receives different anonymous IDs and item order. Neither lane
 contains case IDs, span IDs, benchmark gold, baseline or candidate output,
 peer annotation, scores, or prior error analysis.
+
+Both returned annotation files passed exact model, lane, pack-hash, blinding,
+schema, cross-field, and 48-span coverage validation.
+
+- complete typed-label agreement: 37/48 spans (77.1%);
+- anonymous Kimi-K3 adjudication required: 11/48 spans (22.9%);
+- context-versus-reject disputes: 8;
+- evidence-versus-context disputes: 1;
+- effect-basis-only disputes: 2.
+
+GPT-5.6 retained 13 context spans while Gemini-3.1 retained 4; Gemini rejected
+19 spans while GPT-5.6 rejected 11. The primary remaining disagreement is
+therefore the boundary between useful context and no target utility, not the
+definition of effect-bearing evidence.
+
+The two benchmark-improved cases show a stronger preliminary signal:
+
+- all four `EI-CAL-5792` spans received complete lane agreement;
+- both restored gold spans in `EI-CAL-13791` were independently labeled
+  `ADMIT_EVIDENCE` by both annotators, with disagreement only in their
+  effect-basis codes.
+
+These observations remain blinded diagnostics. They do not authorize semantic
+acceptance before Kimi-K3 adjudication and frozen-reference scoring.
 
 ## Authority Boundary
 
