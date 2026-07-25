@@ -69,3 +69,24 @@ and Gemini-3.1 annotation.
 
 Candidate acceptance remains false until both lanes, any required independent
 adjudication, and frozen-reference scoring are complete.
+
+## Preregistered Typed Gate
+
+The post-reference decision logic was frozen before either annotation response
+was received. Relative to A14, the staged candidate must satisfy all of:
+
+1. typed accuracy improves;
+2. typed macro F1 improves;
+3. `REJECT` F1 improves;
+4. `ADMIT_EVIDENCE` F1 is preserved exactly;
+5. `RETAIN_CONTEXT` recall is at least 0.50 when valid context exists;
+6. corrected spans outnumber harmed spans.
+
+Passing these conditions yields only
+`READY_PM_REVIEW_STAGED_CONTEXT_GAIN`. It does not authorize candidate
+acceptance, runtime tuning, Core writes, retention writes, or production use.
+
+The complete lane validation, anonymous-disagreement adjudication, typed
+reference finalization, and three-arm scoring path passed a 48-span synthetic
+protocol smoke test. Synthetic labels are test fixtures only and are not
+retained as experimental evidence.

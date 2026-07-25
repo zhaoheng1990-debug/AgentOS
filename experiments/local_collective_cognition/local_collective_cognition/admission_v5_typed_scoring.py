@@ -10,11 +10,14 @@ CLASSES = ("ADMIT_EVIDENCE", "RETAIN_CONTEXT", "REJECT")
 
 
 def score_typed_reference(*, reference, baseline_run, candidate_run):
-    _validate_reference(reference)
-    validate_run(baseline_run)
-    validate_run(candidate_run)
-    baseline = _score(reference, baseline_run)
-    candidate = _score(reference, candidate_run)
+    baseline = score_run_against_typed_reference(
+        reference=reference,
+        run=baseline_run,
+    )
+    candidate = score_run_against_typed_reference(
+        reference=reference,
+        run=candidate_run,
+    )
     baseline_predictions = _predictions(baseline_run)
     candidate_predictions = _predictions(candidate_run)
     corrected, harmed = [], []
@@ -63,6 +66,12 @@ def score_typed_reference(*, reference, baseline_run, candidate_run):
         "production_authority": False,
     }
     return {**value, "artifact_hash": hash_payload(value)}
+
+
+def score_run_against_typed_reference(*, reference, run):
+    _validate_reference(reference)
+    validate_run(run)
+    return _score(reference, run)
 
 
 def _score(reference, run):
