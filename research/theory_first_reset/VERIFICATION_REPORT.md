@@ -80,3 +80,19 @@ Verification date: `2026-07-25`
 
 The addendum verifies evidence coverage, input integrity, and route consistency.
 It does not validate the retrospective theory model as external truth.
+
+## Theory-First Governance Addendum
+
+- governing principle:
+  `THEORY_FIRST_ENGINEERING_VALIDATION_PRINCIPLE.md`;
+- machine-readable policy:
+  `THEORY_FIRST_RESEARCH_POLICY.json`;
+- policy status: `ACTIVE_RESEARCH_GOVERNANCE`;
+- theory freeze status required before engineering:
+  `FROZEN_FOR_ENGINEERING_VALIDATION`;
+- PM/HumanGate required: yes;
+- unmapped engineering-object action: `BLOCK`;
+- current authorized stage:
+  `R1_ARCHIVED_ORGANIZATIONAL_IDENTIFIABILITY_AUDIT`;
+- current Provider, fresh-holdout, Runtime, Core, retention, and baseline
+  authority: false.

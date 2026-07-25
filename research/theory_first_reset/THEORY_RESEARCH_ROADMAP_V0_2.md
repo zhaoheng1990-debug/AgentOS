@@ -8,6 +8,15 @@ v0.1 moved the project from patch-driven engineering to theory-first research.
 v0.2 adds a missing step: retrospective organizational identifiability before
 formal or synthetic construction.
 
+## Research Governance
+
+This roadmap is governed by
+`THEORY_FIRST_ENGINEERING_VALIDATION_PRINCIPLE.md`.
+
+No engineering stage begins from a roadmap arrow alone. R3, R4, R5, or later
+engineering requires an R2 theory packet with status
+`FROZEN_FOR_ENGINEERING_VALIDATION` and explicit PM/HumanGate approval.
+
 ## Governing Object
 
 ```text

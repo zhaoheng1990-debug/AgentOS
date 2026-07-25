@@ -3,6 +3,11 @@
   "status": "THEORY_FIRST_BASELINE_CANDIDATE",
   "created_date": "2026-07-25",
   "rollback_mode": "NON_DESTRUCTIVE_BRANCH",
+  "research_governance": {
+    "principle": "THEORY_FIRST_ENGINEERING_VALIDATION",
+    "policy": "research/theory_first_reset/THEORY_FIRST_RESEARCH_POLICY.json",
+    "engineering_without_frozen_theory": "BLOCKED"
+  },
   "active_branch": "codex/theory-first-reset-v0.65",
   "active_base": {
     "version": "v0.65",

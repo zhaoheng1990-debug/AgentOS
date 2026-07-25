@@ -1,0 +1,69 @@
+{
+  "policy_version": "agentos_theory_first_engineering_validation_v1",
+  "status": "ACTIVE_RESEARCH_GOVERNANCE",
+  "effective_date": "2026-07-25",
+  "principle": "THEORY_FIRST_ENGINEERING_VALIDATION",
+  "sequence": [
+    "THEORY_RESEARCH",
+    "THEORY_FREEZE",
+    "ENGINEERING_DERIVATION",
+    "VALIDATION_PREREGISTRATION",
+    "MINIMAL_ENGINEERING_INSTRUMENT",
+    "EMPIRICAL_VALIDATION",
+    "THEORY_UPDATE",
+    "PROMOTION_REVIEW"
+  ],
+  "theory_freeze": {
+    "required_status": "FROZEN_FOR_ENGINEERING_VALIDATION",
+    "human_gate_required": true,
+    "required_objects": [
+      "ONTOLOGY_OBJECT",
+      "BOUNDARY_AND_EXCLUDED_CLAIMS",
+      "CAUSAL_MECHANISM",
+      "LEADING_MODEL",
+      "RIVAL_OR_NULL_MODEL",
+      "DISCRIMINATING_PREDICTIONS",
+      "FALSIFICATION_CONDITIONS",
+      "PROXY_VALIDITY_LIMITS",
+      "ANTI_ADDITIVE_AUDIT",
+      "STOP_AND_ROLLBACK_CONDITION"
+    ]
+  },
+  "engineering_gate": {
+    "theory_variable_mapping_required": true,
+    "minimality_justification_required": true,
+    "removal_test_required": true,
+    "candidate_only_default": true,
+    "unmapped_object_action": "BLOCK"
+  },
+  "same_version_change_policy": {
+    "mechanical_amendment": "CONDITIONALLY_ALLOWED_BEFORE_AFFECTED_PROVIDER_OR_LABEL_EXPOSURE",
+    "semantic_or_theory_relevant_change": "FORBIDDEN_CLOSE_AND_VERSION",
+    "threshold_or_metric_change_after_reveal": "FORBIDDEN",
+    "receipt_repair_after_reveal": "FORBIDDEN"
+  },
+  "mandatory_theory_review_triggers": [
+    "ONTOLOGY_PROXY_LEVEL_MISMATCH",
+    "TWO_CONSECUTIVE_BOTTLENECK_MIGRATIONS",
+    "NONPOSITIVE_IDENTIFIABLE_MARGINAL_CBIT",
+    "SAFETY_GAIN_BY_CORRECT_ACTION_SUPPRESSION",
+    "RIVAL_MODELS_NOT_DISCRIMINABLE",
+    "GROWING_BASELINE_EXCEPTIONS"
+  ],
+  "current_authority": {
+    "stage": "R1_ARCHIVED_ORGANIZATIONAL_IDENTIFIABILITY_AUDIT",
+    "theory_research": true,
+    "provider_calls": false,
+    "fresh_holdout_consumption": false,
+    "new_runtime_modules": false,
+    "core_writes": false,
+    "retention_writes": false,
+    "baseline_promotion": false
+  },
+  "references": [
+    "THEORY_FIRST_ENGINEERING_VALIDATION_PRINCIPLE.md",
+    "THEORY_PACKET_TEMPLATE.md",
+    "THEORY_RESEARCH_ROADMAP_V0_2.md",
+    "ROLLBACK_POINTER.json"
+  ]
+}
