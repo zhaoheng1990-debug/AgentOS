@@ -63,8 +63,9 @@ and blob identity, but its candidate code is not part of this branch.
 28. `R4_ENGINEERING_OBJECT_MAP_V0_3.md`
 29. `R4_RELATION_BOUNDARY_AUTHORIZATION_V0_3A.json`
 30. `R4_RELATION_BOUNDARY_SYNTHETIC_PREREGISTRATION_V0_3A.md`
-31. `THEORY_PACKET_TEMPLATE.md`
-32. `ROLLBACK_POINTER.json`
+31. `R4_RELATION_BOUNDARY_SYNTHETIC_CLOSURE_V0_3A.md`
+32. `THEORY_PACKET_TEMPLATE.md`
+33. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -113,3 +114,8 @@ R4 v0.3 optimizes that boundary without creating a second coordinator Runtime.
 It freezes `SemanticPacketRelation` as the Provider-supported object, while
 Runtime alone compiles relation graphs, derives plans, composes probabilities,
 and emits replayable receipts. v0.3A is a zero-Provider construction test.
+
+R4 v0.3A passed all 14 frozen construction gates. Four actionable graphs
+composed exactly and eight inadmissible graphs blocked. Naive duplicate
+composition produced 0.141 to 0.222 probability overconfidence, establishing
+the value of relation-aware deduplication without validating Provider semantics.

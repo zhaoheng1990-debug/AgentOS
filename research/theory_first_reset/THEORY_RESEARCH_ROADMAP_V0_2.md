@@ -219,6 +219,12 @@ R4 v0.3A is preregistered as a zero-Provider construction test. A fresh
 Provider relation experiment is not authorized until the finite object chain
 passes.
 
+R4 v0.3A passed 14/14 gates with zero Provider calls. Four actionable graphs
+composed exactly. Eight unsafe, incomplete, or contradictory graphs blocked.
+Naive duplicate composition produced probability overconfidence of 0.141 to
+0.222. The object chain is ready for a fresh Provider semantic-relation
+preregistration, but not Core synchronization.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -283,6 +289,7 @@ Require:
 | next Provider calls | paused pending semantic relation theory |
 | R4 v0.3 object map | frozen for standalone construction |
 | R4 v0.3A | zero-Provider synthetic validation authorized |
+| R4 v0.3A result | 14/14 construction pass; Provider semantics untested |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |
