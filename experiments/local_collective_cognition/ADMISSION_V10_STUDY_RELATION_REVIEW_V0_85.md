@@ -2,8 +2,8 @@
 
 ## Status
 
-**DEVELOPMENT_SCREEN_COMPLETE -
-AWAITING_MUTATION_CASE_TYPED_PANEL.**
+**EXTERNAL_MUTATION_SCREEN_COMPLETE -
+REJECT_A19_ALL_MUTATIONS_EXTERNALLY_HARMFUL.**
 
 v0.85 tests whether a shared case-level study relation graph can repair the
 two coupled residual errors observed in v0.84:
@@ -98,11 +98,52 @@ case. Selection basis, benchmark gold, lane identity, and all system outputs
 are withheld. GPT-5.6 and Gemini-3.1 will independently label the four spans;
 lane disagreements will require anonymous Kimi-K3 adjudication.
 
+Both lane responses passed the frozen contract without repair. Three of four
+spans received complete typed-label agreement. The only disagreement concerns
+an unchanged control span and cannot affect the paired A19 result.
+
+Both A19 mutations were independently rejected by GPT-5.6 and Gemini-3.1:
+
+- the complete target-arm value span is `ADMIT_EVIDENCE`, so its
+  evidence-to-context mutation is harmful;
+- the side-effect span is `REJECT`, so its reject-to-context mutation is also
+  harmful.
+
+The paired mutation result is:
+
+- corrected: 0;
+- harmed: 2;
+- unresolved: 0.
+
 Current decision:
 
-`DEFER_A19_SCREEN_PENDING_MUTATION_CASE_TYPED_PANEL`
+`REJECT_A19_ALL_MUTATIONS_EXTERNALLY_HARMFUL`
 
-Even a positive mutation result cannot accept A19 because the source split is
-development-only. A positive result would authorize acquisition of a new
-benchmark and a redesigned v0.86 protocol; a non-positive result will freeze
-A19 as another bounded negative result.
+The control disagreement does not require Kimi adjudication for the mechanism
+decision. The panel is selective and cannot support a full-reference claim.
+A19 is frozen as a bounded negative result and receives no Core, retention, or
+production authority.
+
+## Interpretation
+
+Case-level structural binding is useful for explaining a study, but it is not
+itself an evidence-utility criterion. A19 made two systematic category errors:
+
+- it treated complete quantitative arm-wise evidence as merely descriptive
+  because no separate comparative conclusion was written;
+- it treated a different study outcome as useful context merely because the
+  intervention/comparator relation matched.
+
+The next architecture should separate three layers:
+
+1. `StudyObjectBinding`: arm aliases, outcome aliases, composites, and
+   coreference, with no mutation authority;
+2. `SemanticWarrant`: whether the bound span independently supports the exact
+   claim, quantitatively corroborates it, merely scopes it, or remains
+   irrelevant;
+3. `KernelUtilityCompiler`: applies bounded disposition changes only when both
+   structural binding and semantic warrant are present.
+
+Before another provider experiment, a new benchmark source is required. The
+current Evidence Inference test pool is exhausted, and validation objects
+cannot establish external acceptance.

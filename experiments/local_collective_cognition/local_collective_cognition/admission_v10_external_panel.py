@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 from .admission_v2_annotation_rubric import (
+    EFFECT_BASIS_CODES,
     LANE_SPECS,
     RUBRIC,
+    label_violations,
 )
 from .admission_v9_external_panel import (
     annotation_response_contract as v9_response_contract,
@@ -227,6 +229,55 @@ def validate_external_panel(*, packs, manifest, source_inputs=None):
         raise ValueError("admission_v10_external_panel_not_deterministic")
 
 
+def validate_annotation_response(response, *, pack):
+    contract = annotation_response_contract()
+    expected = {
+        "panel_version": PANEL_VERSION,
+        "panel_id": pack["panel_id"],
+        "lane_id": pack["lane_id"],
+        "pack_hash": pack["pack_hash"],
+        "annotator_provider": pack["expected_annotator"]["provider"],
+        "annotator_model": pack["expected_annotator"]["model"],
+    }
+    if (
+        not isinstance(response, dict)
+        or set(response) != set(contract["required_top_level"])
+        or any(response.get(key) != value for key, value in expected.items())
+        or response.get("blinding_attestation")
+        != contract["required_blinding_attestation"]
+        or not isinstance(response.get("annotation_session_ref"), str)
+        or not response["annotation_session_ref"].strip()
+    ):
+        raise ValueError("admission_v10_annotation_response_binding_invalid")
+    expected_ids = {
+        item["annotation_id"] for item in pack["items"]
+    }
+    labels = response.get("labels")
+    if not isinstance(labels, list) or len(labels) != len(expected_ids):
+        raise ValueError("admission_v10_annotation_response_count_invalid")
+    observed = []
+    for label in labels:
+        if (
+            not isinstance(label, dict)
+            or set(label) != set(contract["required_label_fields"])
+        ):
+            raise ValueError("admission_v10_annotation_label_shape_invalid")
+        observed.append(label["annotation_id"])
+        if (
+            label_violations(label)
+            or not _confidence(label.get("confidence"))
+            or not isinstance(label.get("rationale"), str)
+            or not label["rationale"].strip()
+            or len(label["rationale"]) > 1200
+            or not set(label["effect_basis_codes"]).issubset(
+                EFFECT_BASIS_CODES
+            )
+        ):
+            raise ValueError("admission_v10_annotation_label_invalid")
+    if len(observed) != len(set(observed)) or set(observed) != expected_ids:
+        raise ValueError("admission_v10_annotation_ids_invalid")
+
+
 def _selected_units(panel, selected_case_ids):
     selected = set(selected_case_ids)
     return [
@@ -248,3 +299,11 @@ def _validate_hash(value, field):
     }
     if value.get(field) != hash_payload(commitment):
         raise ValueError(f"admission_v10_external_{field}_invalid")
+
+
+def _confidence(value):
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and 0 <= value <= 1
+    )
