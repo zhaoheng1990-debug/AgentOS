@@ -331,6 +331,13 @@ call order, and implementation are hash-frozen after 71 passing preflight
 tests. Both private references compile to identical immediate outcomes. Four
 bounded Provider calls are authorized.
 
+R4 v0.3J closed `FAIL_CAUSAL_BENEFIT_WITH_REVALIDATION_GAIN_AND_PRESENTATION_COST`.
+Factorization improved revalidation from 10/12 to 12/12 in both rounds with
+about 4.8 percent token overhead, but factorized action agreement was 9/12
+versus legacy 12/12. One false combine and reverse-order tolerance-witness
+omissions localize the next object as cognitive-load interference in a wide
+receipt, not another ontology enum.
+
 ## R5: Fresh Benchmark
 
 Required arms:
@@ -411,7 +418,7 @@ Require:
 | R4 v0.3G | closed semantic fail; 12/12 Runtime actions; information relation 8/12 |
 | R4 v0.3H | closed construction fail; apparent pass void |
 | R4 v0.3I | 16/16 formal pass; factorization coherence supported |
-| R4 v0.3J | corpus and instrument frozen; four L-F-F-L calls authorized |
+| R4 v0.3J | closed 13/18 fail; revalidation gain plus wide-receipt interference |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

@@ -103,8 +103,9 @@ and blob identity, but its candidate code is not part of this branch.
 68. `R4_FACTORIZATION_CAUSAL_BENEFIT_AUTHORIZATION_V0_3J.json`
 69. `R4_FACTORIZATION_CAUSAL_BENEFIT_PREREGISTRATION_V0_3J.md`
 70. `R4_FACTORIZATION_CAUSAL_BENEFIT_CORPUS_MANIFEST_V0_3J.json`
-71. `THEORY_PACKET_TEMPLATE.md`
-72. `ROLLBACK_POINTER.json`
+71. `R4_FACTORIZATION_CAUSAL_BENEFIT_CLOSURE_V0_3J.md`
+72. `THEORY_PACKET_TEMPLATE.md`
+73. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -253,3 +254,9 @@ The fresh twelve-case dual-reference corpus and comparative implementation
 passed 71 tests and are hash-frozen. Legacy and factorized private references
 compile to identical immediate relations and actions. Four bounded calls are
 authorized in `L-F-F-L` order.
+
+R4 v0.3J closed at 13/18 gates. Factorization improved revalidation by 2/12 in
+both rounds and added only 4.8 percent token cost, but wider receipts degraded
+provenance inference and witness binding. Factorized action agreement was 9/12
+versus legacy 12/12, including one false combine. Provider calls are paused
+pending theory-first role decomposition.

@@ -51,11 +51,11 @@
     "GROWING_BASELINE_EXCEPTIONS"
   ],
   "current_authority": {
-    "stage": "R4_V0_3J_CORPUS_AND_INSTRUMENT_FROZEN_FOUR_CALLS_AUTHORIZED",
+    "stage": "R4_V0_3J_CLOSED_FAIL_ROLE_DECOMPOSITION_THEORY_REQUIRED",
     "theory_research": true,
     "standalone_synthetic_experiment": false,
-    "standalone_provider_experiment": true,
-    "provider_calls": true,
+    "standalone_provider_experiment": false,
+    "provider_calls": false,
     "fresh_holdout_consumption": false,
     "new_runtime_modules": false,
     "core_writes": false,
