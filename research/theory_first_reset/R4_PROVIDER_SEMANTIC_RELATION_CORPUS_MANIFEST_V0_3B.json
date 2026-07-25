@@ -1,0 +1,41 @@
+{
+  "manifest_version": "agentos_r4_provider_semantic_relation_corpus_v0_3b",
+  "status": "FROZEN_BEFORE_PROVIDER_CALLS",
+  "case_count": 12,
+  "state_balance": {
+    "INDEPENDENT_DISTINCT": 2,
+    "EXACT_DUPLICATE": 2,
+    "DEPENDENT_DISTINCT": 2,
+    "PARTIAL_OVERLAP": 2,
+    "SCOPE_INCOMPATIBLE": 2,
+    "UNRESOLVED": 2
+  },
+  "corpus_source": "experiments/theory_first_r4_relation/theory_first_r4_relation/semantic_cases.py",
+  "corpus_source_sha256": "38a8609ffde10fac78f2a5ba89baf84409126283d0344e8138e41fc352568e69",
+  "public_corpus_sha256": "9268dd4dcd4570eff4129062e1fde27f60c40243214fad30002b953d297c32e5",
+  "private_reference_sha256": "b547763439abd477b70cf9571445433fb8529fab283d26e86e118642e768c69f",
+  "prompt_surface_sha256": "ac0ad98e68c0c1f03100e696b939ad61875403cca6ba4a454159984d8554adfe",
+  "prompt_hashes": {
+    "batch_A": "3a1919033bcdbb4eb30914913c4aadc49762f38880e9f7ca7d00d4e8ad2cace4",
+    "batch_B": "9b1226530327e070067799b0b7f32656e98ba9636e7714afc529ff08b3badb9a",
+    "single_R43B-01": "9cd6fa30b1da184c45f4097a68b60d5f76383f72d10aa72dd9c82c55cb3b3d9c",
+    "single_R43B-02": "a45100a27dcf92e571738b39ef735e6859977fcf26491db5af18987f3049aa8d",
+    "single_R43B-03": "8f89921fa84cab3f27e6a20608838f9ac9bb4be5638a71fec5711b30443a56fb",
+    "single_R43B-04": "6e2c11c33eb9808ba88bd2c5b15314a32c5a5411dc4c1c102827d3c108f4c254",
+    "single_R43B-05": "25cfcb4b14e5672b96e66c0d2e76f637f581ea39ea43c35ca1d5dbba4676f625",
+    "single_R43B-06": "cf95b9ba0ecc3870ce81b03fa18c8887b5cb17448ae4a55b28bf83127b2100c9",
+    "single_R43B-07": "afc4e541142802f72090f5e6bd6cbe64991375dd64608fe560020d22772c8473",
+    "single_R43B-08": "642aea28317f5d0223c95a3cbb0df993fca2aa8fd0e008f6e91de3f3dc3f321e",
+    "single_R43B-09": "4149da42dcb2eb2913d78ab852acb3c5ae7eff7daf35c5d46186758a99b37622",
+    "single_R43B-10": "27c16d5f2410bd350689b247c84b553b82bf2dee01ae75f7a72310c593397ad0",
+    "single_R43B-11": "c92fc45ab2b21143fadee0e396b4bf6faa80d7871dd105338b7d1aa72882de2b",
+    "single_R43B-12": "b63374b713f7278bc07526b7ed852470db0ac779685571f13c9f6f54ca11a592"
+  },
+  "private_reference_in_provider_prompt": false,
+  "runtime_action_in_provider_prompt": false,
+  "provider_calls_at_freeze": 0,
+  "fresh_holdout_consumption": false,
+  "core_write_allowed": false,
+  "retention_write_allowed": false,
+  "baseline_write_allowed": false
+}
