@@ -1,0 +1,45 @@
+{
+  "receipt_version": "agentos_r2_human_gate_freeze_v0_2",
+  "status": "FROZEN_FOR_R3_MINIMAL_SYNTHETIC_VALIDATION",
+  "approval_date": "2026-07-25",
+  "approval_text": "批准 A，带边界冻结 R2 v0.2。然后继续下一步研究",
+  "approved_option": "A_APPROVE_WITH_BOUNDARY",
+  "frozen_artifacts": [
+    {
+      "path": "research/theory_first_reset/R2_SYMBOL_AND_PROXY_AUDIT.md",
+      "sha256": "4b5668cae156d13f1cad2a4e82f6975a6cef250e25b9c2eb08cfc3b0cd02c349"
+    },
+    {
+      "path": "research/theory_first_reset/R2_ORGANIZATION_THEORY_PACKET_V0_2.md",
+      "sha256": "2019f0a35bfe512d5be6b5feee1c834e1e82dd3051d1ef02905443e37237400e"
+    },
+    {
+      "path": "research/theory_first_reset/R2_FORMAL_VERIFICATION_REPORT.md",
+      "sha256": "8908c3187bc89a4d66f211ba339a47723f336a1fb3f2fe3aba888edaa94f1a2c"
+    }
+  ],
+  "approved_scope": {
+    "r3_finite_synthetic_system": true,
+    "exact_analytic_validation": true,
+    "standalone_experiment_instrument": true,
+    "provider_calls": false,
+    "fresh_holdout_consumption": false,
+    "runtime_changes": false,
+    "coreslim_changes": false,
+    "retention_writes": false,
+    "baseline_writes": false,
+    "production_authority": false
+  },
+  "frozen_theory_objects": [
+    "CBIT_TASK_PROXY_NOT_ONTOLOGICAL_IDENTITY",
+    "J_SET_AND_J_I_UNIQ",
+    "PACKET_ONLY_COORDINATOR_BOUNDARY",
+    "COORDINATOR_INFORMATION_CEILING",
+    "K_INFO_AND_K_PRESERVE",
+    "G_EQUALS_KJ_MINUS_ONE_MINUS_K_H",
+    "K_STAR_EQUALS_H_OVER_J_PLUS_H",
+    "COGNITIVE_EQUIVALENCE_SEPARATE_FROM_ORGANIZATIONAL_SURPLUS"
+  ],
+  "next_stage": "R3_MINIMAL_SYNTHETIC_VALIDATION",
+  "promotion_authority": false
+}

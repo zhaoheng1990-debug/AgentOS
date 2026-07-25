@@ -103,7 +103,7 @@ Retrospective analysis may describe and compare frozen outputs. It cannot:
 
 ## R2: Organization Theory Packet
 
-Status: `V0_2_READY_FOR_HUMAN_FREEZE_REVIEW`
+Status: `V0_2_FROZEN_WITH_BOUNDARY`
 
 R1 establishes:
 
@@ -217,8 +217,10 @@ Require:
 | --- | --- |
 | R1 zero-call archive audit | complete |
 | R2 theory packet drafting | complete |
-| R2 v0.2 HumanGate review | yes |
-| R2 HumanGate freeze | pending |
+| R2 v0.2 HumanGate review | complete |
+| R2 HumanGate freeze | approved with boundary |
+| R3 finite synthetic validation | authorized |
+| R3 standalone experiment code | authorized |
 | v0.90 replay | no |
 | new Provider calls | no |
 | fresh holdout consumption | no |

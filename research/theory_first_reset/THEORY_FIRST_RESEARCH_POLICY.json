@@ -51,8 +51,9 @@
     "GROWING_BASELINE_EXCEPTIONS"
   ],
   "current_authority": {
-    "stage": "R2_READY_FOR_HUMAN_FREEZE_REVIEW",
+    "stage": "R3_MINIMAL_SYNTHETIC_VALIDATION",
     "theory_research": true,
+    "standalone_synthetic_experiment": true,
     "provider_calls": false,
     "fresh_holdout_consumption": false,
     "new_runtime_modules": false,

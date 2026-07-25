@@ -49,8 +49,10 @@ and blob identity, but its candidate code is not part of this branch.
 14. `R2_SYMBOL_AND_PROXY_AUDIT.md`
 15. `R2_ORGANIZATION_THEORY_PACKET_V0_2.md`
 16. `R2_FORMAL_VERIFICATION_REPORT.md`
-17. `THEORY_PACKET_TEMPLATE.md`
-18. `ROLLBACK_POINTER.json`
+17. `R2_HUMAN_GATE_FREEZE_RECEIPT.json`
+18. `R3_MINIMAL_SYNTHETIC_PREREGISTRATION_V0_1.md`
+19. `THEORY_PACKET_TEMPLATE.md`
+20. `ROLLBACK_POINTER.json`
 
 ## Research Boundary
 
@@ -68,10 +70,9 @@ positive local representation stage, one output-complementarity signal, and
 multiple composition or suppression failures. It does not identify positive
 collective cognition.
 
-R2 v0.2 is ready for HumanGate freeze review. It separates ontological Cbit
-from the task-bit proxy, renames unique role information to `J^uniq`, derives a
-minimal composition phase boundary, and separates small-model cognitive
-equivalence from true organizational surplus.
+R2 v0.2 was frozen by HumanGate with the bounded option A. The authorization
+permits only the preregistered R3 finite synthetic validation and a standalone
+experiment instrument.
 
-R3 synthetic engineering remains blocked until the v0.2 packet and its exact
-gates are explicitly frozen by HumanGate.
+Provider calls, fresh holdouts, Runtime/CoreSlim changes, retention writes, and
+baseline writes remain blocked.
